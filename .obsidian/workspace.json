@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "第一章笔记.md",
+                "file": "数据库系统原理/第一章/第一章笔记.md",
                 "mode": "source",
                 "source": false
               },
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "第一章笔记.md",
+                "file": "数据库系统原理/第一章/第一章笔记.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -181,8 +181,9 @@
   },
   "active": "98412368871f0f17",
   "lastOpenFiles": [
-    "未命名",
-    "第一章笔记.md",
+    "数据库系统原理/第一章",
+    "数据库系统原理",
+    "数据库系统原理/第一章/第一章笔记.md",
     "test note.md",
     "2025-05-11.md",
     "数据库系统原理",
