@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "6ad4a4b5ab531fe2",
+        "id": "05bf843e7c902fce",
         "type": "tabs",
         "children": [
           {
-            "id": "3b5670961854c171",
+            "id": "52325a109faa81f0",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -179,20 +179,21 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c9f1f55130606e43",
+  "active": "52325a109faa81f0",
   "lastOpenFiles": [
-    "数据库系统原理/第一章/pics/10.jpg",
-    "10.jpg",
-    "数据库系统原理/第一章/第一章笔记.md",
-    "数据库系统原理/第一章/pics/0.jpg",
+    "数据库系统原理/第二章/pics/12.jpg",
+    "数据库系统原理/第二章/pics/11.jpg",
+    "数据库系统原理/第二章/pics/13.jpg",
     "数据库系统原理/第二章/第二章笔记.md",
-    "数据库系统原理/第一章/pics/9.jpg",
-    "数据库系统原理/第二章/pics/1735270737545_waifu2x_art_noise1_scale.png",
-    "数据库系统原理/第一章/pics/8.jpg",
-    "数据库系统原理/第一章/pics/7.jpg",
-    "数据库系统原理/第一章/pics/6.jpg",
-    "数据库系统原理/第一章/pics/5.jpg",
-    "数据库系统原理/第一章/pics/4.jpg",
+    "数据库系统原理/第二章/pics/9.jpg",
+    "数据库系统原理/第二章/pics/10.jpg",
+    "数据库系统原理/第二章/pics/21.jpg",
+    "数据库系统原理/第二章/pics/20.jpg",
+    "数据库系统原理/第二章/pics/19.jpg",
+    "数据库系统原理/第二章/pics/18.jpg",
+    "数据库系统原理/第二章/pics/17.jpg",
+    "数据库系统原理/第二章/pics/16.jpg",
+    "数据库系统原理/第一章/第一章笔记.md",
     "数据库系统原理/第一章/pics",
     "数据库系统原理/第二章/pics",
     "数据库系统原理/第二章",
