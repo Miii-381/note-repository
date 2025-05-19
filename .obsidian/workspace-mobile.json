@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0116b345ac6030c5",
+        "id": "0606339b73a2fa5f",
         "type": "tabs",
         "children": [
           {
-            "id": "0967e8eea2e89f5f",
+            "id": "38eea4f2bff2a508",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "数据库系统原理/第二章/第二章笔记.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "第二章笔记"
             }
           }
         ]
@@ -94,7 +98,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "数据库系统原理/第一章/第一章笔记.md",
+            "file": "数据库系统原理/第二章/第二章笔记.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -139,6 +143,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian-git:Open Git source control": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -147,19 +152,20 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0967e8eea2e89f5f",
+  "active": "38eea4f2bff2a508",
   "lastOpenFiles": [
     "数据库系统原理/第一章/第一章笔记.md",
+    "数据库系统原理/第二章/第二章笔记.md",
+    "数据库系统原理/第一章/pics/10.jpg",
+    "数据库系统原理/第一章/pics/9.jpg",
+    "数据库系统原理/第一章/pics/8.jpg",
+    "数据库系统原理/第一章/pics/7.jpg",
     "数据库系统原理/第一章/pics/3.jpg",
     "数据库系统原理/第一章/pics/2.jpg",
     "数据库系统原理/第一章/pics/6.jpg",
     "数据库系统原理/第一章/pics/5.jpg",
     "数据库系统原理/第一章/pics/4.jpg",
     "数据库系统原理/第一章/pics/1.jpg",
-    "1735270737545_waifu2x_art_noise1_scale.png",
-    "数据库系统原理/第一章/pics/0.jpg",
-    "数据库系统原理/第二章/第二章笔记.md",
-    "数据库系统原理/第二章/pics/1735270737545_waifu2x_art_noise1_scale.png",
     "数据库系统原理/第一章/pics",
     "数据库系统原理/第二章/pics",
     "数据库系统原理/第二章",
