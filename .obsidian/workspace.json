@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "30ca4911e79da9be",
+        "id": "363e7376d5a059a7",
         "type": "tabs",
         "children": [
           {
-            "id": "b4114eeabc81e88b",
+            "id": "c30ac14cfa2690a0",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -94,8 +94,8 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "数据库系统原理/第二章/第二章笔记.md",
-                "collapseAll": false,
+                "file": "数据库系统原理/第三章/第三章笔记.md",
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "第二章笔记 的反向链接列表"
+              "title": "第三章笔记 的反向链接列表"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "test note.md",
+                "file": "数据库系统原理/第三章/第三章笔记.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "test note 的大纲"
+              "title": "第三章笔记 的大纲"
             }
           },
           {
@@ -179,11 +179,12 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b4114eeabc81e88b",
+  "active": "c9f1f55130606e43",
   "lastOpenFiles": [
-    "数据库系统原理/第三章/pics/56.jpg",
+    "数据库系统原理/第三章/pics/57.jpg",
     "数据库系统原理/第三章/pics/55.jpg",
     "数据库系统原理/第三章/第三章笔记.md",
+    "数据库系统原理/第三章/pics/56.jpg",
     "数据库系统原理/第三章/pics/52.jpg",
     "数据库系统原理/第三章/pics/33.jpg",
     "数据库系统原理/第三章/pics/32.jpg",
@@ -192,7 +193,6 @@
     "数据库系统原理/第三章/pics/31.jpg",
     "数据库系统原理/第三章/pics/28.jpg",
     "数据库系统原理/第三章/pics/27.jpg",
-    "数据库系统原理/第三章/pics/24.jpg",
     "数据库系统原理/第二章/第二章笔记.md",
     "数据库系统原理/第三章/pics",
     "数据库系统原理/第三章",
