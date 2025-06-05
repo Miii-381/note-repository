@@ -14,8 +14,8 @@
               "type": "markdown",
               "state": {
                 "file": "数据库系统原理/第二章/第二章笔记.md",
-                "mode": "preview",
-                "source": true
+                "mode": "source",
+                "source": false
               },
               "icon": "lucide-file",
               "title": "第二章笔记"
