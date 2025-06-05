@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "数据库系统原理/第一章/第一章笔记.md",
+                "file": "数据库系统原理/第三章/第三章笔记.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "第一章笔记"
+              "title": "第三章笔记"
             }
           }
         ]
@@ -74,8 +74,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -114,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "数据库系统原理/第一章/第一章笔记.md",
+                "file": "数据库系统原理/第三章/第三章笔记.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "第一章笔记 的出链列表"
+              "title": "第三章笔记 的出链列表"
             }
           },
           {
@@ -143,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "数据库系统原理/第一章/第一章笔记.md",
+                "file": "数据库系统原理/第三章/第三章笔记.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "第一章笔记 的大纲"
+              "title": "第三章笔记 的大纲"
             }
           },
           {
@@ -182,10 +181,13 @@
   },
   "active": "c30ac14cfa2690a0",
   "lastOpenFiles": [
+    "数据库系统原理/第三章/第三章笔记.md.baiduyun.uploading.cfg",
+    "数据库系统原理/第二章/第二章笔记.md",
+    "数据库系统原理/第二章/第二章笔记.md.baiduyun.uploading.cfg",
+    "数据库系统原理/第一章/第一章笔记.md",
     "数据库系统原理/第一章/第一章笔记.md.baiduyun.uploading.cfg",
     "数据库系统原理/第七章/第七章笔记.md",
     "数据库系统原理/第七章/第七章笔记.md.baiduyun.uploading.cfg",
-    "数据库系统原理/第二章/第二章笔记.md",
     "数据库系统原理/第七章/pics",
     "数据库系统原理/第七章",
     "数据库系统原理/第二章/pics/20.jpg.baiduyun.uploading.cfg",
@@ -193,8 +195,6 @@
     "数据库系统原理/第二章/pics/18.jpg.baiduyun.uploading.cfg",
     "数据库系统原理/第二章/pics/17.jpg.baiduyun.uploading.cfg",
     "数据库系统原理/第二章/pics/16.jpg.baiduyun.uploading.cfg",
-    "数据库系统原理/第二章/pics/15.jpg.baiduyun.uploading.cfg",
-    "数据库系统原理/第二章/pics/14.jpg.baiduyun.uploading.cfg",
     "第六章笔记.md",
     "数据库系统原理/第三章/第三章笔记.md",
     "数据库系统原理/第三章/pics/57.jpg",
@@ -207,7 +207,6 @@
     "数据库系统原理/第三章/pics/29.jpg",
     "数据库系统原理/第三章/pics/31.jpg",
     "数据库系统原理/第三章/pics/28.jpg",
-    "数据库系统原理/第一章/第一章笔记.md",
     "test note.md",
     "2025-05-11.md",
     "README.md"
