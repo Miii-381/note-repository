@@ -14,8 +14,8 @@
               "type": "markdown",
               "state": {
                 "file": "数据库系统原理/第二章/第二章笔记.md",
-                "mode": "preview",
-                "source": false
+                "mode": "source",
+                "source": true
               },
               "icon": "lucide-file",
               "title": "第二章笔记"
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "test note.md",
+                "file": "数据库系统原理/第二章/第二章笔记.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "test note 的出链列表"
+              "title": "第二章笔记 的出链列表"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "数据库系统原理/第三章/第三章笔记.md",
+                "file": "数据库系统原理/第二章/第二章笔记.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "第三章笔记 的大纲"
+              "title": "第二章笔记 的大纲"
             }
           },
           {
@@ -162,7 +162,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
