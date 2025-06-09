@@ -721,7 +721,7 @@ ___
 - **抽象方法**：在抽象方法中使用`abstract`关键字修饰的方法，没有方法体，方法的具体实现由继承自该抽象类的实现类确定。
 	- 如果一个类包含抽象方法，那么该类**必须是抽象类**。
 	- 任何子类**必须重写**父类的抽象方法，或者**声明自身为抽象类**。
-	- **注意：
+	- **==注意：Object类中的抽象方法不被视作抽象方法！！！**==
 - 建议抽象类中的**模板方法**（通过**定义算法的骨架**（即流程的整体步骤），将某些步骤的实现**延迟到子类中**，从而实现代码复用和灵活扩展）使用`final`进行修饰，以免被子类重写。
 ``` java
 public abstract class Shape {   // 抽象类
@@ -1063,6 +1063,28 @@ class Outter {
 - `(parameters) -> expression`  或  `(parameters) ->{ statements; }
 - 只有一个参数时，可省略小括号；没有参数时，不能省略小括号！
 - 只有一行语句时，可以省略大括号；
+- 可将匿名内部类中的例子改写为：
+``` java
+import javax.swing.*;
+import java.awt.event.*; 
+public class GUIExample { 
+	public static void main(String[] args) { 
+		JFrame frame = new JFrame("Button Example"); 
+		JButton button = new JButton("Click Me"); 
+		
+		// lambda函数声明匿名内部类实现事件监听器
+		// (由于函数式接口特性，方法体会被自动匹配至函数式接口的抽象方法中)
+		button.addActionListener(() -> { 
+			System.out.println("Button clicked!"); 
+		}); 
+		
+		frame.add(button); 
+		frame.setSize(300, 200); 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true); 
+	}
+}
+```
 #### 特性：
 - lambda表达式可以声明**函数式接口**（只包含一个抽象方法的接口，但可以包含多个默认方法或者静态方法。具体实例这里不展开说明。）
 - 
