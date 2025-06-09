@@ -1304,7 +1304,7 @@ ___
 	- **`Exception`** 类：是所有异常类的父类，它提供了一些方法来获取异常信息，如 **`getMessage()`**、**`printStackTrace()`** 等。
 ``` java
 // 捕获异常：
-// 1. try-catch-finally语句块：
+// try-catch-finally语句块：
 try {
     // 可能会抛出异常的代码
 } catch (IOException e) {
@@ -1317,24 +1317,25 @@ try {
 // 1. throw 关键字：用于手动在当前方法中抛出一个异常：
 public void checkNumber(int num) {  
 	if (num < 0) {  
-		// 抛出
+		// 抛出IllegalArgumentException异常
 		throw new IllegalArgumentException("Number must be positive");  
 	}  
 }
-// 2. throws 子句：
-public void readFile() throws IOException {
-    // 可能会抛出IOException的代码
+// 2. throws 子句：指定该方法可能抛出的异常，当方法抛出指定类型的异常时，异常会被传递至调用该方法的代码，并在该代码中使用try-catch语句处理异常。throw子句后可跟多个异常，以逗号隔开。
+public class className { 
+	public void withdraw(double amount) throws RemoteException,                                                                   InsufficientFundsException 
+	{ 
+		// 方法体
+	} 
+	// 其他类成员
 }
-
-
 ```
-
-
 ### Exception类的层次：
-- 所有的异常类是从 java.lang.Exception 类继承的子类。
-- Exception 类是 Throwable 类的子类。除了Exception类外，Throwable还有一个子类Error 。
+- 所有的异常类是从 `java.lang.Exception` 类继承的子类。
+- `Exception` 类是 `Throwable` 类的子类。除了`Exception`类外，`Throwable`还有一个子类`Error` 。
 - Java 程序通常不捕获错误。错误一般发生在严重故障时，它们在Java程序处理的范畴之外。
-- Error 用来指示运行时环境发生的错误。例如，JVM 内存溢出。
+- 异常是程序，
+- Error 用来指示运行时环境发生的错误。例如，**JVM 内存溢出**。
 - 一般地，程序不会从错误中恢复。
-- 异常类有两个主要的子类：IOException 类和 RuntimeException 类。
+- 异常类有两个主要的子类：`IOException` 类和 `RuntimeException` 类。
 ![[Pasted image 20250609221329.png]]
