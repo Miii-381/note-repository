@@ -571,11 +571,33 @@ class Triangle extends Shape {       // Triangle类继承自Shape类，重写了
 }
 ```
 ### 多态的类型转换：
-- 从子到父：**自动类型转换**，子类对象赋值给父类类型的变量指向。
-- 从父到子： 
+- **从子到父**：**自动类型转换**，子类对象赋值给父类类型的变量指向。
+- **从父到子**： 
 	- 此时**必须进行强制类型转换**：`子类 对象变量 = (子类)父类类型的变量`。
 	- **作用**：可以解决多态下的劣势，实现调用子类独有的功能。 
-	- 注意： 如果转型后的类型和对象真实类型不是同一种类型，那么在转换的时候就会出现ClassCastException
+	- **注意**： 如果转型后的类型和对象真实类型**不是同一种类型**，那么在转换的时候就会出现ClassCastException异常
+- 强烈建议强转前使用`instanceof`关键字判断当前对象的真实类型！！！
+- `instanceof` 是 Java 的保留关键字。它的作用是测试它**左边**的对象是否是它**右边**的类的实例，返回 `boolean` 的数据类型。
+``` java
+import java.util.ArrayList; 
+import java.util.Vector; 
+
+public class Main { 
+	public static void main(String[] args) { 
+		Object testObject = new ArrayList(); 
+		displayObjectClass(testObject); 
+	} 
+	public static void displayObjectClass(Object o) { 
+		if (o instanceof Vector) 
+			System.out.println("对象是 java.util.Vector 类的实例"); 
+		else if (o instanceof ArrayList) 
+			System.out.println("对象是 java.util.ArrayList 类的实例"); 
+		else 
+			System.out.println("对象是 " + o.getClass() + " 类的实例"); 
+	}
+}
+// 执行结果：对象是 java.util.ArrayList 类的实例
+```
 ___
 ## 重写（Override）与重载（Overload）:
 ### 重写(Override)：
@@ -846,7 +868,7 @@ class Car implements Vehicle, FourWheeler {
 ```
 ___
 ## 枚举：
-## 概念：
+### 概念：
 - Java 枚举是一个**特殊的类**，一般表示一组常量，比如一年的 4 个季节，一年的 12 个月份，一个星期的 7 天，方向有东南西北等。
 - Java 枚举类使用 `enum` 关键字来定义，各个常量使用**逗号**`,`来分割。
 - 枚举常被用于 **for循环** 和 **switch语句** 中。
@@ -874,3 +896,8 @@ class Color {
 	- `valueOf()`方法返回**指定字符串值的枚举常量**。
 - 枚举跟普通类一样可以用自己的变量、方法和构造函数，构造函数只能使用 `private` 访问修饰符，所以外部无法调用。枚举既可以包含**具体方法**，也可以包含**抽象方法**。 如果枚举类具有抽象方法，则枚举类的每个实例都必须实现它。
 ___
+## 内部类：
+### 概念：
+- 在 Java 中，可以**将一个类定义在另一个类里面或者一个方法里面**，这样的类称为**内部类**。
+- 广泛意义上的内部类一般来说包括这四种：**成员内部类、局部内部类、匿名内部类**和**静态内部类**。
+- 
