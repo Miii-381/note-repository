@@ -1107,9 +1107,44 @@ public class Java8Tester {
 - 在 Lambda 表达式当中不允许声明一个**与局部变量同名**的参数或者局部变量。
 ___
 ## 泛型：
-### 
+### 概念：
+- Java 中的 **泛型（Generics）** 是一种在编译时进行类型检查的技术，允许开发者通过参数化类型（Type Parameters）来编写灵活且类型安全的代码。它通过将类型作为参数传递给类、接口或方法，使代码能够处理多种数据类型，同时避免运行时类型转换错误。
+- **泛型的本质**：参数化类型（Parameterized Types）。你可以将类型（如 `String`、`Integer`）作为参数传递给类、接口或方法，使代码更加通用。
+``` java
+// 泛型类
+public class Box<T> {
+    private T content;
+    public void set(T content) { this.content = content; }
+    public T get() { return content; }
+}
 
-
+// 使用泛型类
+Box<String> stringBox = new Box<>();
+stringBox.set("Hello");
+String value = stringBox.get(); // 无需强制类型转换
+```
+### 为什么引入泛型？
+- **类型安全**：  
+    在泛型出现之前，集合类（如 `List`）只能存储 `Object` 类型，取出元素时需要强制类型转换，可能导致 `ClassCastException` 异常。
+    - **传统写法**
+	``` java
+        List list = new ArrayList();
+        list.add("Hello");
+        String str = (String) list.get(0); // 需要强制转换，可能存在异常
+	```
+    - **泛型写法**：
+        ``` java
+        List<String> list = new ArrayList<>();
+        list.add("Hello");
+        String str = list.get(0); // 自动类型检查，无需强制转换
+        ```
+        
+- **代码复用**：  
+    通过泛型，可以编写通用的类或方法，适用于多种数据类型。
+    
+    - 例如：`List<T>`、`Map<K, V>` 可以支持任意类型的键值对操作。
+- **消除强制类型转换**：  
+    泛型在编译时自动处理类型转换，减少冗余代码并避免运行时错误。
 ___
 # 异常及异常的处理
 ## 异常：
