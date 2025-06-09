@@ -1424,4 +1424,8 @@ ___
 		1. `Integer.parseInt(“字符串类型的整数”)` 
 		2. `Double.parseDouble(“字符串类型的小数”)`
 - 包装类常用四种方法：
-	- `parseXxx()`：将除
+	- `parseXxx()`：将除`Character类`外的所有字符串向基本类型转换，`Xxx`是基本类型名。
+	- `xxxValue()`：将除`Character类`外的所有包装类型（Number对象）向基本类型转换，`xxx`是基本类型名。
+	- `valueOf()`：将字符串向除`Character类`外的所有包装类型（Number对象）转换   `例：Integer i= Integer.valueOf("5")`
+	- `toString()`：实现基本类型或者包装类型向字符串的转换
+	- 小技巧：*数据+“”**
