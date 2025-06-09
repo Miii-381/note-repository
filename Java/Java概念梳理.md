@@ -815,5 +815,10 @@ class Color {
      public static final Color GREEN = new Color();
 }
 ```
-- enum 定义的枚举类默认继承了 `java.lang.Enum` 类，并实现了 `java.lang.Serializable` 和 `java.lang.Comparable` 两个接口。也就意味着，枚举类能被**序列化**和**比较**（序列化在此不做讨论）。
-- enum类存在如下fan
+- enum 定义的枚举类默认继承了 `java.lang.Enum` 类，并实现了 `java.lang.Serializable` 和 `java.lang.Comparable` 两个接口。也就意味着，enum类能被**序列化**和**比较**`（序列化在此不做讨论，简单来说就是将数据转化成一条连续的二进制串，便于传输，反序列化同理）`。
+- enum类存在如下方法：
+	- `values()` 返回枚举类中**所有的值**。
+	- `ordinal()`方法可以找到每个枚举常量的**索引**，就像数组索引一样。
+	- `valueOf()`方法返回**指定字符串值的枚举常量**。
+- 枚举跟普通类一样可以用自己的变量、方法和构造函数，构造函数只能使用 `private` 访问修饰符，所以外部无法调用。枚举既可以包含**具体方法**，也可以包含**抽象方法**。 如果枚举类具有抽象方法，则枚举类的每个实例都必须实现它。
+___
