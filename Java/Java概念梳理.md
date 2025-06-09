@@ -1419,8 +1419,9 @@ ___
 - **自动装/拆箱的好处**：可以让基本数据类型和引用数据类型直接进行计算。
 ``` java
 	Integer x = 3;        // 相当于 Integer x = new Integer(3);
-	x = x + 1;            // 相当于 x = x.inValue() + 1
-	System.out.println(x);
+	x = x + 1;            // 相当于 x = Integer.valueOf(((int) x) + 1 );
+						  // 或者是 x = Integer.valueOf(x.intValue() + 1);
+	System.out.println(x);// 4
 ```
 - **包装类的特有功能**：
 	- 包装类的变量的默认值可以是`null`，容错率更高；
