@@ -722,8 +722,8 @@ ___
 - 除非实现接口的类是抽象类，否则该类要定义接口中的所有方法。
 - 接口**无法被实例化**，但是**可以被实现**。一个实现接口的类，必须实现接口内所描述的**所有方法**，否则就必须声明为抽象类。另外，在 Java 中，接口类型可用来声明一个变量，他们可以成为一个空指针，或是被绑定在一个以此接口实现的对象。
 ### 特性：
-- 接口本身是隐式抽象的，声明接口的时候不用使用`abstract`关键字
-- 接口中每一个方法也是隐式抽象的,接口中的方法会被隐式的指定为 `public abstract`（只能是 `public abstract`，其他修饰符都会报错）。
+- 接口**本身**是隐式抽象的，声明接口的时候不用使用`abstract`关键字
+- 接口中**每一个方法**也是隐式抽象的,接口中的方法会被隐式的指定为 `public abstract`（只能是 `public abstract`，其他修饰符都会报错）。
 - 接口中可以含有变量，但是接口中的变量会被隐式的指定为 `public static final` 变量（并且只能是 `public`，用 `private` 修饰会报编译错误）。
 - 接口中的方法是不能在接口中实现的，只能由**实现接口的类**来实现接口中的方法。
 ### 接口与类相似点：
@@ -734,20 +734,60 @@ ___
 ### 接口与类的区别：
 - 接口不能用于实例化对象。
 - 接口没有构造方法。
-- 接口中所有的方法必须是抽象方法，Java 8 之后 接口中可以使用 default 关键字修饰的非抽象方法。
+- 接口中所有的方法必须是抽象方法，但在Java 8 之后，接口中可以使用 `default` 关键字修饰的非抽象方法（**默认方法**）。
 - 接口不能包含成员变量，除了 static 和 final 变量。
-- 接口不是被类继承了，而是要被类实现。
-- 接口支持多继承。
+- 接口不是被类继承了，而是要被类**实现**。
+- 接口支持**多继承**（一个实现类可继承多个接口，实现这些接口全部的抽象方法）。
 ### 语法：
 ``` java
 // 接口声明：
 [可见度] interface 接口名称 [extends 其他的接口名] {
 	// 声明变量 
 	// 抽象方法 
+	// 默认方法（JDK 1.8添加）：
+	default void print(){
+		System.out.println("我是一辆车!"); 
+	}
 }
+
 // 接口实现：
 [可见度] class 实现类名 implements 接口名称[, 其他接口名称, 其他接口名称..., ...] {
-	// 实现所声明接口内的所有抽象方法
+	// 必须实现所声明接口内的所有抽象方法
+	// 可添加实现类内自有的方法
 }
 ```
-### 
+### 举个栗子：
+``` java
+/* 文件名 : Animal.java */
+interface Animal {
+   public void eat();
+   public void travel();
+}
+
+/* 文件名 : MammalInt.java */
+public class MammalInt implements Animal{
+ 
+   public void eat(){
+      System.out.println("Mammal eats");
+   }
+ 
+   public void travel(){
+      System.out.println("Mammal travels");
+   } 
+ 
+   public int noOfLegs(){
+      return 0;
+   }
+ 
+   public static void main(String args[]){
+      MammalInt m = new MammalInt();
+      m.eat();
+      m.travel();
+   }
+}
+
+/* 执行结果： 
+* Mammal eats
+* Mammal travels
+*/
+```
