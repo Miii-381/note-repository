@@ -1124,27 +1124,64 @@ stringBox.set("Hello");
 String value = stringBox.get(); // 无需强制类型转换
 ```
 ### 为什么引入泛型？
-- **类型安全**：  
-    在泛型出现之前，集合类（如 `List`）只能存储 `Object` 类型，取出元素时需要强制类型转换，可能导致 `ClassCastException` 异常。
-    - **传统写法**
-	``` java
-        List list = new ArrayList();
-        list.add("Hello");
-        String str = (String) list.get(0); // 需要强制转换，可能存在异常
-	```
-    - **泛型写法**：
-        ``` java
-        List<String> list = new ArrayList<>();
-        list.add("Hello");
-        String str = list.get(0); // 自动类型检查，无需强制转换
-        ```
-        
-- **代码复用**：  
-    通过泛型，可以编写通用的类或方法，适用于多种数据类型。
+- **类型安全**：  在泛型出现之前，集合类（如 `List`）只能存储 `Object` 类型，取出元素时需要强制类型转换，可能导致 `ClassCastException` 异常。
+``` java
+	// 传统写法：
+    List list = new ArrayList();
+    list.add("Hello");
+    String str = (String) list.get(0); // 需要强制转换，可能存在异常
     
+	// 泛型写法:
+    List<String> list = new ArrayList<>();
+    list.add("Hello");
+    String str = list.get(0); // 自动类型检查，无需强制转换
+```
+- **代码复用**：  
+    - 通过泛型，可以编写通用的类或方法，适用于多种数据类型。
     - 例如：`List<T>`、`Map<K, V>` 可以支持任意类型的键值对操作。
 - **消除强制类型转换**：  
-    泛型在编译时自动处理类型转换，减少冗余代码并避免运行时错误。
+    - 泛型在编译时自动处理类型转换，减少冗余代码并避免运行时错误。
+### 泛型的实现原理：类型擦除
+Java 的泛型是通过 **类型擦除（Type Erasure）** 实现的。这意味着：
+- **编译阶段**：泛型信息被保留，编译器会进行类型检查并插入必要的类型转换代码。
+- **运行阶段**：泛型信息被擦除，实际类型被替换为原始类型（Raw Type，通常是 `Object`）。
+#### 类型擦除的示例
+
+- **源代码**：
+    ``` java
+    public class Box<T> {
+        private T content;
+        public void set(T content) { this.content = content; }
+        public T get() { return content; }
+    }
+    ```
+- **编译后**：
+``` java
+public class Box {
+    private Object content;
+        public void set(Object content) { this.content = content; }
+        public Object get() { return content; }
+    }
+```
+    
+
+#### **2.2 类型擦除的影响**
+
+- **不能获取泛型的具体类型**：  
+    运行时无法通过 `instanceof` 或反射获取泛型的实际类型。
+    
+    java
+    
+    深色版本
+    
+    ```
+    List<String> list = new ArrayList<>();
+    // 下面的判断始终为 false
+    if (list instanceof List<String>) { ... } // 编译错误
+    ```
+    
+- **泛型数组的限制**：  
+    由于类型擦除，不能直接创建泛型数组（如 `new T[10]`），但可以通过反射或 `Object[]` 间接实现。
 ___
 # 异常及异常的处理
 ## 异常：
