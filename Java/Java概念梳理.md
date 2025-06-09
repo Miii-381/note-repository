@@ -951,17 +951,18 @@ public class Test {
         //第一种方式：
         Outter outter = new Outter();
         Outter.Inner inner = outter.new Inner();  //必须通过Outter对象来创建
+        // 或:Outter.Inner inner = new Outter().new Inner();
          
         //第二种方式：
-        Outter.Inner inner1 = outter.getInnerInstance();
+        Outter.Inner inner1 = outter.getInnerInstance(); 
+        // 通过getInnerInstance()方法获取成员内部类对象,这种方法需要自定义创建逻辑
+        // 此处使用了懒汉式单例模式的创建逻辑
     }
 }
  
 class Outter {
     private Inner inner = null;
-    public Outter() {
-         
-    }
+    public Outter() { }
      
     public Inner getInnerInstance() {
         if(inner == null)
@@ -969,8 +970,10 @@ class Outter {
         return inner;
     }
       
-    class Inner {
+    class Inner {          // 成员内部类
         public Inner() { }
     }
 }
 ```
+### 局部内部类：
+- 局部内部类是定义在一个方法或者一个作用域里面的类，它和成员内部类的区别在于局部内部类的访问**仅限于方法内或者该作用域内**。
