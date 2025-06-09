@@ -1039,7 +1039,7 @@ public class GUIExample {
 	4. **调试困难**：匿名类的编译生成文件（如 `OuterClass$1.class`）难以调试。
 ### 静态内部类：
 - 静态内部类也是定义在另一个类里面的类，只不过在类的前面多了一个关键字`static`。
-- 静态内部类是不需要依赖于外部类的，这点和类的静态成员属性有点类似，并且它不能使用外部类的非static成员变量或者方法。这点很好理解，因为在没有外部类的对象的情况下，可以创建静态内部类的对象，这时如果允许访问外部类的非`static`成员就会产生矛盾，因为外部类的非static成员必须依附于具体的对象，在具体对象未被实例化前，该成员是不存在的，访问它会导致程序错误。
+- 静态内部类是不需要依赖于外部类的，这点和类的静态成员属性有点类似，并且它不能使用外部类的非static成员变量或者方法。这点很好理解，因为静态成员内部类不持有外部类实例的引用，这时如果允许访问外部类的非`static`成员就会产生矛盾，因为外部类的非`static`成员必须依附于具体的对象，而在具体对象未被实例化前，该成员是不存在的，访问它会导致程序错误。
 ``` java
 public class Test {
     public static void main(String[] args)  {
@@ -1048,15 +1048,13 @@ public class Test {
 }
  
 class Outter {
-    public Outter() {
-         
-    }
+    public Outter() { }
      
     static class Inner {
-        public Inner() {
-             
-        }
+        public Inner() { }
     }
 }
 ```
-### lambda函数：
+### Lambda函数：
+- Lambda表达式是 JDK 8 开始后的一种新语法形式。
+- **作用**：简化匿名内部类的代码写法。
