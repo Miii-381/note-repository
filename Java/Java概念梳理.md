@@ -1334,8 +1334,41 @@ public class className {
 - 所有的异常类是从 `java.lang.Exception` 类继承的子类。
 - `Exception` 类是 `Throwable` 类的子类。除了`Exception`类外，`Throwable`还有一个子类`Error` 。
 - Java 程序通常不捕获错误。错误一般发生在严重故障时，它们在Java程序处理的范畴之外。
-- 异常是程序，
-- Error 用来指示运行时环境发生的错误。例如，**JVM 内存溢出**。
+- `Exception`是程序**逻辑层面的异常**，而`Error`是**JVM或者系统级的严重错误**。
+- `Error` 用来指示运行时环境发生的错误。例如，**JVM 内存溢出**、**栈溢出**等。
 - 一般地，程序不会从错误中恢复。
 - 异常类有两个主要的子类：`IOException` 类和 `RuntimeException` 类。
 ![[Pasted image 20250609221329.png]]
+### 补充：try-with-resource 语法：
+- JDK7 之后，Java 新增的 `try-with-resource` 语法结构，旨在自动管理资源，确保资源在使用后能够及时关闭，避免资源泄露 。
+- `try-with-resources` 是一种异常处理机制，它能够自动关闭在 `try` 块中声明的实现了`AutoCloseable`接口的资源，无需显式地在 `finally` 块中关闭。
+- 在 `try-with-resources` 语句中，你只需要在 `try` 关键字后面声明资源，然后跟随一个代码块。无论代码块中的操作是否成功，资源都会在 `try` 代码块执行完毕后自动关闭。
+- 语法如下：
+``` java
+try (resource declaration) {
+  // 使用的资源
+} catch (ExceptionType e1) {
+  // 异常块
+}
+```
+- 实例：
+``` java
+import java.io.*;  
+  
+public class RunoobTest {  
+  
+    public static void main(String[] args) {  
+	    String line;  
+	    // try-with-resources语句在执行完毕后自动关闭BufferedReader资源
+        try(BufferedReader br = new BufferedReader(new FileReader("test.txt"))) {  
+            while ((line = br.readLine()) != null) {  
+                System.out.println("Line =>"+line);  
+            }  
+        } catch (IOException e) {  
+            System.out.println("IOException in try block => " + e.getMessage());  
+        }  
+    }  
+}
+
+// 输出结果：IOException in try block => test.txt (No such file or directory)
+```
