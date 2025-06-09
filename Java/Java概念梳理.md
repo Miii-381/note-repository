@@ -225,5 +225,58 @@ int i = sc.nextInt();
 ### do...while循环：同上
 ### for循环：
 #### 基础的懒得写了
-#### 增强for循环：
-#### 迭代器：
+#### 增强for循环（for-each循环）：
+##### 特点：
+- **语法简洁**：无需显式声明索引或迭代器对象，直接遍历集合或数组。
+- **自动迭代**：自动处理元素的访问逻辑，无需手动调用`hasNext()`或`next()`方法。
+- **限制性**：
+    - **无法修改集合结构**：不能在遍历过程中添加或删除元素（否则会抛出`ConcurrentModificationException`）。
+    - **无法获取索引**：不能直接访问当前元素的索引（需要配合传统`for`循环）。
+    - **单向遍历**：只能从头到尾遍历，不能跳过部分元素或逆序遍历。
+##### 语法：
+``` java
+// 遍历集合
+List<String> list = new ArrayList<>();
+list.add("A");
+list.add("B");
+for (String item : list) {
+    System.out.println(item);
+}
+
+// 遍历数组
+int[] numbers = {1, 2, 3};
+for (int num : numbers) {
+    System.out.println(num);
+}
+```
+##### 适用场景：
+- **简单遍历**：仅需读取集合中的元素，无需修改集合结构。
+- **代码简洁性**：希望减少冗余代码，提高可读性。
+- **固定顺序遍历**：集合的顺序不影响业务逻辑（如`ArrayList`）。
+##### 注意事项：
+- **不能修改集合**：如果尝试在循环中直接修改集合（如`list.add()`或`list.remove()`），会抛出`ConcurrentModificationException`异常。
+	```java
+    // 错误示例：增强for循环中修改集合
+    for (String item : list) {
+        if (item.equals("B")) {
+            list.remove(item); // 抛出ConcurrentModificationException异常
+        }
+    }
+    ```
+#### 迭代器循环：
+##### 特点：
+
+##### 语法：
+``` java
+List<String> list = new ArrayList<>();
+list.add("A");
+list.add("B");
+Iterator<String> iterator = list.iterator();
+while (iterator.hasNext()) {
+    String item = iterator.next();
+    if (item.equals("B")) {
+        iterator.remove(); // 安全删除元素
+    }
+    System.out.println(item);
+}
+```
