@@ -8,11 +8,30 @@
 - 通过字节码文件和JVM，Java实现了**一次编写，到处运行”** 的特性
 ## 程序结构：
 ``` java
-package Test;                                // package语句（0个或多个）
-import java.util.*                           // import语句（0个或多个）
-public class HelloWorld {                    // 类定义（public类名与文件名保持一致）
-    public static void main(String[] args) {  
-        System.out.println("Hello world!");  
+package Test;                                 // package语句（0个或多个）
+import java.util.*                            // import语句（0个或多个）
+public class HelloWorld {                     // 类定义（public类名应与文件名保持一致）
+    public static void main(String[] args) {  // main方法（程序入口点）
+        System.out.println("Hello world!");   // 方法体（执行的东西）
     }  
 }
 ```
+- **编写并运行一个java程序**：编写源文件->生成字节码文件（java xxx.java）->使用解释器运行字节码文件（javac xxx）
+## 注释书写：
+``` java
+// 单行注释
+
+/* 
+* 多行注释
+* 多行注释
+* 多行注释
+/
+
+/**
+* 文档注释
+* 文档注释
+* 文档注释
+* （会被JavaDoc文档识别并生成API文档，可添加类似@param等标签）
+**/
+```
+## gua
