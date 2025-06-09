@@ -900,4 +900,77 @@ ___
 ### 概念：
 - 在 Java 中，可以**将一个类定义在另一个类里面或者一个方法里面**，这样的类称为**内部类**。
 - 广泛意义上的内部类一般来说包括这四种：**成员内部类、局部内部类、匿名内部类**和**静态内部类**。
-- 
+### 成员内部类：
+- 成员内部类是最普通的内部类，它的定义**位于另一个类的内部**，形如下面的形式：
+``` java
+class Circle {
+    double radius = 0;
+     
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+     
+    class Draw {     // 内部类
+        public void drawSahpe() {
+            System.out.println("drawshape");
+        }
+    }
+}
+```
+- 此处`Draw`为内部类，`Circle`为外部类。成员内部类可以**无条件访问**外部类的所有成员属性和成员方法（包括private成员和静态成员）。
+- 当成员内部类拥有和外部类同名的成员变量或者方法时，会发生**隐藏现象**，即默认情况下访问的是成员内部类的成员（**作用域的覆盖**）。如果要访问外部类的同名成员，需要以下面的形式进行访问：
+``` java
+外部类.this.成员变量
+外部类.this.成员方法
+```
+- 在外部类中如果要访问成员内部类的成员，必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问：
+``` java
+class Circle {
+    private double radius = 0;
+ 
+    public Circle(double radius) {
+        this.radius = radius;
+        getDrawInstance().drawSahpe();   //必须先创建成员内部类的对象，再进行访问
+    }
+     
+    private Draw getDrawInstance() {
+        return new Draw();
+    }
+     
+    class Draw {     //内部类
+        public void drawSahpe() {
+            System.out.println(radius);  //外部类的private成员
+        }
+    }
+}
+```
+- 成员内部类是依附外部类而存在的，也就是说，如果要创建成员内部类的对象，前提是**必须存在一个外部类的对象**。创建成员内部类对象的一般方式如下：
+``` java
+public class Test {
+    public static void main(String[] args)  {
+        //第一种方式：
+        Outter outter = new Outter();
+        Outter.Inner inner = outter.new Inner();  //必须通过Outter对象来创建
+         
+        //第二种方式：
+        Outter.Inner inner1 = outter.getInnerInstance();
+    }
+}
+ 
+class Outter {
+    private Inner inner = null;
+    public Outter() {
+         
+    }
+     
+    public Inner getInnerInstance() {
+        if(inner == null)
+            inner = new Inner();
+        return inner;
+    }
+      
+    class Inner {
+        public Inner() { }
+    }
+}
+```
