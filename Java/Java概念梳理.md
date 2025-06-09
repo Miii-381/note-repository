@@ -1238,28 +1238,22 @@ public interface List<T> {
 3. **简化代码**：避免强制类型转换，提高可读性。
 4. **更好的 API 设计**：通过泛型，API 提供者可以明确约束输入和输出的类型。
 ### 7. 泛型的限制
-1. **不能使用基本类型**：  
-    泛型参数只能是引用类型（如 `Integer`、`String`），不能是基本类型（如 `int`、`char`）。
-    - 解决方案：使用包装类（如 `List<Integer>`）。
+1. **不能使用基本类型**：  泛型参数只能是引用类型（如 `Integer`、`String`），不能是基本类型（如 `int`、`char`）。
+**解决方案**：使用包装类（如 `List<Integer>`）。
+
 2. **不能实例化泛型类型参数**：
 ``` java
 public class Box<T> {
     T content = new T(); // 编译错误：无法实例化泛型类型参数
 }
 ```
-    
-    - 解决方案：通过反射或工厂方法创建对象。
+**解决方案**：通过反射或工厂方法创建对象。
+
 3. **不能创建泛型数组**：
-    
-    java
-    
-    深色版本
-    
-    ```
-    T[] array = new T[10]; // 编译错误
-    ```
-    
-    - 解决方案：使用 `Object[]` 或 `Array.newInstance()`。
+``` java
+T[] array = new T[10]; // 编译错误
+```
+**解决方案**：使用 `Object[]` 或 `Array.newInstance()`。
 
 ---
 
@@ -1267,42 +1261,26 @@ public class Box<T> {
 
 1. **集合类**：  
     Java 集合框架（如 `List<T>`、`Map<K, V>`）广泛使用泛型，确保类型安全。
-    
-    java
-    
-    深色版本
-    
-    ```
+    ``` java
     List<String> names = new ArrayList<>();
     names.add("Alice");
     String name = names.get(0); // 自动类型检查
     ```
-    
 2. **工具类方法**：  
     泛型方法可以处理多种类型的参数，提高代码复用性。
-    
-    java
-    
-    深色版本
-    
-    ```
+    ``` java
     public static <T> void printArray(T[] array) {
         for (T element : array) {
             System.out.println(element);
         }
     }
     ```
-    
+
 3. **自定义容器类**：  
     泛型类可以封装任意类型的数据，如缓存、队列等。
-    
-    java
-    
-    深色版本
-    
-    ```
+    ``` java
     public class Cache<K, V> {
-        private Map<K, V> map = new HashMap<>();
+        private Map<K, V> map = new HashMap<>();``
         public void put(K key, V value) { map.put(key, value); }
         public V get(K key) { return map.get(key); }
     }
@@ -1311,3 +1289,16 @@ ___
 # 异常及异常的处理
 ## 异常：
 ### 概念：
+- 异常是干扰程序正常运行的各种难以避免的问题，但并不是所有的错误都是异常，并且错误有时候是可以避免的。
+- **检查性异常**：
+	- 最具代表的检查性异常是用户错误或问题引起的异常，这些异常在编译时强制要求程序员处理。例如要打开一个不存在文件时，一个异常就发生了，这些异常在编译时不能被简单地忽略。
+	- 这类异常通常使用 try-catch 块来捕获并处理异常，或者在方法声明中使用 throws 子句声明方法可能抛出的异常。
+``` java
+try {
+    // 可能会抛出异常的代码
+} catch (IOException e) {
+    // 处理异常的代码
+} finally {
+	// 无论执不执行catch语句块，最终dou'y'h
+}
+```
