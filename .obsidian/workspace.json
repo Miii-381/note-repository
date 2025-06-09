@@ -15,7 +15,7 @@
               "state": {
                 "file": "Java/Java概念梳理.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
               "title": "Java概念梳理"
