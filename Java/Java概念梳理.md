@@ -349,6 +349,20 @@ int[] x = new int[100];
 | 3   | **public static void fill(int[] a, int val)**  <br>将指定的 int 值分配给指定 int 型数组指定范围中的每个元素。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。                                                                                                                    |
 | 4   | ==**public static void sort(Object[] a)**==<br>对指定对象数组根据其元素的自然顺序进行**升序排列**。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。                                                                                                                              |
 ___
-# 面向对象基本概念
+# 面向对象基本概念：
+### **封装、继承、多态**
+优势：代码可重用、可扩展、易于维护
 # 类：
-
+- **类（class）** 是对具有相同**特征**和**行为**的对象的描述，它是**创建对象（实例，instance）的一个模板**
+- 定义格式：
+``` java
+public class Car {  // [权限修饰符] class 类名
+	// 类的属性
+	String color; 
+	int number;
+	// 类的方法
+	void run() { 
+		System.out.println(color + ":" + number);
+	}
+}
+```
