@@ -570,6 +570,12 @@ class Triangle extends Shape {       // Triangle类继承自Shape类，重写了
     }
 }
 ```
+### 多态的类型转换：
+- 从子到父：**自动类型转换**，子类对象赋值给父类类型的变量指向。
+- 从父到子： 
+	- 此时**必须进行强制类型转换**：`子类 对象变量 = (子类)父类类型的变量`。
+	- **作用**：可以解决多态下的劣势，实现调用子类独有的功能。 
+	- 注意： 如果转型后的类型和对象真实类型不是同一种类型，那么在转换的时候就会出现ClassCastException
 ___
 ## 重写（Override）与重载（Overload）:
 ### 重写(Override)：
@@ -693,7 +699,7 @@ ___
 - **抽象方法**：在抽象方法中使用`abstract`关键字修饰的方法，没有方法体，方法的具体实现由继承自该抽象类的实现类确定。
 	- 如果一个类包含抽象方法，那么该类**必须是抽象类**。
 	- 任何子类**必须重写**父类的抽象方法，或者**声明自身为抽象类**。
-- 建议抽象类中的**模板方法**（子类中用得较多的方法，提取到抽象类中共用，或者该方法内使用了需要被重写的抽象方法）使用`final`进行修饰，以免被
+- 建议抽象类中的**模板方法**（通过**定义算法的骨架**（即流程的整体步骤），将某些步骤的实现**延迟到子类中**，从而实现代码复用和灵活扩展）使用`final`进行修饰，以免被子类重写。
 ``` java
 public abstract class Shape {   // 抽象类
 	private String name;        // 抽象类中仍然可以定义成员变量、成员方法和构造方法
@@ -797,10 +803,10 @@ public class MammalInt implements Animal{
 ### 默认方法、静态方法和私有方法的例子：
 ``` java
 public class Java8Tester {
-   public static void main(String args[]){
+    public static void main(String args[]){
        Vehicle vehicle = new Car();
-      vehicle.print();
-   }
+       vehicle.print();
+    } 
 }
  
 interface Vehicle {
@@ -815,21 +821,28 @@ interface Vehicle {
  
 interface FourWheeler {
 	default void print(){                // 默认方法
-      System.out.println("我是一辆四轮车!");
+	    System.out.println("我是一辆四轮车!");
+	    printCar();
     }
-	private void printCar(){
-		System.out.println("我是一辆四轮车!");
+	private void printCar(){             // 私有方法
+		System.out.println("我是一辆四轮车hahahahaha!");
 	}
 }
  
 class Car implements Vehicle, FourWheeler {
    public void print(){                 // 重写Vehicle和FourWheeler的print()方法
-      Vehicle.super.print();            // 默认方法冲突时可通过super进行指定调用
+      Vehicle.super.print();            // 可通过super进行默认方法的指定调用
       FourWheeler.super.print();
       Vehicle.blowHorn();               // 静态方法需使用接口名进行调用
       System.out.println("我是一辆汽车!");
    }
 }
+// 输出结果为：
+// 我是一辆车!
+// 我是一辆四轮车!
+// 我是一辆四轮车hahahahaha!
+// 按喇叭!!!
+// 我是一辆汽车!
 ```
 ___
 ## 枚举：
