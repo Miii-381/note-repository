@@ -1144,7 +1144,7 @@ String value = stringBox.get(); // 无需强制类型转换
 ### 3. 泛型的实现原理：类型擦除
 Java 的泛型是通过 **类型擦除（Type Erasure）** 实现的。这意味着：
 - **编译阶段**：泛型信息被保留，编译器会进行类型检查并插入必要的类型转换代码。
-- **运行阶段**：泛型信息被擦除，实际类型被替换为原始类型（Raw Type，通常是 `Object`）。
+- **运行阶段**：泛型信息被擦除，实际类型被替换为**原始类型**（Raw Type，通常是 `Object`）。
 #### 类型擦除的示例：
 - **源代码**：
 ``` java
@@ -1303,20 +1303,33 @@ ___
 	- **`throws`**：用于在方法声明中指定方法可能抛出的异常。
 	- **`Exception`** 类：是所有异常类的父类，它提供了一些方法来获取异常信息，如 **`getMessage()`**、**`printStackTrace()`** 等。
 ``` java
-// try-catch-finally语句块：
+// 捕获异常：
+// 1. try-catch-finally语句块：
 try {
     // 可能会抛出异常的代码
 } catch (IOException e) {
-    // 处理异常的代码
+    // 处理异常的代码（可存在多个catch块，称为多重捕获，异常会被一层层往下传递，直到异常被捕获或者是通过所有的catch块，被抛给上一级别的代码）
 } finally {
-	// 无论发不发生异常，最终都会执行finally语句块内的代码
+	// 无论发不发生异常，异常能不能被捕捉到，最终都会执行finally语句块内的代码
 }
 
-// throws子句：
+// 抛出异常：
+// 1. throw 关键字：用于手动在当前方法中抛出一个异常：
+public void checkNumber(int num) {  
+	if (num < 0) {  
+		// 抛出
+		throw new IllegalArgumentException("Number must be positive");  
+	}  
+}
+// 2. throws 子句：
 public void readFile() throws IOException {
     // 可能会抛出IOException的代码
 }
+
+
 ```
+
+
 ### Exception类的层次：
 - 所有的异常类是从 java.lang.Exception 类继承的子类。
 - Exception 类是 Throwable 类的子类。除了Exception类外，Throwable还有一个子类Error 。
