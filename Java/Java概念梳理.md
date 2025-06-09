@@ -349,20 +349,35 @@ int[] x = new int[100];
 | 3   | **public static void fill(int[] a, int val)**  <br>将指定的 int 值分配给指定 int 型数组指定范围中的每个元素。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。                                                                                                                    |
 | 4   | ==**public static void sort(Object[] a)**==<br>对指定对象数组根据其元素的自然顺序进行**升序排列**。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。                                                                                                                              |
 ___
-# 面向对象基本概念：
-### **封装、继承、多态**
-优势：代码可重用、可扩展、易于维护
-# 类：
+# 面向对象：
+## 面向对象三大特性：void run() { 
+		System.out.println(color + ":" + number);
+	}
+## 类：
 - **类（class）** 是对具有相同**特征**和**行为**的对象的描述，它是**创建对象（实例，instance）的一个模板**
 - 定义格式：
 ``` java
 public class Car {  // [权限修饰符] class 类名
-	// 类的属性
+	// 类的属性（成员变量）
 	String color; 
 	int number;
-	// 类的方法
+	// 类的方法（成员方法）
 	void run() { 
 		System.out.println(color + ":" + number);
 	}
 }
+```
+## 对象：
+- 对象是**类的实例化**，创建对象使其具有类的相应属性和行为。
+- 对象的创建和使用一般分三步：
+	- 声明对象
+	- 对象赋值
+	- 调用属性
+``` java
+	public static void run(String[] args) { 
+		Car c = new Car();   // 1. 对象
+		c.color = "red";     // 2. 为成员方法赋值（直接赋值；使用get/set方法赋值）
+		c.number = 114514;  
+		c.run();             // 3. 执行成员方法
+	}
 ```
