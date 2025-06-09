@@ -184,3 +184,37 @@ Scanner sc = new Scanner(System.in);
 // 3.调用Scanner对象提供的方法读取数据
 int i = sc.nextInt();
 ```
+#### 常用Scanner输入
+| **构造方法**                      |                   |
+| ----------------------------- | ----------------- |
+| `Scanner(File source)`        | 从文件创建 Scanner     |
+| `Scanner(InputStream source)` | 从输入流创建 Scanner    |
+| `Scanner(String source)`      | 从字符串创建 Scanner    |
+| **基本输入方法**                    |                   |
+| `boolean hasNext()`           | 检查是否有下一个标记（以空格分隔） |
+| `String next()`               | 读取下一个标记（字符串）      |
+| `boolean hasNextLine()`       | 检查是否有下一行          |
+| `String nextLine()`           | 读取下一行内容           |
+| **类型检查方法**                    |                   |
+| `boolean hasNextInt()`        | 检查下一个标记是否为整数      |
+| `boolean hasNextDouble()`     | 检查下一个标记是否为双精度浮点数  |
+| `boolean hasNextBoolean()`    | 检查下一个标记是否为布尔值     |
+| **类型读取方法**                    |                   |
+| `int nextInt()`               | 读取下一个整数           |
+| `double nextDouble()`         | 读取下一个双精度浮点数       |
+| `boolean nextBoolean()`       | 读取下一个布尔值          |
+| `long nextLong()`             | 读取下一个长整数          |
+| `float nextFloat()`           | 读取下一个单精度浮点数       |
+| `short nextShort()`           | 读取下一个短整数          |
+| `byte nextByte()`             | 读取下一个字节           |
+| **其他方法**                      |                   |
+| `void close()`                | 关闭扫描器             |
+#### next()和nextLine()的区别：
+**next():**
+1. 一定要读取到有效字符后才可以结束输入。
+2. 对输入有效字符之前遇到的空白，next() 方法会自动将其去掉。
+3. 只有输入有效字符后才将其后面输入的空白作为分隔符或者结束符。
+4. next() 不能得到带有空格的字符串。
+**nextLine()**：
+5. 以Enter为结束符,也就是说 nextLine()方法返回的是输入回车之前的所有字符。
+6. 可以获得空白。
