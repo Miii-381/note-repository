@@ -690,8 +690,19 @@ ___
 - 由于抽象类不能实例化对象，所以抽象类**必须被继承**，才能被使用。也是因为这个原因，通常在设计阶段决定要不要设计抽象类。
 ### 语法：
 - 使用`abstract`关键字声明该类为抽象类
+- **抽象方法**：在抽象方法中使用`abstract`关键字修饰的方法，没有方法体，方法的具体实现由继承自该抽象类的实现类确定。
+	- 如果一个类包含抽象方法，那么该类**必须是抽象类**。
+	- 任何子类**必须重写**父类的抽象方法，或者**声明自身为抽象类**。
 ``` java
-public abstract class Sharp {   // 抽象类
+public abstract class Shape {   // 抽象类
+	private String name;        // 抽象类中仍然可以定义成员变量、成员方法和构造方法
+	private double length;
 	public abstract int area(); // 抽象方法
+}
+
+public class Rectangle extends Shape {
+	public int area() {
+		return W * H;
+	}
 }
 ```
