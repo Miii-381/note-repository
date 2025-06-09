@@ -1288,13 +1288,12 @@ T[] array = new T[10]; // 编译错误
 ___
 # 异常及异常的处理
 ## 异常：
-### 概念：
 - 异常是干扰程序正常运行的各种难以避免的问题，但并不是所有的错误都是异常，并且错误有时候是可以避免的。
 - **检查性异常**：
 	- 最具代表的检查性异常是用户错误或问题引起的异常，这些异常在编译时强制要求程序员处理。例如要打开一个不存在文件时，一个异常就发生了，这些异常在编译时不能被简单地忽略。
 	- 这类异常通常使用 `try-catch(-finally)` 块来捕获并处理异常，或者在方法声明中使用 `throws` 子句声明方法可能抛出的异常。
 - **运行时异常**： 这些异常在编译时不强制要求处理，通常是由程序中的错误引起的，例如 `NullPointerExceptio`n、`ArrayIndexOutOfBoundsException` 等，这类异常可以选择处理，但并非强制要求。
-### 语法：
+## 语法：
 - Java 提供了以下关键字和类来支持异常处理：
 	- **`try`**：用于包裹可能会抛出异常的代码块。
 	- **`catch`**：用于捕获异常并处理异常的代码块。
@@ -1330,7 +1329,7 @@ public class className {
 	// 其他类成员
 }
 ```
-### Exception类的层次：
+## Exception类的层次：
 - 所有的异常类是从 `java.lang.Exception` 类继承的子类。
 - `Exception` 类是 `Throwable` 类的子类。除了`Exception`类外，`Throwable`还有一个子类`Error` 。
 - Java 程序通常不捕获错误。错误一般发生在严重故障时，它们在Java程序处理的范畴之外。
@@ -1339,7 +1338,7 @@ public class className {
 - 一般地，程序不会从错误中恢复。
 - 异常类有两个主要的子类：`IOException` 类和 `RuntimeException` 类。
 ![[Pasted image 20250609221329.png]]
-### 补充：try-with-resource 语法：
+## 补充：try-with-resource 语法：
 - JDK7 之后，Java 新增的 `try-with-resource` 语法结构，旨在自动管理资源，确保资源在使用后能够及时关闭，避免资源泄露 。
 - `try-with-resources` 是一种异常处理机制，它能够自动关闭在 `try` 块中声明的实现了`AutoCloseable`接口的资源，无需显式地在 `finally` 块中关闭。
 - 在 `try-with-resources` 语句中，你只需要在 `try` 关键字后面声明资源，然后跟随一个代码块。无论代码块中的操作是否成功，资源都会在 `try` 代码块执行完毕后自动关闭。
@@ -1371,4 +1370,41 @@ public class RunoobTest {
 }
 
 // 输出结果：IOException in try block => test.txt (No such file or directory)
+```
+- `try-with-resources` 语句中可以声明多个资源，方法是使用分号`;`分隔各个资源。多个声明资源时，`try-with-resources` 语句以相反的顺序关闭这些资源。 在本例中，`PrintWriter` 对象先关闭，然后 `Scanner` 对象关闭。
+``` java
+import java.io.*;  
+import java.util.*;  
+class RunoobTest {  
+    public static void main(String[] args) throws IOException{  
+        try (Scanner scanner = new Scanner(new File("testRead.txt"));  
+            PrintWriter writer = new PrintWriter(new File("testWrite.txt"))) {  
+            while (scanner.hasNext()) {  
+                writer.print(scanner.nextLine());  
+            }  
+        }  
+    }  
+}
+```
+## 自定义异常：
+- 在 Java 中你可以自定义异常。编写自己的异常类时需要记住下面的几点。  
+	- 所有异常都必须是 **`Throwable` 的子类**。
+	- 如果希望写一个**检查性异常类**，则需要继承 `Exception` 类。
+	- 如果你想写一个**运行时异常类**，那么需要继承 `RuntimeException` 类。
+``` java
+// 文件名InsufficientFundsException.java 
+import java.io.*; 
+
+//自定义异常类，继承Exception类 ,为检查性异常。
+public class InsufficientFundsException extends Exception { 
+	//此处的amount用来储存当出现异常（取出钱多于余额时）所缺乏的钱 
+	private double amount; 
+	
+	public InsufficientFundsException(double amount) { 
+		this.amount = amount; 
+	} 
+	public double getAmount() { 
+		return amount; 
+	} 
+}
 ```
