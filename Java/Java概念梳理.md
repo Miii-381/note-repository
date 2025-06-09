@@ -693,6 +693,7 @@ ___
 - **抽象方法**：在抽象方法中使用`abstract`关键字修饰的方法，没有方法体，方法的具体实现由继承自该抽象类的实现类确定。
 	- 如果一个类包含抽象方法，那么该类**必须是抽象类**。
 	- 任何子类**必须重写**父类的抽象方法，或者**声明自身为抽象类**。
+- 建议抽象类中的**模板方法**（子类中用得较多的方法，提取到抽象类中共用，或者该方法内使用了需要被重写的抽象方法）使用`final`进行修饰，以免被
 ``` java
 public abstract class Shape {   // 抽象类
 	private String name;        // 抽象类中仍然可以定义成员变量、成员方法和构造方法
@@ -794,14 +795,13 @@ public class MammalInt implements Animal{
 ___
 ## 枚举：
 ## 概念：
-- Java 枚举是一个特殊的类，一般表示一组常量，比如一年的 4 个季节，一年的 12 个月份，一个星期的 7 天，方向有东南西北等。
+- Java 枚举是一个**特殊的类**，一般表示一组常量，比如一年的 4 个季节，一年的 12 个月份，一个星期的 7 天，方向有东南西北等。
 - Java 枚举类使用 `enum` 关键字来定义，各个常量使用**逗号**`,`来分割。
-- 枚举可被用于**for循环**和**switch语句中**
+- 枚举常被用于 **for循环** 和 **switch语句** 中。
 ### 语法：
 - 例如：定义一个颜色的枚举类：
 ``` java
-enum Color 
-{ 
+enum Color { 
     RED, GREEN, BLUE; 
 }
 ```
@@ -809,10 +809,11 @@ enum Color
 - 每个枚举都是通过 Class 在内部实现的，且所有的枚举值都是 `public static final` 的。
 - 比如，上面的枚举类可被同等转化为：
 ``` java
-class Color
-{
+class Color {
      public static final Color RED = new Color();
      public static final Color BLUE = new Color();
      public static final Color GREEN = new Color();
 }
 ```
+- enum 定义的枚举类默认继承了 `java.lang.Enum` 类，并实现了 `java.lang.Serializable` 和 `java.lang.Comparable` 两个接口。也就意味着，枚举类能被**序列化**和**比较**（序列化在此不做讨论）。
+- enum类存在如下fan
