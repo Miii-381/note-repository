@@ -1107,7 +1107,7 @@ public class Java8Tester {
 - 在 Lambda 表达式当中不允许声明一个**与局部变量同名**的参数或者局部变量。
 ___
 ## 泛型：
-### 概念：
+### 1. 概念：
 - Java 中的 **泛型（Generics）** 是一种在编译时进行类型检查的技术，允许开发者通过参数化类型（Type Parameters）来编写灵活且类型安全的代码。它通过将类型作为参数传递给类、接口或方法，使代码能够处理多种数据类型，同时避免运行时类型转换错误。
 - **泛型的本质**：参数化类型（Parameterized Types）。你可以将类型（如 `String`、`Integer`）作为参数传递给类、接口或方法，使代码更加通用。
 ``` java
@@ -1123,7 +1123,7 @@ Box<String> stringBox = new Box<>();
 stringBox.set("Hello");
 String value = stringBox.get(); // 无需强制类型转换
 ```
-### 为什么引入泛型？
+### 2. 为什么引入泛型？
 - **类型安全**：  在泛型出现之前，集合类（如 `List`）只能存储 `Object` 类型，取出元素时需要强制类型转换，可能导致 `ClassCastException` 异常。
 ``` java
 	// 传统写法：
@@ -1141,47 +1141,172 @@ String value = stringBox.get(); // 无需强制类型转换
     - 例如：`List<T>`、`Map<K, V>` 可以支持任意类型的键值对操作。
 - **消除强制类型转换**：  
     - 泛型在编译时自动处理类型转换，减少冗余代码并避免运行时错误。
-### 泛型的实现原理：类型擦除
+### 3. 泛型的实现原理：类型擦除
 Java 的泛型是通过 **类型擦除（Type Erasure）** 实现的。这意味着：
 - **编译阶段**：泛型信息被保留，编译器会进行类型检查并插入必要的类型转换代码。
 - **运行阶段**：泛型信息被擦除，实际类型被替换为原始类型（Raw Type，通常是 `Object`）。
-#### 类型擦除的示例
-
+#### 类型擦除的示例：
 - **源代码**：
-    ``` java
-    public class Box<T> {
-        private T content;
-        public void set(T content) { this.content = content; }
-        public T get() { return content; }
-    }
-    ```
+``` java
+public class Box<T> {
+    private T content;
+    public void set(T content) { this.content = content; }
+    public T get() { return content; }
+}
+```
 - **编译后**：
 ``` java
 public class Box {
     private Object content;
-        public void set(Object content) { this.content = content; }
-        public Object get() { return content; }
+    public void set(Object content) { this.content = content; }
+    public Object get() { return content; }
+}
+```
+#### 类型擦除的影响：
+- **不能获取泛型的具体类型**：  
+    运行时无法通过 `instanceof` 或反射获取泛型的实际类型。  
+``` java
+    List<String> list = new ArrayList<>();
+    // 下面的判断始终为 false
+    if (list instanceof List<String>) { ... } // 编译错误
+```
+- **泛型数组的限制**：  
+    由于类型擦除，不能直接创建泛型数组（如 `new T[10]`），但可以通过反射或 `Object[]` 间接实现。
+### 4. 泛型的使用方式
+
+#### 泛型类
+- **定义**：在类名后声明类型参数（如 `<T>`、`<K, V>`）。
+- **示例**：
+``` java
+public class Pair<K, V> {
+    private K key;
+    private V value;
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
     }
+    // Getter 和 Setter
+}
+```
+#### 泛型方法
+- **定义**：在方法返回值前声明类型参数（如 `<T>`）。
+- **示例**：
+``` java
+public class Util {
+    // 泛型方法：返回数组的最后一个元素
+    public static <T> T getLastItem(T[] array) {
+        if (array.length == 0) return null;
+        return array[array.length - 1];
+    }
+}
+```
+#### 泛型接口
+- **定义**：在接口名后声明类型参数。
+- **示例**：
+``` java
+public interface List<T> {
+    void add(T element);
+    T get(int index);
+}
+```
+#### 通配符（Wildcards）
+- **`?`**：表示未知类型，用于限制泛型的范围。
+``` java
+    List<?> list = new ArrayList<String>(); // 可以接受任意类型的 List
+```
+- **`? extends T`**：表示上限，只能接受 `T` 及其子类。
+``` java
+    List<? extends Number> numbers = new ArrayList<Integer>(); 
+    // 可以存储 Integer、Double 等
+```
+- **`? super T`**：表示下限，只能接受 `T` 及其父类。
+``` java
+    List<? super Integer> list = new ArrayList<Number>(); 
+    // 可以存储 Integer、Number 等
+```
+### 5. 泛型的命名约定
+- **常见类型参数名称**：
+    - `T`：Type（通用类型）
+    - `E`：Element（集合中的元素）
+    - `K`：Key（键）
+    - `V`：Value（值）
+    - `N`：Number（数字）
+    - `?`：通配符（Unknown）
+### 6. 泛型的优势
+1. **类型安全**：编译时检查类型匹配，避免运行时 `ClassCastException`。
+2. **代码复用**：一套逻辑处理多种类型（如 `List<T>`、`Map<K, V>`）。
+3. **简化代码**：避免强制类型转换，提高可读性。
+4. **更好的 API 设计**：通过泛型，API 提供者可以明确约束输入和输出的类型。
+### 7. 泛型的限制
+1. **不能使用基本类型**：  
+    泛型参数只能是引用类型（如 `Integer`、`String`），不能是基本类型（如 `int`、`char`）。
+    - 解决方案：使用包装类（如 `List<Integer>`）。
+2. **不能实例化泛型类型参数**：
+``` java
+public class Box<T> {
+    T content = new T(); // 编译错误：无法实例化泛型类型参数
+}
 ```
     
-
-#### **2.2 类型擦除的影响**
-
-- **不能获取泛型的具体类型**：  
-    运行时无法通过 `instanceof` 或反射获取泛型的实际类型。
+    - 解决方案：通过反射或工厂方法创建对象。
+3. **不能创建泛型数组**：
     
     java
     
     深色版本
     
     ```
-    List<String> list = new ArrayList<>();
-    // 下面的判断始终为 false
-    if (list instanceof List<String>) { ... } // 编译错误
+    T[] array = new T[10]; // 编译错误
     ```
     
-- **泛型数组的限制**：  
-    由于类型擦除，不能直接创建泛型数组（如 `new T[10]`），但可以通过反射或 `Object[]` 间接实现。
+    - 解决方案：使用 `Object[]` 或 `Array.newInstance()`。
+
+---
+
+### **7. 常见应用场景**
+
+1. **集合类**：  
+    Java 集合框架（如 `List<T>`、`Map<K, V>`）广泛使用泛型，确保类型安全。
+    
+    java
+    
+    深色版本
+    
+    ```
+    List<String> names = new ArrayList<>();
+    names.add("Alice");
+    String name = names.get(0); // 自动类型检查
+    ```
+    
+2. **工具类方法**：  
+    泛型方法可以处理多种类型的参数，提高代码复用性。
+    
+    java
+    
+    深色版本
+    
+    ```
+    public static <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.println(element);
+        }
+    }
+    ```
+    
+3. **自定义容器类**：  
+    泛型类可以封装任意类型的数据，如缓存、队列等。
+    
+    java
+    
+    深色版本
+    
+    ```
+    public class Cache<K, V> {
+        private Map<K, V> map = new HashMap<>();
+        public void put(K key, V value) { map.put(key, value); }
+        public V get(K key) { return map.get(key); }
+    }
+    ```
 ___
 # 异常及异常的处理
 ## 异常：
