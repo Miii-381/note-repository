@@ -1060,7 +1060,7 @@ class Outter {
 #### 概念：
 - Lambda表达式是 JDK 8 开始后的一种新语法形式。Lambda 允许把函数作为一个方法的参数传递进方法中。使用 Lambda 表达式可以**使代码变的更加简洁紧凑**。
 #### 语法：
-- `(parameters) -> expression`  或  `(parameters) ->{ statements; }
+- `(参数列表) -> 表达式`  或  `(参数列表) ->{ 方法体 }
 - 只有一个参数时，可省略小括号；没有参数时，不能省略小括号！
 - 只有一行语句时，可以省略大括号；
 - 可将匿名内部类中的例子改写为：
@@ -1087,4 +1087,19 @@ public class GUIExample {
 ```
 #### 特性：
 - lambda表达式可以声明**函数式接口**（只包含一个抽象方法的接口，但可以包含多个默认方法或者静态方法。具体实例这里不展开说明。）
-- 
+- lambda表达式可以捕获其外层的**标记了`final`的局部变量**，但也可以不用声明为`final` ，只需要其不可被hou'mia
+``` java
+public class Java8Tester { 
+	final static String salutation = "Hello! "; 
+	public static void main(String args[]) { 
+		GreetingService greetService1 = message ->   // 此处使用lambda实现了接口
+		System.out.println(salutation + message); 
+		greetService1.sayMessage("Runoob"); 
+	} 
+	interface GreetingService {
+		void sayMessage(String message); 
+	}
+}
+
+// 执行结果为：Hello! Runoob
+```
