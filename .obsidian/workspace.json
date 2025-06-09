@@ -14,8 +14,8 @@
               "type": "markdown",
               "state": {
                 "file": "数据库系统原理/第七章/第七章笔记.md",
-                "mode": "source",
-                "source": false
+                "mode": "preview",
+                "source": true
               },
               "icon": "lucide-file",
               "title": "第七章笔记"
@@ -74,8 +74,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -180,7 +179,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ac92c4cff9a77fda",
+  "active": "98412368871f0f17",
   "lastOpenFiles": [
     "数据库系统原理/第七章/pics/Screenshot_2025-06-05-22-35-48-406_tv.danmaku.bil.png",
     "README.md",
