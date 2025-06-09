@@ -791,3 +791,28 @@ public class MammalInt implements Animal{
 * Mammal travels
 */
 ```
+___
+## 枚举：
+## 概念：
+- Java 枚举是一个特殊的类，一般表示一组常量，比如一年的 4 个季节，一年的 12 个月份，一个星期的 7 天，方向有东南西北等。
+- Java 枚举类使用 `enum` 关键字来定义，各个常量使用**逗号**`,`来分割。
+- 枚举可被用于**for循环**和**switch语句中**
+### 语法：
+- 例如：定义一个颜色的枚举类：
+``` java
+enum Color 
+{ 
+    RED, GREEN, BLUE; 
+}
+```
+### 特性：
+- 每个枚举都是通过 Class 在内部实现的，且所有的枚举值都是 `public static final` 的。
+- 比如，上面的枚举类可被同等转化为：
+``` java
+class Color
+{
+     public static final Color RED = new Color();
+     public static final Color BLUE = new Color();
+     public static final Color GREEN = new Color();
+}
+```
