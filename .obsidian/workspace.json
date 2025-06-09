@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "数据库系统原理/第七章/第七章笔记.md",
-                "mode": "preview",
+                "file": "Java/Java概念梳理.md",
+                "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "第七章笔记"
+              "title": "Java概念梳理"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "数据库系统原理/第七章/第七章笔记.md",
+                "file": "Java/Java概念梳理.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "第七章笔记 的大纲"
+              "title": "Java概念梳理 的大纲"
             }
           },
           {
@@ -179,12 +179,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "98412368871f0f17",
+  "active": "ac92c4cff9a77fda",
   "lastOpenFiles": [
+    "数据库系统原理/第七章/第七章笔记.md",
+    "Java/Java概念梳理.md",
+    "Java",
     "数据库系统原理/第七章/pics/Screenshot_2025-06-05-22-35-48-406_tv.danmaku.bil.png",
     "README.md",
     "数据库系统原理/第一章/第一章笔记.md",
-    "数据库系统原理/第七章/第七章笔记.md",
     "数据库系统原理/第六章/第六章笔记.md",
     "数据库系统原理/第六章/pics",
     "数据库系统原理/第六章",
@@ -197,7 +199,6 @@
     "数据库系统原理/第七章/pics",
     "数据库系统原理/第七章",
     "数据库系统原理/第二章/pics/20.jpg.baiduyun.uploading.cfg",
-    "数据库系统原理/第二章/pics/19.jpg.baiduyun.uploading.cfg",
     "数据库系统原理/第三章/pics/57.jpg",
     "数据库系统原理/第三章/pics/55.jpg",
     "数据库系统原理/第三章/pics/56.jpg",
@@ -207,7 +208,6 @@
     "数据库系统原理/第三章/pics/30.jpg",
     "数据库系统原理/第三章/pics/29.jpg",
     "数据库系统原理/第三章/pics/31.jpg",
-    "数据库系统原理/第三章/pics/28.jpg",
     "test note.md",
     "2025-05-11.md"
   ]
