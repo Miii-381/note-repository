@@ -976,4 +976,48 @@ class Outter {
 }
 ```
 ### 局部内部类：
-- 局部内部类是定义在一个方法或者一个作用域里面的类，它和成员内部类的区别在于局部内部类的访问**仅限于方法内或者该作用域内**。
+- 局部内部类是定义在**一个方法**或者**一个作用域**里面的类，它和成员内部类的区别在于局部内部类的访问**仅限于方法内或者该作用域内**。
+``` java
+class People{
+    public People() { }
+}
+ 
+class Man{
+    public Man() { }
+     
+    public People getWoman(){
+        class Woman extends People{   //局部内部类
+            int age =0;
+        }
+        return new Woman();
+    }
+}
+```
+- **注意**: 局部内部类就像是方法里面的一个局部变量一样，是不能有 `public、protected、private`以及 `static` 修饰符的。
+### 匿名内部类：
+- Java中的**匿名内部类**是一种没有显式名称的内部类，通常用于简化代码，尤其是在需要实现接口或继承抽象类时。它允许在代码中直接定义并实例化一个类，适用于一次性使用的场景。
+- 匿名内部类常见于**设置事件监听器**、**实现接口**等**一次性使用类**的情况。
+``` java
+// 下面是一个
+import javax.swing.*;
+import java.awt.event.*; 
+public class GUIExample { 
+	public static void main(String[] args) { 
+		JFrame frame = new JFrame("Button Example"); 
+		JButton button = new JButton("Click Me"); 
+		
+		// 匿名内部类实现事件监听器 
+		button.addActionListener(new ActionListener() { 
+			@Override 
+			public void actionPerformed(ActionEvent e) { 
+				System.out.println("Button clicked!"); 
+			} 
+		}); 
+		
+		frame.add(button); 
+		frame.setSize(300, 200); 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true); 
+	}
+}
+```
