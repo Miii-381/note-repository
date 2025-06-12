@@ -131,9 +131,9 @@ ___
 ### **7. 其他运算符**
 |运算符|运算规则|范例代码|结果|说明|
 |---|---|---|---|---|
-|`[]`|数组访问|`int[] arr = {1,2}; int b = arr[0];`|1|访问数组元素|
-|`.`|成员访问|`String str = "Hello"; int len = str.length();`|5|访问对象属性或方法|
-|`instanceof`|类型检查|`Object obj = "Hello"; boolean c = obj instanceof String;`|true|判断对象是否为指定类型|
+|`[]`|数组访问|`int[] arr = {1,2};`<br>`int b = arr[0];`|1|访问数组元素|
+|`.`|成员访问|`String str = "Hello"; `<br>`int len = str.length();`|5|访问对象属性或方法|
+|`instanceof`|类型检查|`Object obj = "Hello";`<br>`boolean c = obj instanceof String;`|true|判断对象是否为指定类型|
 ### **补充说明**
 1. **优先级**：`后缀自增\减 > 前缀自增\减 > 乘除模（*, /, %） > 加减（+, -）`
 2. **字符串连接**：
@@ -146,6 +146,7 @@ ___
         ``` java
         double p = 5 + 3.14; // 5 是 int，3.14 是 double，结果为 double（8.14）
         ```
+	- 注意：Java的高精度强转低精度会报错！
 4. **复合赋值运算符**：
     - Java 提供 `+=`, `-=`, `*=`, `/=`, `%=` 等复合赋值运算符，简化代码：
         ``` java
