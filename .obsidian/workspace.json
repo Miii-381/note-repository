@@ -4,21 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "6f6a689b155b8e4f",
+        "id": "8c9b20064743b646",
         "type": "tabs",
         "children": [
           {
-            "id": "081b0826d502c0aa",
+            "id": "20dbbe41ee2f3d9e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "计组小总结.md",
-                "mode": "source",
-                "source": false
+                "file": "Java/Pasted image 20250609221329.png"
               },
-              "icon": "lucide-file",
-              "title": "计组小总结"
+              "icon": "lucide-image",
+              "title": "Pasted image 20250609221329"
             }
           }
         ]
@@ -142,13 +140,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "计组小总结.md",
+                "file": "Java/Pasted image 20250609221329.png",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "计组小总结 的大纲"
+              "title": "Pasted image 20250609221329 的大纲"
             }
           },
           {
@@ -181,9 +179,9 @@
   },
   "active": "98412368871f0f17",
   "lastOpenFiles": [
-    "Java/Java概念梳理.md",
     "计组小总结.md",
-    "Pasted image 20250609221329.png",
+    "Java/Java概念梳理.md",
+    "Java/Pasted image 20250609221329.png",
     "Java/Pasted image 20250609195329.png",
     "Java/Pasted image 20250609195322.png",
     "Java/Pasted image 20250609174040.png",
