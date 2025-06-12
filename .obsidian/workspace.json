@@ -29,7 +29,7 @@
               "state": {
                 "file": "计组小总结.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
               "title": "计组小总结"
