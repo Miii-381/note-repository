@@ -235,8 +235,8 @@ ___
 ### while循环：懒得写了，原因同上
 ### do...while循环：同上
 ### for循环：
-#### 基础的懒得写了
-#### 增强for循环（for-each循环）：
+#### 1. 基础的懒得写了
+#### 2. 增强for循环（for-each循环）：
 ##### 特点：
 - **语法简洁**：无需显式声明索引或迭代器对象，直接遍历集合或数组。
 - **自动迭代**：自动处理元素的访问逻辑，无需手动调用`hasNext()`或`next()`方法。
@@ -250,7 +250,7 @@ ___
 List<String> list = new ArrayList<>();
 list.add("A");
 list.add("B");
-for (String item : list) {
+for (String item : list) {   // for-each循环：for(暂存变量 : 遍历对象)
     System.out.println(item);
 }
 
@@ -274,7 +274,7 @@ for (int num : numbers) {
         }
     }
     ```
-#### 迭代器循环：
+#### 3. 迭代器循环：
 ##### 特点：
 - **灵活性**：支持在遍历过程中修改集合（如删除元素）。
 - **手动控制**：需要显式调用`hasNext()`和`next()`方法控制迭代过程。
@@ -285,10 +285,10 @@ for (int num : numbers) {
 List<String> list = new ArrayList<>();
 list.add("A");
 list.add("B");
-Iterator<String> iterator = list.iterator();
+Iterator<String> iterator = list.iterator();  // 1.新建迭代器
 
-while (iterator.hasNext()) {
-    String item = iterator.next();
+while (iterator.hasNext()) {                  // 2.使用hasNext()进行迭代条件控制
+    String item = iterator.next();            // 使用next()进行迭代器指向元素的获取
     if (item.equals("B")) {
         iterator.remove(); // 安全删除元素
     }
