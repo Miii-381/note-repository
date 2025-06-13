@@ -1864,6 +1864,13 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 	- `TreeSet`：排序、不重复、无索引。
 ### HashSet：
 - 基于`HashMap`实现，不允许有重复元素。
+	- `HashMap`在JDK8之前使用**数组+链表**组成，JDK8及之后使用**数组+链表+红黑树**组成。
+	- **哈希值**是JDK根据对象的地址，按照某种规则算出来的int类型的数值。
+	- `Object`类的API:`public int hashCode()`：返回对象的哈希值
+	- 对象的哈希值特点:
+		- 同一个对象多次调用`hashCode()`方法返回的哈希值是相同的 
+		- 默认情况下，不同对象的哈希值是不同的
+	- 由于哈希表的物理特性
 - 允许有`null`值。
 - `HashSet` 是无序的，即不会记录插入的顺序。
 - `HashSet` 不是线程安全的， 如果多个线程尝试同时修改 HashSet，则最终结果是不确定的。 必须在多线程访问时显式同步对 HashSet 的并发访问。
@@ -1874,3 +1881,19 @@ import java.util.HashSet; // 引入 HashSet 类
 //以下实例我们创建一个 HashSet 对象 sites，用于保存字符串元素：
 HashSet<String> sites = new HashSet<String>();
 ```
+- 都是`Collection`接口下的实现类，使用方法都差不多。
+
+| **方法**                              | **返回值**       | **说明**                              | **示例**                                                                                         |
+| ----------------------------------- | ------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `add(E e)`                          | `boolean`     | 添加元素到集合，成功返回 `true`，重复元素返回 `false`。 | `set.add("Java");`                                                                             |
+| `remove(Object o)`                  | `boolean`     | 删除指定元素，成功返回 `true`，元素不存在返回 `false`。 | `set.remove("Python");`                                                                        |
+| `contains(Object o)`                | `boolean`     | 检查集合是否包含指定元素。                       | `if (set.contains("Java")) { ... }`                                                            |
+| `size()`                            | `int`         | 返回集合中的元素数量。                         | `int count = set.size();`                                                                      |
+| `isEmpty()`                         | `boolean`     | 判断集合是否为空。                           | `if (set.isEmpty()) { ... }`                                                                   |
+| `clear()`                           | `void`        | 清空集合中的所有元素。                         | `set.clear();`                                                                                 |
+| `iterator()`                        | `Iterator<E>` | 返回集合的迭代器，用于遍历元素。                    | `for (String s : set) { ... }`                                                                 |
+| `toArray()`                         | `Object[]`    | 将集合转换为数组。                           | `Object[] arr = set.toArray();`                                                                |
+| `toArray(T[] a)`                    | `T[]`         | 将集合转换为指定类型的数组。                      | `String[] arr = set.toArray(new String[0]);`                                                   |
+| `addAll(Collection<? extends E> c)` | `boolean`     | 添加另一个集合的所有元素（并集操作）。                 | `[set.addAll(Arrays.asList("A", "B"));](https://www.runoob.com/java/java-hashset-addall.html)` |
+| `retainAll(Collection<?> c)`        | `boolean`     | 仅保留与指定集合共有的元素（交集操作）。                | `set.retainAll(otherSet);`                                                                     |
+| `removeAll(Collection<?> c)`        | `boolean`     | 删除与指定集合共有的元素（差集操作）。                 | `set.removeAll(otherSet);`                                                                     |
