@@ -1612,7 +1612,7 @@ ___
 - 集合都支持**泛型**。
 - 实现了`Cloneable`接口并实现了`clone()`方法的**标准集合类**可以直接使用`clone()`方法进行**深拷贝**
 - 对于集合框架的详细介绍还是看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
-
+---
 ## List集合：
 - 注意：`Vector`也是集合，但`Vector`在Java中属于历史遗留产物，现在一般使用`ArrayList`或者``LinkedList替代`Vector`。
 - `Vector`在内部代码层面是完全同步和线程安全的，`List`默认是非线程安全的，需要手动进行同步代码编写。
@@ -1854,6 +1854,8 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 | [public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)  | 返回从指定位置开始到末尾的迭代器。                                 |
 | [public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素组成的数组。                                   |
 | [public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素转换类型而成的数组。                               |
+
+---
 ## Set集合：
 - **特点：**
 	- **无序**：存取顺序不一致 
@@ -1914,6 +1916,7 @@ HashSet<String> sites = new HashSet<String>();
 	- 对于**字符串类型**：默认按照首字符的编号**升序排序**。 
 	- 对于**自定义类型**（如Student对象），TreeSe**无法直接排序**。
 	- 结论：想要使用TreeSet存储自定义类型，需要自己制定排序规则。
+---
 ## 比较器（Comparable）
 - 这里很重要，所以单独抽出来讲。
 - 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
@@ -1924,19 +1927,116 @@ public interface Comparable<T> {
     int compareTo(T o);
 }
 ```
-
-- **泛型 `<T>`**：表示当前类要与其他同类型对象进行比较。
-- **`compareTo(T o)` 方法**：
-    - 返回值为 `int`，用于表示比较结果：
-        - **负数**：当前对象小于参数对象。
-        - **0**：当前对象等于参数对象。
-        - **正数**：当前对象大于参数对象。
-### **2. 使用场景**
-
-`Comparable` 接口主要用于以下场景：
-
+- **内容**：
+	- **泛型 `<T>`**：表示当前类要与其他同类型对象进行比较。
+	- **`compareTo(T o)` 方法**：
+	    - 返回值为 `int`，用于表示比较结果：
+	        - **负数**：当前对象小于参数对象。
+	        - **0**：当前对象等于参数对象。
+	        - **正数**：当前对象大于参数对象。
+### 2. 使用场景：
+- `Comparable` 接口主要用于以下场景：
+- 
 1. **排序集合/数组**
     - 对实现了 `Comparable` 的对象集合进行排序（如 `Arrays.sort()`、`Collections.sort()`）。
     - 在 `TreeSet`、`TreeMap` 等基于排序的集合中自动排序。
 2. **定义自然顺序**
     - 当需要为自定义类（如 `Student`、`Person`）定义默认的排序规则时。
+### 3. 实现示例：
+
+#### 示例 1：自定义类实现 `Comparable`
+``` java
+public class Student implements Comparable<Student> {
+    private String name;
+    private int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        // 先按年龄排序，若年龄相同则按姓名排序
+        int ageComparison = Integer.compare(this.age, other.age);
+        if (ageComparison != 0) {
+            return ageComparison;
+        }
+        return this.name.compareTo(other.name); // 姓名比较依赖 String 的自然排序
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', age=" + age + "}";
+    }
+}
+```
+#### 示例 2：使用 `Arrays.sort()` 排序
+``` java
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        Student[] students = {
+            new Student("Alice", 20),
+            new Student("Bob", 19),
+            new Student("Charlie", 20)
+        };
+
+        Arrays.sort(students); // 依赖 Student 的 compareTo 方法
+
+        for (Student s : students) {
+            System.out.println(s);
+        }
+    }
+}
+/* 执行结果：
+*     Student{name='Bob', age=19}
+*     Student{name='Alice', age=20}
+*     Student{name='Charlie', age=20} */
+```
+### 4. `Comparable` 与 `Comparator` 的区别
+
+|**特性**|**`Comparable`**|**`Comparator`**|
+|---|---|---|
+|**定义位置**|定义在类内部（类本身实现接口）|定义在类外部（独立比较器）|
+|**用途**|定义自然排序规则|定义自定义排序规则|
+|**方法**|`compareTo(T o)`|`compare(T o1, T o2)`|
+|**灵活性**|固定排序规则（仅一种）|可定义多种排序规则（如按年龄、姓名等）|
+|**适用场景**|默认排序需求|多种排序需求或无法修改类源码时|
+### **5. 注意事项**
+1. **确保一致性**
+    - `compareTo()` 和 `equals()` 方法应保持一致。如果 `x.compareTo(y) == 0`，则 `x.equals(y)` 应返回 `true`（反之亦然），否则可能导致集合行为异常（如 `TreeSet` 中元素重复）。
+2. **处理 `null`**
+    - 默认情况下，`compareTo()` 会抛出 `NullPointerException`（如果参数为 `null`）。在实现时需考虑如何处理 `null` 值（如将 `null` 视为最小或最大值）。
+3. **满足比较规则**
+    - `compareTo()` 必须满足以下数学性质：
+        - **自反性**：`x.compareTo(x) == 0`。
+        - **对称性**：`x.compareTo(y) = -y.compareTo(x)`。
+        - **传递性**：如果 `x.compareTo(y) > 0` 且 `y.compareTo(z) > 0`，则 `x.compareTo(z) > 0`。
+
+### 6. 常见问题
+
+#### Q1: 如果两个对象比较时返回 0，它们在集合中会如何处理？
+- **在 `TreeSet`/`TreeMap` 中**：视为相等，后者会被前者覆盖（或忽略）。
+- **在排序中**：顺序不确定（依赖具体实现）。
+#### Q2: 如何处理多个排序规则？
+- **使用 `Comparator`**：定义多个比较器，例如：
+``` java
+    // 按姓名排序的 Comparator
+    Comparator<Student> byName = (s1, s2) -> s1.getName().compareTo(s2.getName());
+    Arrays.sort(students, byName);
+```
+### 7. 总结
+
+|**特点**|**说明**|
+|---|---|
+|**核心作用**|定义类的自然排序规则，支持排序和集合框架的自动排序。|
+|**实现方式**|通过 `compareTo()` 方法定义比较逻辑。|
+|**适用场景**|默认排序需求（如 `TreeSet`、`TreeMap`、`Arrays.sort()`）。|
+|**与 `Comparator` 对比**|`Comparable` 是类的固有排序规则，`Comparator` 是外部定义的自定义排序规则。|
+
+### 8. 推荐实践
+- **优先使用 `Comparable`**：如果类的排序规则是明确且唯一的，优先实现 `Comparable`。
+- **结合 `Comparator`**：当需要多种排序规则时，使用 `Comparator` 提供灵活性。
+- **遵循设计原则**：确保比较逻辑与 `equals()` 一致，并满足数学性质（自反性、对称性、传递性）。
