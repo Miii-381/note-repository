@@ -1453,6 +1453,7 @@ ___
 	- **队列（Queue）**
 	- **映射（Map）**
 - 所有集合全部继承自`Collection`接口，`Collection`接口是最基本的集合接口，其存储一组不唯一且无序的对象。
+- 只要是实现了`Iterator`或者`ListIterator`接口的集合都可以进行迭代器遍历
 - 对于集合框架的详细介绍看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
 ## ArrayList
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
