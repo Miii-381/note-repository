@@ -1337,7 +1337,7 @@ public class className {
 - Java 程序通常不捕获错误。错误一般发生在严重故障时，它们在Java程序处理的范畴之外。
 - `Exception`是程序**逻辑层面的异常**，而`Error`是**JVM或者系统级的严重错误**。
 - `Error` 用来指示运行时环境发生的错误。例如，**JVM 内存溢出**、**栈溢出**等。
-- 一般地，程序不会从错误中恢复。
+- 一般地，程序不会从错误中恢复。也就是说，程序出现错误会导致程序死亡。
 - 异常类有两个主要的子类：`IOException` 类和 `RuntimeException` 类。
 ![[Pasted image 20250609221329.png]]
 ## 补充：try-with-resource 语法：
@@ -1357,7 +1357,6 @@ try (resource declaration) {
 import java.io.*;  
   
 public class RunoobTest {  
-  
     public static void main(String[] args) {  
 	    String line;  
 	    // try-with-resources语句在执行完毕后自动关闭BufferedReader资源
@@ -1379,7 +1378,7 @@ import java.io.*;
 import java.util.*;  
 class RunoobTest {  
     public static void main(String[] args) throws IOException{  
-        try (Scanner scanner = new Scanner(new File("testRead.txt"));  
+        try (Scanner scanner = new Scanner(new File("testRead.txt"));//看这看这看这
             PrintWriter writer = new PrintWriter(new File("testWrite.txt"))) {  
             while (scanner.hasNext()) {  
                 writer.print(scanner.nextLine());  
