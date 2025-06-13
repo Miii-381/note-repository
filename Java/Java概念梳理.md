@@ -1395,72 +1395,36 @@ public class Tester {
 - Java 的 Math 包含了用于执行基本数学运算的属性和方法，如初等指数、对数、平方根和三角函数。
 - Math 的方法都被定义为 static 形式，通过 Math 类可以在主函数中直接调用。
 - **常用方法见外部链接，太长了懒得放**
-### System类：
+### System类（不一定考）：
 - System类是 `java.lang` 包中的一个工具类，主要用于提供**与系统相关**的静态方法和属性。它是 Java 中最基础且重要的类之一，无需实例化即可直接通过类名调用其方法和属性。
+- **特点**：
+- 
 - **核心功能**
-	- **标准输入/输出流**：
+	1. **标准输入/输出流**：
 		- **`System.in`**：标准输入流（通常用于从控制台读取数据）。
 		- **`System.out`**：标准输出流（用于向控制台输出信息，如 `System.out.println()`）。
 		- **`System.err`**：标准错误流（用于输出错误信息）。
-	- **流的重定向**：
-    - 可通过 `System.setIn()`、`System.setOut()`、`System.setErr()` 修改默认流的行为，例如将输出重定向到文件。
-
-#### **（2）系统属性和环境变量**
-
-- **获取系统属性**：
-    - `System.getProperty("key")`：获取指定的系统属性（如操作系统名称、Java 版本等）。
-    - 示例：
-        
-        java
-        
-        深色版本
-        
-        ```
-        String osName = System.getProperty("os.name"); // 获取操作系统名称
-        String javaVersion = System.getProperty("java.version"); // 获取 Java 版本
-        ```
-        
-- **获取环境变量**：
-    - `System.getenv("VAR_NAME")`：读取操作系统环境变量（如 `PATH`）。
-
-#### **（3）时间操作**
-
-- **`System.currentTimeMillis()`**：返回自 1970 年 1 月 1 日 00:00:00 UTC 的毫秒数，常用于性能测试。
-- **`System.nanoTime()`**：返回高精度的时间戳（纳秒级别），适合测量代码执行时间。
-    - 示例：
-        
-        java
-        
-        深色版本
-        
-        ```
+		- **流的重定向**：可通过 `System.setIn()`、`System.setOut()`、`System.setErr()` 修改默认流的行为，例如将输出重定向到文件。
+	2. **系统属性和环境变量（不考）**
+	3. **时间操作**
+		- **`System.currentTimeMillis()`**：返回自 1970 年 1 月 1 日 00:00:00 UTC 的毫秒数，常用于性能测试。
+		- **`System.nanoTime()`**：返回高精度的时间戳（纳秒级别），适合测量代码执行时间。
+        ``` java
         long startTime = System.nanoTime();
         // 执行代码
         long duration = System.nanoTime() - startTime;
         System.out.println("耗时：" + duration + " 纳秒");
         ```
-        
-
-#### **（4）数组操作**
-
-- **`System.arraycopy()`**：高效复制数组元素。
-    - 示例：
-        
-        java
-        
-        深色版本
-        
-        ```
+	4. **数组操作**
+	- **`System.arraycopy()`**：高效复制数组元素。
+        ``` java
         int[] src = {1, 2, 3};
         int[] dest = new int[3];
         System.arraycopy(src, 0, dest, 0, src.length); // 复制数组
         ```
-        
-
-#### **（5）系统控制**
-
-- **`System.exit(int status)`**：终止 Java 虚拟机（JVM），`status=0` 表示正常退出，非零表示异常退出。
-- **`System.gc()`**：建议 JVM 执行垃圾回收（不保证立即执行）。
+	5. **系统控制**
+		- **`System.exit(int status)`**：终止 Java 虚拟机（JVM），`status=0` 表示正常退出，非零表示异常退出。
+		- **`System.gc()`**：建议 JVM 执行垃圾回收（不保证立即执行）。
 
 ---
 # 异常及异常的处理
