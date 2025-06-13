@@ -1922,7 +1922,7 @@ HashSet<String> sites = new HashSet<String>();
 - 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
 - `Comparator` 是 Java 中的一个 **函数式接口**，用于定义对象的**外部比较逻辑**。与 `Comparable` 不同，`Comparator` 允许在不修改类源码的情况下，为对象提供多种排序规则。
 ### 1. 核心概念：
-#### `Comparator`**接口定义**：
+#### `Comparable`**接口定义**：
 ``` java
 public interface Comparable<T> {
     int compareTo(T o);
@@ -1970,9 +1970,12 @@ Comparator<Student> byAgeThenName = Comparator.comparing(Student::getAge)
                                                .thenComparing(Student::getName);
 ```
 3. 需要动态控制排序逻辑（例如在 GUI 中让用户选择排序方式）。
-
+``` java
+Comparator<Student> byAgeDescending = Comparator.comparing(Student::getAge).reversed();
+```
 ### 3. 实现示例：
-#### 示例 1：自定义类实现 `Comparable`
+#### `Comparable`接口：
+##### 示例 1：自定义类实现 `Comparable`
 ``` java
 public class Student implements Comparable<Student> {
     private String name;
@@ -1999,7 +2002,7 @@ public class Student implements Comparable<Student> {
     }
 }
 ```
-#### 示例 2：使用 `Arrays.sort()` 排序
+##### 示例 2：使用 `Arrays.sort()` （实现类中已经重写好的Comparable实现类）排序
 ``` java
 import java.util.Arrays;
 
@@ -2023,16 +2026,45 @@ public class Main {
 *     Student{name='Alice', age=20}
 *     Student{name='Charlie', age=20} */
 ```
-### 4. `Comparable` 与 `Comparator` 的区别
+#### `Comparator`接口：
+##### 1. 传统方式：实现接口
+``` java
+class StudentAgeComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return Integer.compare(s1.getAge(), s2.getAge());
+    }
+}
+```
+##### 2. 使用匿名内部类
+``` java
+Collections.sort(students, new Comparator<Student>() {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return s1.getName().compareTo(s2.getName());
+    }
+});
+```
+##### 3. 使用 Lambda 表达式（推荐）
+``` java
+Collections.sort(students, (s1, s2) -> s1.getName().compareTo(s2.getName()));
+```
+##### 4. 使用 `Comparator.comparing` 工厂方法
+``` java
+Comparator<Student> byName = Comparator.comparing(Student::getName);
+```
 
-|**特性**|**`Comparable`**|**`Comparator`**|
-|---|---|---|
-|**定义位置**|定义在类内部（类本身实现接口）|定义在类外部（独立比较器）|
-|**用途**|定义自然排序规则|定义自定义排序规则|
-|**方法**|`compareTo(T o)`|`compare(T o1, T o2)`|
-|**灵活性**|固定排序规则（仅一种）|可定义多种排序规则（如按年龄、姓名等）|
-|**适用场景**|默认排序需求|多种排序需求或无法修改类源码时|
+### 4. `Comparable` 与 `Comparator` 的区别：
+
+| **特性**   | **`Comparable`** | **`Comparator`**      |
+| -------- | ---------------- | --------------------- |
+| **定义位置** | 定义在类内部（类本身实现接口）  | 定义在类外部（独立比较器）         |
+| **用途**   | 定义自然排序规则         | 定义自定义排序规则             |
+| **方法**   | `compareTo(T o)` | `compare(T o1, T o2)` |
+| **灵活性**  | 固定排序规则（仅一种）      | 可定义多种排序规则（如按年龄、姓名等）   |
+| **适用场景** | 默认排序需求           | 多种排序需求或无法修改类源码时       |
 ### 5. 注意事项
+##### Comparable接口：
 1. **确保一致性**
     - `compareTo()` 和 `equals()` 方法应保持一致。如果 `x.compareTo(y) == 0`，则 `x.equals(y)` 应返回 `true`（反之亦然），否则可能导致集合行为异常（如 `TreeSet` 中元素重复）。
 2. **处理 `null`**
@@ -2042,7 +2074,16 @@ public class Main {
         - **自反性**：`x.compareTo(x) == 0`。
         - **对称性**：`x.compareTo(y) = -y.compareTo(x)`。
         - **传递性**：如果 `x.compareTo(y) > 0` 且 `y.compareTo(z) > 0`，则 `x.compareTo(z) > 0`。
-
+##### Comparator接口：
+1. **一致性问题**：
+    - 如果同时使用 `Comparable` 和 `Comparator`，需确保逻辑一致，否则可能导致集合行为异常。
+2. **处理 `null` 值**：
+    - 在比较时需考虑 `null` 值的处理逻辑，例如：
+``` java
+Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Student::getAge));
+```
+3. **性能优化**：
+    - 避免在比较器中执行耗时操作（如数据库查询），以保证排序效率。
 ### 6. 常见问题
 
 #### Q1: 如果两个对象比较时返回 0，它们在集合中会如何处理？
@@ -2056,6 +2097,7 @@ public class Main {
     Arrays.sort(students, byName);
 ```
 ### 7. 总结
+### 
 
 |**特点**|**说明**|
 |---|---|
