@@ -1433,7 +1433,9 @@ ___
 		2. `Double.parseDouble(“字符串类型的小数”)`
 - **包装类常用四种方法**：
 	- `parseXxx()`：将除`Character类`外的所有字符串向基本类型转换，`Xxx`是基本类型名。
-	- `xxxValue()`：将除`Character类`外的所有包装类型（Number对象）向基本类型转换，`xxx`是基本类型名。
-	- `valueOf()`：将字符串向除`Character类`外的所有包装类型（Number对象）转换   `例：Integer i= Integer.valueOf("5")`
-	- `toString()`：实现基本类型或者包装类型向字符串的转换
+	- `xxxValue()`：将除`Character类`外的所有包装类型（Number对象）向基本类型转换，`xxx`是基本类型名。**（拆箱）**
+	- `valueOf()`：将字符串向除`Character类`外的所有包装类型（Number对象）转换。**（装箱）**   
+		- `例：Integer i= Integer.valueOf("5")`
+	- `toString()`：实现基本类型或者包装类型向字符串的转换（包装类型转字符串实际上是调用了对应包装类重写的`toString()`方法）
 	- 小技巧：**数据+“”**，将数据与空字符串进行运算也能转换
+- **注意**：包装类也遵循类型转换的规则！！！
