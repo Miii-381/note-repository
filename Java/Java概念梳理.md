@@ -1486,7 +1486,7 @@ public class RunoobTest {
 
 // 使用println输出集合，结果会自动格式化，原理是集合类重写了toString()方法，println()内部会调用toString()方法将集合转换成易读的字符串进行输出。
 // 输出基本类型数组则不会自动格式化，只会输出数组的哈希码。
-// 但输出对象数组的话，如果对象重写了toSt
+// 但输出对象数组的话，如果对象重写了toString()方法，则输出会按照重写的toString()方法进行输出。
 ```
 ### 删：
 - 如果要删除 `ArrayList` 中的元素可以使用 `remove()` 方法：
@@ -1504,8 +1504,42 @@ public class RunoobTest {
         System.out.println(sites);  
     }  
 }
-
 // 执行结果：[Google, Runoob, Taobao]
 ```
 ### 改：
+- 如果要修改 `ArrayList` 中的元素可以使用 `set()` 方法
+- `set(int index, E element)` 方法的第一个参数是**索引（index）**，表示要替换的元素的位置，第二个参数是**新元素（element）**，表示要设置的新值
+``` java
+import java.util.ArrayList;  
+  
+public class RunoobTest {  
+    public static void main(String[] args) {  
+        ArrayList<String> sites = new ArrayList<String>();  
+        sites.add("Google");  
+        sites.add("Runoob");  
+        sites.add("Taobao");  
+        sites.add("Weibo");  
+        sites.set(2, "Wiki"); // 第一个参数为索引位置（从0开始），第二个为要修改的值  
+        System.out.println(sites);  
+    }  
+}
+// 执行结果：[Google, Runoob, Wiki, Weibo]
+```
 ### 查：
+### 遍历数组：
+1. 使用**for循环**进行遍历：
+``` java
+for (int i = 0; i < sites.size(); i++) {  
+    System.out.println(sites.get(i));  // 使用get()获取对应索引位置的元素。
+}
+```
+2. 使用**增强for循环（for-each循环）** 进行遍历：
+``` java
+for (String i : sites) {  
+	System.out.println(i);  
+}
+```
+3. 使用**迭代器**进行遍历：
+``` java
+
+```
