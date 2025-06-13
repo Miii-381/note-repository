@@ -1617,6 +1617,7 @@ ___
 - `Vector`在内部代码层面是完全同步和线程安全的，`List`默认是非线程安全的，需要手动进行同步代码编写。
 ### ArrayList：
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
+- `ArrayList`底层是基于数组实现的：根据索引定位元素快，增删需要做元素的移位操作，扩容一般为1.5倍扩容。
 - `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
 - `ArrayList` 类位于` java.util` 包中，使用前需要引入它，语法格式如下：
 ``` java
@@ -1812,4 +1813,42 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 }
 ```
 ### LinkedList：
-- 底层通过双链表实现
+- 底层通过**双链表**实现，与 ArrayList 相比，LinkedList 的增加和删除的操作效率更高，而查找和修改的操作效率较低。
+- 具体使用方式跟`ArrayList`差不多，不讲了，反正考的多的都是`ArrayList`
+- LinkedList由于双链表的存在，多了一些对首尾操作的特殊API。
+
+|方法|描述|
+|---|---|
+|[public boolean add(E e)](https://www.runoob.com/java/java-linkedlist-add.html)|链表末尾添加元素，返回是否成功，成功为 true，失败为 false。|
+|[public void add(int index, E element)](https://www.runoob.com/java/java-linkedlist-addall.html)|向指定位置插入元素。|
+|[public boolean addAll(Collection c)](https://www.runoob.com/java/java-linkedlist-addall.html)|将一个集合的所有元素添加到链表后面，返回是否成功，成功为 true，失败为 false。|
+|[public boolean addAll(int index, Collection c)](https://www.runoob.com/java/java-linkedlist-addall.html)|将一个集合的所有元素添加到链表的指定位置后面，返回是否成功，成功为 true，失败为 false。|
+|[public void addFirst(E e)](https://www.runoob.com/java/java-linkedlist-addfirst.html)|元素添加到头部。|
+|[public void addLast(E e)](https://www.runoob.com/java/java-linkedlist-addlast.html)|元素添加到尾部。|
+|[public boolean offer(E e)](https://www.runoob.com/java/java-linkedlist-offer.html)|向链表末尾添加元素，返回是否成功，成功为 true，失败为 false。|
+|[public boolean offerFirst(E e)](https://www.runoob.com/java/java-linkedlist-offerfirst.html)|头部插入元素，返回是否成功，成功为 true，失败为 false。|
+|[public boolean offerLast(E e)](https://www.runoob.com/java/java-linkedlist-offerlast.html)|尾部插入元素，返回是否成功，成功为 true，失败为 false。|
+|[public void clear()](https://www.runoob.com/java/java-linkedlist-clear.html)|清空链表。|
+|[public E removeFirst()](https://www.runoob.com/java/java-linkedlist-removefirst.html)|删除并返回第一个元素。|
+|[public E removeLast()](https://www.runoob.com/java/java-linkedlist-removelast.html)|删除并返回最后一个元素。|
+|[public boolean remove(Object o)](https://www.runoob.com/java/java-linkedlist-remove.html)|删除某一元素，返回是否成功，成功为 true，失败为 false。|
+|[public E remove(int index)](https://www.runoob.com/java/java-linkedlist-remove.html)|删除指定位置的元素。|
+|[public E poll()](https://www.runoob.com/java/java-linkedlist-poll.html)|删除并返回第一个元素。|
+|[public E remove()](https://www.runoob.com/java/java-linkedlist-remove.html)|删除并返回第一个元素。|
+|[public boolean contains(Object o)<](https://www.runoob.com/java/java-linkedlist-contains.html)/td>|判断是否含有某一元素。|
+|[public E get(int index)](https://www.runoob.com/java/java-linkedlist-get.html)|返回指定位置的元素。|
+|[public E getFirst()](https://www.runoob.com/java/java-linkedlist-getfirst.html)|返回第一个元素。|
+|[public E getLast()](https://www.runoob.com/java/java-linkedlist-getlast.html)|返回最后一个元素。|
+|[public int indexOf(Object o)](https://www.runoob.com/java/java-linkedlist-indexof.html)|查找指定元素从前往后第一次出现的索引。|
+|[public int lastIndexOf(Object o)](https://www.runoob.com/java/java-linkedlist-lastindexof.html)|查找指定元素最后一次出现的索引。|
+|[public E peek()](https://www.runoob.com/java/java-linkedlist-peek.html)|返回第一个元素。|
+|[public E element()](https://www.runoob.com/java/java-linkedlist-element.html)|返回第一个元素。|
+|[public E peekFirst()](https://www.runoob.com/java/java-linkedlist-peekfirst.html)|返回头部元素。|
+|[public E peekLast()](https://www.runoob.com/java/java-linkedlist-peeklast.html)|返回尾部元素。|
+|[public E set(int index, E element)](https://www.runoob.com/java/java-linkedlist-set.html)|设置指定位置的元素。|
+|[public Object clone()](https://www.runoob.com/java/java-linkedlist-clone.html)|克隆该列表。|
+|[public Iterator descendingIterator()](https://www.runoob.com/java/java-linkedlist-descendingiterator.html)|返回倒序迭代器。|
+|[public int size()](https://www.runoob.com/java/java-linkedlist-size.html)|返回链表元素个数。|
+|[public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)|返回从指定位置开始到末尾的迭代器。|
+|[public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)|返回一个由链表元素组成的数组。|
+|[public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)|返回一个由链表元素转换类型而成的数组。|
