@@ -1288,9 +1288,40 @@ T[] array = new T[10]; // 编译错误
     ```
 ___
 ## 常见基本类及API：
-### Object：
+### [Object](https://www.runoob.com/java/java-object-class.html)：
 - `Object` 类是**所有类的父类**，也就是说 Java 的所有类都继承了 `Object`，**子类可以使用 `Object` 的所有方法**。
-- `Object` 类位于 `java.lang` 包中，编译时会自动导入，我们创建一个类时，如果没有明确继承一个父类，那么它就会自动继承 `Object，成为 Object 的子类。
+- `Object` 类位于 `java.lang` 包中，编译时会自动导入，我们创建一个类时，如果没有明确继承一个父类，那么它就会自动继承 `Object`，成为 `Object` 的子类。
+- `Object` 类可以显式继承，也可以隐式继承，以下两种方式是一样的：
+``` java
+// 1.显式继承
+public class Runoob extends Object{ }
+// 2.隐式继承
+public class Runoob { }
+```
+- `Object`类有两个很重要的方法：`equals()`和 `toString()`
+- `equals()` 方法用于比较两个对象是否相等。它的判断方式是判断两个对象引用**指向**的是不是**同一个对象**，即它只是检查两个对象是否**指向内存中的同一个地址**。
+	- **注意**：如果子类重写了 equals() 方法，就需要重写 [hashCode() 方法](https://www.runoob.com/java/java-object-hashcode.html)，比如 String 类就重写了 equals() 方法，同时也重写了 hashCode() 方法。
+``` java
+class RunoobTest {
+    public static void main(String[] args) {
+        // Object 类使用 equals() 方法
+        // 创建两个对象
+        Object obj1 = new Object();
+        Object obj2 = new Object();
+ 
+        // 判断 obj1 与 obj2 是否相等
+        // 不同对象，内存地址不同，不相等，返回 false
+        System.out.println(obj1.equals(obj2)); // 结果：false
+ 
+        // obj1 赋值给 obj3
+        // String 重写了 equals() 方法
+        // 对象引用，内存地址相同，相等，返回 true
+        Object obj3 = obj1;
+        System.out.println(obj1.equals(obj3)); // 结果：true
+    }
+}
+```
+### 
 ---
 # 异常及异常的处理
 ## 异常：
