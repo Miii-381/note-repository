@@ -1788,6 +1788,7 @@ public class LambdaForEachExample {
 	- **迭代器的 `remove` 方法**：会同步更新迭代器的 `expectedModCount`，避免 `ConcurrentModificationException`。
 	- **不会跳过元素**：迭代器内部维护游标（`cursor`）和 `lastRet`，确保删除操作后仍能正确遍历后续元素。
 - 或者，在遍历删除元素的时候，改为**从后往前**进行筛选和删除。
+- 补充：`forEach()`方法搭配lambda表达式进行遍历的时候，不能边遍历边删除，会出错。（本质上就是实现了`Consumer`接口，其内部的`accept()`方法会通过**迭代器**逐个处理集合元素，其实也是迭代器遍历，跟迭代器错误方式一样。）
 ``` java
 // 普通for循环
 for(int i = 0; i < scores.size(); i++) {
@@ -1852,3 +1853,9 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 |[public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)|返回从指定位置开始到末尾的迭代器。|
 |[public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)|返回一个由链表元素组成的数组。|
 |[public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)|返回一个由链表元素转换类型而成的数组。|
+## Set集合：
+- **特点：**
+	- **无序**：存取顺序不一致 
+	- **不重复**：可以去除重复 
+	- **无索引**：没有带索引的方法，所以不能使用普通for循环遍历，也不能通过索引来获取元素
+### 
