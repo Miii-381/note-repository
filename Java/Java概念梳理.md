@@ -1452,3 +1452,17 @@ ___
 	- **集合（Set）**
 	- **队列（Queue）**
 	- **映射（Map）**
+- 所有集合全部继承自`Collection`接口，`Collection`接口是最基本的集合接口，其存储一组不唯一且无序的对象。
+- 对于集合框架的详细介绍看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
+## ArrayList
+- `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
+- `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
+- `ArrayList` 类位于` java.util` 包中，使用前需要引入它，语法格式如下：
+``` java
+import java.util.ArrayList; // 引入 ArrayList 类
+
+ArrayList<E> objectName =new ArrayList<>();　 // 初始化
+
+// E: 泛型数据类型，用于设置 objectName 的数据类型，**其只能为引用数据类型**。
+// objectName: 对象名。
+```
