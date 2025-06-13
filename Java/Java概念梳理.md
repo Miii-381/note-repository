@@ -1612,6 +1612,7 @@ ___
 - 集合都支持**泛型**。
 - 实现了`Cloneable`接口并实现了`clone()`方法的**标准集合类**可以直接使用`clone()`方法进行**深拷贝**
 - 对于集合框架的详细介绍还是看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
+
 ## List集合：
 - 注意：`Vector`也是集合，但`Vector`在Java中属于历史遗留产物，现在一般使用`ArrayList`或者``LinkedList替代`Vector`。
 - `Vector`在内部代码层面是完全同步和线程安全的，`List`默认是非线程安全的，需要手动进行同步代码编写。
@@ -1915,3 +1916,27 @@ HashSet<String> sites = new HashSet<String>();
 	- 结论：想要使用TreeSet存储自定义类型，需要自己制定排序规则。
 ## 比较器（Comparable）
 - 这里很重要，所以单独抽出来讲。
+- 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
+### 1. 核心概念：
+- **接口定义**：
+``` java
+public interface Comparable<T> {
+    int compareTo(T o);
+}
+```
+
+- **泛型 `<T>`**：表示当前类要与其他同类型对象进行比较。
+- **`compareTo(T o)` 方法**：
+    - 返回值为 `int`，用于表示比较结果：
+        - **负数**：当前对象小于参数对象。
+        - **0**：当前对象等于参数对象。
+        - **正数**：当前对象大于参数对象。
+### **2. 使用场景**
+
+`Comparable` 接口主要用于以下场景：
+
+1. **排序集合/数组**
+    - 对实现了 `Comparable` 的对象集合进行排序（如 `Arrays.sort()`、`Collections.sort()`）。
+    - 在 `TreeSet`、`TreeMap` 等基于排序的集合中自动排序。
+2. **定义自然顺序**
+    - 当需要为自定义类（如 `Student`、`Person`）定义默认的排序规则时。
