@@ -1818,44 +1818,59 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 - 具体使用方式跟`ArrayList`差不多，不讲了，反正考的多的都是`ArrayList`
 - LinkedList由于双链表的存在，多了一些对首尾操作的特殊API。
 
-|方法|描述|
-|---|---|
-|[public boolean add(E e)](https://www.runoob.com/java/java-linkedlist-add.html)|链表末尾添加元素，返回是否成功，成功为 true，失败为 false。|
-|[public void add(int index, E element)](https://www.runoob.com/java/java-linkedlist-addall.html)|向指定位置插入元素。|
-|[public boolean addAll(Collection c)](https://www.runoob.com/java/java-linkedlist-addall.html)|将一个集合的所有元素添加到链表后面，返回是否成功，成功为 true，失败为 false。|
-|[public boolean addAll(int index, Collection c)](https://www.runoob.com/java/java-linkedlist-addall.html)|将一个集合的所有元素添加到链表的指定位置后面，返回是否成功，成功为 true，失败为 false。|
-|[public void addFirst(E e)](https://www.runoob.com/java/java-linkedlist-addfirst.html)|元素添加到头部。|
-|[public void addLast(E e)](https://www.runoob.com/java/java-linkedlist-addlast.html)|元素添加到尾部。|
-|[public boolean offer(E e)](https://www.runoob.com/java/java-linkedlist-offer.html)|向链表末尾添加元素，返回是否成功，成功为 true，失败为 false。|
-|[public boolean offerFirst(E e)](https://www.runoob.com/java/java-linkedlist-offerfirst.html)|头部插入元素，返回是否成功，成功为 true，失败为 false。|
-|[public boolean offerLast(E e)](https://www.runoob.com/java/java-linkedlist-offerlast.html)|尾部插入元素，返回是否成功，成功为 true，失败为 false。|
-|[public void clear()](https://www.runoob.com/java/java-linkedlist-clear.html)|清空链表。|
-|[public E removeFirst()](https://www.runoob.com/java/java-linkedlist-removefirst.html)|删除并返回第一个元素。|
-|[public E removeLast()](https://www.runoob.com/java/java-linkedlist-removelast.html)|删除并返回最后一个元素。|
-|[public boolean remove(Object o)](https://www.runoob.com/java/java-linkedlist-remove.html)|删除某一元素，返回是否成功，成功为 true，失败为 false。|
-|[public E remove(int index)](https://www.runoob.com/java/java-linkedlist-remove.html)|删除指定位置的元素。|
-|[public E poll()](https://www.runoob.com/java/java-linkedlist-poll.html)|删除并返回第一个元素。|
-|[public E remove()](https://www.runoob.com/java/java-linkedlist-remove.html)|删除并返回第一个元素。|
-|[public boolean contains(Object o)<](https://www.runoob.com/java/java-linkedlist-contains.html)/td>|判断是否含有某一元素。|
-|[public E get(int index)](https://www.runoob.com/java/java-linkedlist-get.html)|返回指定位置的元素。|
-|[public E getFirst()](https://www.runoob.com/java/java-linkedlist-getfirst.html)|返回第一个元素。|
-|[public E getLast()](https://www.runoob.com/java/java-linkedlist-getlast.html)|返回最后一个元素。|
-|[public int indexOf(Object o)](https://www.runoob.com/java/java-linkedlist-indexof.html)|查找指定元素从前往后第一次出现的索引。|
-|[public int lastIndexOf(Object o)](https://www.runoob.com/java/java-linkedlist-lastindexof.html)|查找指定元素最后一次出现的索引。|
-|[public E peek()](https://www.runoob.com/java/java-linkedlist-peek.html)|返回第一个元素。|
-|[public E element()](https://www.runoob.com/java/java-linkedlist-element.html)|返回第一个元素。|
-|[public E peekFirst()](https://www.runoob.com/java/java-linkedlist-peekfirst.html)|返回头部元素。|
-|[public E peekLast()](https://www.runoob.com/java/java-linkedlist-peeklast.html)|返回尾部元素。|
-|[public E set(int index, E element)](https://www.runoob.com/java/java-linkedlist-set.html)|设置指定位置的元素。|
-|[public Object clone()](https://www.runoob.com/java/java-linkedlist-clone.html)|克隆该列表。|
-|[public Iterator descendingIterator()](https://www.runoob.com/java/java-linkedlist-descendingiterator.html)|返回倒序迭代器。|
-|[public int size()](https://www.runoob.com/java/java-linkedlist-size.html)|返回链表元素个数。|
-|[public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)|返回从指定位置开始到末尾的迭代器。|
-|[public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)|返回一个由链表元素组成的数组。|
-|[public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)|返回一个由链表元素转换类型而成的数组。|
+| 方法                                                                                                            | 描述                                                |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| [public boolean add(E e)](https://www.runoob.com/java/java-linkedlist-add.html)(重要)                           | 链表末尾添加元素，返回是否成功，成功为 true，失败为 false。               |
+| [public void add(int index, E element)](https://www.runoob.com/java/java-linkedlist-addall.html)(重要)          | 向指定位置插入元素。                                        |
+| [public boolean addAll(Collection c)](https://www.runoob.com/java/java-linkedlist-addall.html)(重要)            | 将一个集合的所有元素添加到链表后面，返回是否成功，成功为 true，失败为 false。      |
+| [public boolean addAll(int index, Collection c)](https://www.runoob.com/java/java-linkedlist-addall.html)(重要) | 将一个集合的所有元素添加到链表的指定位置后面，返回是否成功，成功为 true，失败为 false。 |
+| [public void addFirst(E e)](https://www.runoob.com/java/java-linkedlist-addfirst.html)(重要)                    | 元素添加到头部。                                          |
+| [public void addLast(E e)](https://www.runoob.com/java/java-linkedlist-addlast.html)(重要)                      | 元素添加到尾部。                                          |
+| [public boolean offer(E e)](https://www.runoob.com/java/java-linkedlist-offer.html)                           | 向链表末尾添加元素，返回是否成功，成功为 true，失败为 false。              |
+| [public boolean offerFirst(E e)](https://www.runoob.com/java/java-linkedlist-offerfirst.html)                 | 头部插入元素，返回是否成功，成功为 true，失败为 false。                 |
+| [public boolean offerLast(E e)](https://www.runoob.com/java/java-linkedlist-offerlast.html)                   | 尾部插入元素，返回是否成功，成功为 true，失败为 false。                 |
+| [public void clear()](https://www.runoob.com/java/java-linkedlist-clear.html)(重要)                             | 清空链表。                                             |
+| [public E removeFirst()](https://www.runoob.com/java/java-linkedlist-removefirst.html)(重要)                    | 删除并返回第一个元素。                                       |
+| [public E removeLast()](https://www.runoob.com/java/java-linkedlist-removelast.html)(重要)                      | 删除并返回最后一个元素。                                      |
+| [public boolean remove(Object o)](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                | 删除某一元素，返回是否成功，成功为 true，失败为 false。                 |
+| [public E remove(int index)](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                     | 删除指定位置的元素。                                        |
+| [public E poll()](https://www.runoob.com/java/java-linkedlist-poll.html)                                      | 删除并返回第一个元素。                                       |
+| [public E remove()](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                              | 删除并返回第一个元素。                                       |
+| [public boolean contains(Object o)](https://www.runoob.com/java/java-linkedlist-contains.html)(重要)            | 判断是否含有某一元素。                                       |
+| [public E get(int index)](https://www.runoob.com/java/java-linkedlist-get.html)(重要)                           | 返回指定位置的元素。                                        |
+| [public E getFirst()](https://www.runoob.com/java/java-linkedlist-getfirst.html)(重要)                          | 返回第一个元素。                                          |
+| [public E getLast()](https://www.runoob.com/java/java-linkedlist-getlast.html)(重要)                            | 返回最后一个元素。                                         |
+| [public int indexOf(Object o)](https://www.runoob.com/java/java-linkedlist-indexof.html)(重要)                  | 查找指定元素从前往后第一次出现的索引。                               |
+| [public int lastIndexOf(Object o)](https://www.runoob.com/java/java-linkedlist-lastindexof.html)              | 查找指定元素最后一次出现的索引。                                  |
+| [public E peek()](https://www.runoob.com/java/java-linkedlist-peek.html)(重要)                                  | 返回第一个元素。                                          |
+| [public E element()](https://www.runoob.com/java/java-linkedlist-element.html)                                | 返回第一个元素。                                          |
+| [public E peekFirst()](https://www.runoob.com/java/java-linkedlist-peekfirst.html)                            | 返回头部元素。                                           |
+| [public E peekLast()](https://www.runoob.com/java/java-linkedlist-peeklast.html)                              | 返回尾部元素。                                           |
+| [public E set(int index, E element)](https://www.runoob.com/java/java-linkedlist-set.html)(重要)                | 设置指定位置的元素。                                        |
+| [public Object clone()](https://www.runoob.com/java/java-linkedlist-clone.html)                               | 克隆该列表。                                            |
+| [public Iterator descendingIterator()](https://www.runoob.com/java/java-linkedlist-descendingiterator.html)   | 返回倒序迭代器。                                          |
+| [public int size()](https://www.runoob.com/java/java-linkedlist-size.html)(重要)                                | 返回链表元素个数。                                         |
+| [public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)  | 返回从指定位置开始到末尾的迭代器。                                 |
+| [public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素组成的数组。                                   |
+| [public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素转换类型而成的数组。                               |
 ## Set集合：
 - **特点：**
 	- **无序**：存取顺序不一致 
 	- **不重复**：可以去除重复 
 	- **无索引**：没有带索引的方法，所以不能使用普通for循环遍历，也不能通过索引来获取元素
-### 
+- **实现类特点：**
+	- `HashSet` : 无序、不重复、无索引。
+	- `LinkedHashSet`：有序、不重复、无索引。 
+	- `TreeSet`：排序、不重复、无索引。
+### HashSet：
+- 基于`HashMap`实现，不允许有重复元素。
+- 允许有`null`值。
+- `HashSet` 是无序的，即不会记录插入的顺序。
+- `HashSet` 不是线程安全的， 如果多个线程尝试同时修改 HashSet，则最终结果是不确定的。 必须在多线程访问时显式同步对 HashSet 的并发访问。
+``` java
+// HashSet 类位于 java.util 包中，使用前需要引入它，语法格式如下：
+import java.util.HashSet; // 引入 HashSet 类
+
+//以下实例我们创建一个 HashSet 对象 sites，用于保存字符串元素：
+HashSet<String> sites = new HashSet<String>();
+```
