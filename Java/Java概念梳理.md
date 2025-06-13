@@ -1920,12 +1920,9 @@ HashSet<String> sites = new HashSet<String>();
 ## 比较器（Comparable和Comparator）
 - 这里很重要，所以单独抽出来讲。
 - 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
-- `Comparator` 是 Java 中的一个 **函数式接口**，用于定义对象的**外部比较逻辑**。与 `Comparable` 不同，`Comparator` 允许在不修改类源码的情况下，为对象提供多种排序规则。它常用于以下场景：
-	- 需要为已存在的类（如 `String`、`Integer` 或第三方类）定义排序规则。
-	- 需要为同一个类定义多种排序规则（如按年龄排序、按姓名排序等）。
-	- 需要动态控制排序逻辑（例如在 GUI 中让用户选择排序方式）。
+- `Comparator` 是 Java 中的一个 **函数式接口**，用于定义对象的**外部比较逻辑**。与 `Comparable` 不同，`Comparator` 允许在不修改类源码的情况下，为对象提供多种排序规则。
 ### 1. 核心概念：
-- Comparator**接口定义**：
+#### `Comparator`**接口定义**：
 ``` java
 public interface Comparable<T> {
     int compareTo(T o);
@@ -1938,6 +1935,17 @@ public interface Comparable<T> {
 	        - **负数**：当前对象小于参数对象。
 	        - **0**：当前对象等于参数对象。
 	        - **正数**：当前对象大于参数对象。
+#### `Comparator` 接口定义了一个核心方法:
+``` java
+int compare(T o1, T o2);
+```
+- **参数**：
+    - `o1`：第一个对象。
+    - `o2`：第二个对象。
+- **返回值**：
+    - **负数**：`o1` 小于 `o2`。
+    - **0**：`o1` 等于 `o2`。
+    - **正数**：`o1` 大于 `o2`。
 ### 2. 使用场景：
 - `Comparable` 接口主要用于以下场景：
 1. **排序集合/数组**
@@ -1945,6 +1953,24 @@ public interface Comparable<T> {
     - 在 `TreeSet`、`TreeMap` 等基于排序的集合中自动排序。
 2. **定义自然顺序**
     - 当需要为自定义类（如 `Student`、`Person`）定义默认的排序规则时。
+
+-  `Comparator`接口常用于以下场景：
+1. 需要为已存在的类（如 `String`、`Integer` 或第三方类）定义排序规则。
+``` java
+// 示例：按字符串长度排序
+Comparator<String> byLength = (s1, s2) -> s1.length() - s2.length();
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+Collections.sort(names, byLength);
+// 输出: [Bob, Alice, Charlie]
+```
+2. 需要为同一个类定义多种排序规则（如按年龄排序、按姓名排序等）。
+``` java
+// 示例：先按年龄排序，再按姓名排序
+Comparator<Student> byAgeThenName = Comparator.comparing(Student::getAge)
+                                               .thenComparing(Student::getName);
+```
+3. 需要动态控制排序逻辑（例如在 GUI 中让用户选择排序方式）。
+
 ### 3. 实现示例：
 #### 示例 1：自定义类实现 `Comparable`
 ``` java
