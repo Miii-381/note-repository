@@ -1542,5 +1542,26 @@ for (String i : sites) {
 ```
 3. 使用**迭代器**进行遍历：
 ``` java
+import java.util.ArrayList;
+import java.util.Iterator;
 
+public class IteratorExample {
+    public static void main(String[] args) {
+        // 1. 创建 ArrayList 实例并添加元素
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+
+        // 2. 获取迭代器对象
+        Iterator<String> iterator = fruits.iterator();
+
+        // 3. 使用迭代器遍历集合
+        System.out.println("遍历 ArrayList 元素：");
+        while (iterator.hasNext()) {
+            String fruit = iterator.next(); // 获取下一个元素
+            System.out.println(fruit);
+        }
+    }
+}
 ```
