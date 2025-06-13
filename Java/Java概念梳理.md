@@ -341,6 +341,7 @@ int[] x = new int[100];
 	- **数组下标越界**：常见于遍历数组；
 	- **数组也是引用数据类型**，数组名保存的是**地址**，不是变量值！！！
 	- 静态初始化时不能定义数组长度！
+	- 数组复制只能使用Arrays.copyOf()或者System.arraycopy()进行复制，否则复制前后指向的是同一个shu'zu
 ## 多维数组就不在此介绍了
 ## Arrays类：
 | 序号  | 方法和说明                                                                                                                                                                                                                                         |
@@ -1569,30 +1570,30 @@ public class IteratorExample {
 - 如果要计算 `ArrayList` 中的元素数量可以使用 `size()` 方法：
 - 代码示例懒得写了。
 ### ArrayList常用方法：
-|方法|描述|
-|---|---|
-|[add()](https://www.runoob.com/java/java-arraylist-add.html)|将元素插入到指定位置的 arraylist 中|
-|[addAll()](https://www.runoob.com/java/java-arraylist-addall.html)|添加集合中的所有元素到 arraylist 中|
-|[clear()](https://www.runoob.com/java/java-arraylist-clear.html)|删除 arraylist 中的所有元素|
-|[clone()](https://www.runoob.com/java/java-arraylist-clone.html)|复制一份 arraylist|
-|[contains()](https://www.runoob.com/java/java-arraylist-contains.html)|判断元素是否在 arraylist|
-|[get()](https://www.runoob.com/java/java-arraylist-get.html)|通过索引值获取 arraylist 中的元素|
-|[indexOf()](https://www.runoob.com/java/java-arraylist-indexof.html)|返回 arraylist 中元素的索引值|
-|[removeAll()](https://www.runoob.com/java/java-arraylist-removeall.html)|删除存在于指定集合中的 arraylist 里的所有元素|
-|[remove()](https://www.runoob.com/java/java-arraylist-remove.html)|删除 arraylist 里的单个元素|
-|[size()](https://www.runoob.com/java/java-arraylist-size.html)|返回 arraylist 里元素数量|
-|[isEmpty()](https://www.runoob.com/java/java-arraylist-isempty.html)|判断 arraylist 是否为空|
-|[subList()](https://www.runoob.com/java/java-arraylist-sublist.html)|截取部分 arraylist 的元素|
-|[set()](https://www.runoob.com/java/java-arraylist-set.html)|替换 arraylist 中指定索引的元素|
-|[sort()](https://www.runoob.com/java/java-arraylist-sort.html)|对 arraylist 元素进行排序|
-|[toArray()](https://www.runoob.com/java/java-arraylist-toarray.html)|将 arraylist 转换为数组|
-|[toString()](https://www.runoob.com/java/java-arraylist-tostring.html)|将 arraylist 转换为字符串|
-|[ensureCapacity](https://www.runoob.com/java/java-arraylist-surecapacity.html)()|设置指定容量大小的 arraylist|
-|[lastIndexOf()](https://www.runoob.com/java/java-arraylist-lastindexof.html)|返回指定元素在 arraylist 中最后一次出现的位置|
-|[retainAll()](https://www.runoob.com/java/java-arraylist-retainall.html)|保留 arraylist 中在指定集合中也存在的那些元素|
-|[containsAll()](https://www.runoob.com/java/java-arraylist-containsall.html)|查看 arraylist 是否包含指定集合中的所有元素|
-|[trimToSize()](https://www.runoob.com/java/java-arraylist-trimtosize.html)|将 arraylist 中的容量调整为数组中的元素个数|
-|[removeRange()](https://www.runoob.com/java/java-arraylist-removerange.html)|删除 arraylist 中指定索引之间存在的元素|
-|[replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)|将给定的操作内容替换掉数组中每一个元素|
-|[removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)|删除所有满足特定条件的 arraylist 元素|
-|[forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)|遍历 arraylist 中每一个元素并执行特定操作|
+| 方法                                                                               | 描述                           |
+| -------------------------------------------------------------------------------- | ---------------------------- |
+| [add()](https://www.runoob.com/java/java-arraylist-add.html)                     | 将元素插入到指定位置的 arraylist 中      |
+| [addAll()](https://www.runoob.com/java/java-arraylist-addall.html)               | 添加集合中的所有元素到 arraylist 中      |
+| [clear()](https://www.runoob.com/java/java-arraylist-clear.html)                 | 删除 arraylist 中的所有元素          |
+| [clone()](https://www.runoob.com/java/java-arraylist-clone.html)                 | 复制一份 arraylist               |
+| [contains()](https://www.runoob.com/java/java-arraylist-contains.html)           | 判断元素是否在 arraylist            |
+| [get()](https://www.runoob.com/java/java-arraylist-get.html)                     | 通过索引值获取 arraylist 中的元素       |
+| [indexOf()](https://www.runoob.com/java/java-arraylist-indexof.html)             | 返回 arraylist 中元素的索引值         |
+| [removeAll()](https://www.runoob.com/java/java-arraylist-removeall.html)         | 删除存在于指定集合中的 arraylist 里的所有元素 |
+| [remove()](https://www.runoob.com/java/java-arraylist-remove.html)               | 删除 arraylist 里的单个元素          |
+| [size()](https://www.runoob.com/java/java-arraylist-size.html)                   | 返回 arraylist 里元素数量           |
+| [isEmpty()](https://www.runoob.com/java/java-arraylist-isempty.html)             | 判断 arraylist 是否为空            |
+| [subList()](https://www.runoob.com/java/java-arraylist-sublist.html)             | 截取部分 arraylist 的元素           |
+| [set()](https://www.runoob.com/java/java-arraylist-set.html)                     | 替换 arraylist 中指定索引的元素        |
+| [sort()](https://www.runoob.com/java/java-arraylist-sort.html)                   | 对 arraylist 元素进行排序           |
+| [toArray()](https://www.runoob.com/java/java-arraylist-toarray.html)             | 将 arraylist 转换为数组            |
+| [toString()](https://www.runoob.com/java/java-arraylist-tostring.html)           | 将 arraylist 转换为字符串           |
+| [ensureCapacity](https://www.runoob.com/java/java-arraylist-surecapacity.html)() | 设置指定容量大小的 arraylist          |
+| [lastIndexOf()](https://www.runoob.com/java/java-arraylist-lastindexof.html)     | 返回指定元素在 arraylist 中最后一次出现的位置 |
+| [retainAll()](https://www.runoob.com/java/java-arraylist-retainall.html)         | 保留 arraylist 中在指定集合中也存在的那些元素 |
+| [containsAll()](https://www.runoob.com/java/java-arraylist-containsall.html)     | 查看 arraylist 是否包含指定集合中的所有元素  |
+| [trimToSize()](https://www.runoob.com/java/java-arraylist-trimtosize.html)       | 将 arraylist 中的容量调整为数组中的元素个数  |
+| [removeRange()](https://www.runoob.com/java/java-arraylist-removerange.html)     | 删除 arraylist 中指定索引之间存在的元素    |
+| [replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)       | 将给定的操作内容替换掉数组中每一个元素          |
+| [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)           | 删除所有满足特定条件的 arraylist 元素     |
+| [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)             | 遍历 arraylist 中每一个元素并执行特定操作   |
