@@ -1918,7 +1918,7 @@ HashSet<String> sites = new HashSet<String>();
 	- 结论：想要使用TreeSet存储自定义类型，需要自己制定排序规则。
 ---
 ## 比较器（Comparable和Comparator）
-- 这里很重要，所以单独抽出来讲。
+- 这里很重要，所以单独抽出来讲。（说是重要，但占不了这么多篇幅，写上头了是这样的 doge）
 - 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
 - `Comparator` 是 Java 中的一个 **函数式接口**，用于定义对象的**外部比较逻辑**。与 `Comparable` 不同，`Comparator` 允许在不修改类源码的情况下，为对象提供多种排序规则。
 ### 1. 核心概念：
@@ -2097,7 +2097,7 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
     Arrays.sort(students, byName);
 ```
 ### 7. 总结
-### 
+#### Comparable接口：
 
 |**特点**|**说明**|
 |---|---|
@@ -2105,8 +2105,25 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
 |**实现方式**|通过 `compareTo()` 方法定义比较逻辑。|
 |**适用场景**|默认排序需求（如 `TreeSet`、`TreeMap`、`Arrays.sort()`）。|
 |**与 `Comparator` 对比**|`Comparable` 是类的固有排序规则，`Comparator` 是外部定义的自定义排序规则。|
-
+#### Comparator接口：
+- **`Comparator` 是 Java 中灵活控制对象排序的核心工具**，尤其适合需要动态或多种排序规则的场景。
+- **与 `Comparable` 互补**：`Comparable` 定义类的自然排序规则，`Comparator` 提供外部自定义排序逻辑。
+- **掌握 Lambda 表达式和 `Comparator` 的链式调用**（如 `thenComparing`、`reversed`）可以显著提升代码简洁性和可读性。
 ### 8. 推荐实践
 - **优先使用 `Comparable`**：如果类的排序规则是明确且唯一的，优先实现 `Comparable`。
 - **结合 `Comparator`**：当需要多种排序规则时，使用 `Comparator` 提供灵活性。
 - **遵循设计原则**：确保比较逻辑与 `equals()` 一致，并满足数学性质（自反性、对称性、传递性）。
+### 注意：如果TreeSet集合存储的对象有实现比较规则，集合也自带比较器，默认使用集合自带的比较器排序。
+___
+## 总结：
+1. 如果希望元素可以重复，又有索引，索引查询要快？ 
+	- 用`ArrayList`集合，基于**数组**的。（用的最多） 
+2. 如果希望元素可以重复，又有索引，增删首尾操作快？ 
+	- 用`LinkedList`集合，基于**链表**的。 
+3. 如果希望增删改查都快，但是元素不重复、无序、无索引。
+	- 用`HashSet`集合，基于**哈希表**的。
+4. 如果希望增删改查都快，但是元素不重复、有序、无索引。 
+	- 用`LinkedHashSet`集合，基于**哈希表和双链表**。 
+5. 如果要对对象进行排序。 
+	- 用`TreeSet`集合，基于**红黑树**。后续也可以用List集合实现排序。
+___
