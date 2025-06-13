@@ -1322,7 +1322,6 @@ class RunoobTest {
         System.out.println(obj1.equals(obj3)); // 结果：true
     }
 }
-// 重写后：
 ```
 - `Object.toString()` 方法用于返回对象的字符串表示形式。
 - 默认返回格式：对象的 class 名称 + @ + hashCode 的十六进制字符串。
@@ -1343,6 +1342,50 @@ class RunoobTest {
 ```
 - 由于`Object`类是所有类的父类，所以所有类都能使用和重写`toString()`方法。**父类中的`toString()`方法存在的意义就是为了被子类重写，以便子类自己来定制转换规则**。
 - 比如：`System.out.println(array[1].toString()); // 结果：Runoob`
+``` java
+// 一个具体的重写示例：
+// Person.java
+import java.util.Objects;  
+public class Person{  
+    private String name;  
+    private int age;  
+    
+    // 构造函数和getter/setter函数省略
+    
+    @Override  
+    public String toString(){  
+        return getClass().getName() + ": { name = " + this.name 
+							        + ", age = " + this.age + " }";  
+    }  
+  
+    @Override  
+    public int hashCode(){  
+        return java.util.Objects.hash(name, age);  
+    }  
+  
+    @Override  
+    public boolean equals(Object obj){  
+        Person other = (Person) obj;  
+        // 1.
+        if(this == obj) return true;  
+        if(obj == null || getClass() != obj.getClass()) return false;  
+        return age == other.age && (Objects.equals(name, other.name));  
+        /* 上面三行的另一种不太推荐的写法：  
+        *  return this.toString().equals(other.toString());        * */    }  
+}
+// Tester.java
+public class Tester {  
+    public static void main(String[] args) {  
+        Person person1 = new Person("千早爱音", 15);  
+        Person person2 = new Person("长崎素世", 16);  
+        Person person3 = new Person("长崎素世", 16);  
+        System.out.println(person1.equals(person2));  // false
+        System.out.println(person3.equals(person2));  // true
+        System.out.println(person1 == person2);       // false
+        System.out.println(person2 == person3);       // false
+    }  
+}
+```
 ### 
 ---
 # 异常及异常的处理
