@@ -1366,12 +1366,16 @@ public class Person{
     @Override  
     public boolean equals(Object obj){  
         Person other = (Person) obj;  
-        // 1.
+        // 1.比较是否是同一个对象
         if(this == obj) return true;  
+        // 2.确定对象是否为空或者对象名是否不同
         if(obj == null || getClass() != obj.getClass()) return false;  
-        return age == other.age && (Objects.equals(name, other.name));  
+        // 3.比较对象的内容是否不同
+        return age == other.age && (Objects.equals(name, other.name)); 
+         
         /* 上面三行的另一种不太推荐的写法：  
-        *  return this.toString().equals(other.toString());        * */    }  
+        *  return this.toString().equals(other.toString());        * */    
+	}
 }
 // Tester.java
 public class Tester {  
@@ -1697,4 +1701,13 @@ public class IteratorExample {
 | [replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)       | 将给定的操作内容替换掉数组中每一个元素          |
 | [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)           | 删除所有满足特定条件的 arraylist 元素     |
 | [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)(重要)         | 遍历 arraylist 中每一个元素并执行特定操作   |
-## 
+### 可能出现的问题：
+- 在遍历删除元素的时候，如果是从前往后进行筛选并删除，由于`ArrayList`自动补位的特性，会导致元素错位，进而导致遍历错误。
+``` java
+for(int i = 0; i < scores.size(); i++) {
+	int score = score.get(i);
+	if(score < 80) {
+		score.remove(i); // 会出错
+	}
+}
+```
