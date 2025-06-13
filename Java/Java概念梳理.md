@@ -1466,3 +1466,42 @@ ArrayList<E> objectName =new ArrayList<>();　 // 初始化
 // E: 泛型数据类型，用于设置 objectName 的数据类型，**其只能为引用数据类型**。
 // objectName: 对象名。
 ```
+### 增：
+- 添加元素到 `ArrayList` 可以使用 `add()` 方法：
+``` java
+import java.util.ArrayList;  
+  
+public class RunoobTest {  
+    public static void main(String[] args) {  
+        ArrayList<String> sites = new ArrayList<String>();  
+        sites.add("Google");  
+        sites.add("Runoob");  
+        sites.add("Taobao");  
+        sites.add("Weibo");  
+        System.out.println(sites);  
+    }  
+}
+
+// 执行结果：[Google, Runoob, Taobao, Weibo] **使用println输出会自动g**
+```
+### 删：
+- 如果要删除 `ArrayList` 中的元素可以使用 `remove()` 方法：
+``` java
+import java.util.ArrayList;  
+  
+public class RunoobTest {  
+    public static void main(String[] args) {  
+        ArrayList<String> sites = new ArrayList<String>();  
+        sites.add("Google");  
+        sites.add("Runoob");  
+        sites.add("Taobao");  
+        sites.add("Weibo");  
+        sites.remove(3); // 删除第四个元素  
+        System.out.println(sites);  
+    }  
+}
+
+// 执行结果：[Google, Runoob, Taobao]
+```
+### 改：
+### 查：
