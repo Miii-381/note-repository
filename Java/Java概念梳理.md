@@ -1613,6 +1613,8 @@ ___
 - 实现了`Cloneable`接口并实现了`clone()`方法的**标准集合类**可以直接使用`clone()`方法进行**深拷贝**
 - 对于集合框架的详细介绍还是看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
 ## List集合：
+- 注意：`Vector`也是集合，但`Vector`在Java中属于历史遗留产物，现在一般使用`ArrayList`或者``LinkedList替代`Vector`。
+- `Vector`在内部代码层面是完全同步和线程安全的，`List`默认是非线程安全的，需要手动进行同步代码编写。
 ### ArrayList：
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
 - `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
@@ -1620,7 +1622,7 @@ ___
 ``` java
 import java.util.ArrayList; // 引入 ArrayList 类
 
-ArrayList<E> objectName =new ArrayList<>();　 // 初始化
+ArrayList<E> objectName = new ArrayList<>();　 // 初始化
 
 // E: 泛型数据类型，用于设置 objectName 的数据类型，**其只能为引用数据类型**。
 // objectName: 对象名。
@@ -1750,7 +1752,7 @@ public class LambdaForEachExample {
 ##### 计算大小：
 - 如果要计算 `ArrayList` 中的元素数量可以使用 `size()` 方法：
 - 代码示例懒得写了。
-### ArrayList常用方法：
+#### ArrayList常用方法：
 | 方法                                                                               | 描述                           |
 | -------------------------------------------------------------------------------- | ---------------------------- |
 | [add()](https://www.runoob.com/java/java-arraylist-add.html)(重要)                 | 将元素插入到指定位置的 arraylist 中      |
@@ -1778,7 +1780,7 @@ public class LambdaForEachExample {
 | [replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)       | 将给定的操作内容替换掉数组中每一个元素          |
 | [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)           | 删除所有满足特定条件的 arraylist 元素     |
 | [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)(重要)         | 遍历 arraylist 中每一个元素并执行特定操作   |
-### 可能出现的问题：
+#### 可能出现的问题：
 - 在遍历删除元素的时候，如果是从前往后进行筛选并删除，由于`ArrayList`自动调整索引的特性，会导致某些元素被跳过，进而未被删除。
 - 改用`for-each`循环后，由于使用**集合**的`remove()`方法会修改集合的结构，导致迭代器的 `expectedModCount` 与实际的 `modCount` 不一致，抛出 `ConcurrentModificationException`异常，从而导致程序的终止，问题更严重。
 - 但如果将代码改为使用**迭代器**的`remove()`方法，就能正确删除。
@@ -1809,3 +1811,5 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 	}
 }
 ```
+### LinkedList：
+- 底层通过双链表实现
