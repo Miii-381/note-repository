@@ -1455,7 +1455,7 @@ ___
 - 所有集合全部继承自`Collection`接口，`Collection`接口是最基本的集合接口，其存储一组不唯一且无序的对象。
 - 只要是实现了`Iterator`或者`ListIterator`接口的集合都可以进行迭代器遍历
 - 对于集合框架的详细介绍看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
-## ArrayList
+## ArrayList：
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
 - `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
 - `ArrayList` 类位于` java.util` 包中，使用前需要引入它，语法格式如下：
@@ -1527,7 +1527,7 @@ public class RunoobTest {
 // 执行结果：[Google, Runoob, Wiki, Weibo]
 ```
 ### 查：
-### 遍历数组：
+#### 遍历数组：
 1. 使用**for循环**进行遍历：
 ``` java
 for (int i = 0; i < sites.size(); i++) {  
@@ -1556,7 +1556,7 @@ public class IteratorExample {
         // 2. 获取迭代器对象
         Iterator<String> iterator = fruits.iterator();
 
-        // 3. 使用迭代器遍历集合
+        // 3. 使用迭代器遍历集合（迭代器）
         System.out.println("遍历 ArrayList 元素：");
         while (iterator.hasNext()) {
             String fruit = iterator.next(); // 获取下一个元素
@@ -1565,3 +1565,34 @@ public class IteratorExample {
     }
 }
 ```
+#### 计算大小：
+- 如果要计算 `ArrayList` 中的元素数量可以使用 `size()` 方法：
+- 代码示例懒得写了。
+### ArrayList常用方法：
+|方法|描述|
+|---|---|
+|[add()](https://www.runoob.com/java/java-arraylist-add.html)|将元素插入到指定位置的 arraylist 中|
+|[addAll()](https://www.runoob.com/java/java-arraylist-addall.html)|添加集合中的所有元素到 arraylist 中|
+|[clear()](https://www.runoob.com/java/java-arraylist-clear.html)|删除 arraylist 中的所有元素|
+|[clone()](https://www.runoob.com/java/java-arraylist-clone.html)|复制一份 arraylist|
+|[contains()](https://www.runoob.com/java/java-arraylist-contains.html)|判断元素是否在 arraylist|
+|[get()](https://www.runoob.com/java/java-arraylist-get.html)|通过索引值获取 arraylist 中的元素|
+|[indexOf()](https://www.runoob.com/java/java-arraylist-indexof.html)|返回 arraylist 中元素的索引值|
+|[removeAll()](https://www.runoob.com/java/java-arraylist-removeall.html)|删除存在于指定集合中的 arraylist 里的所有元素|
+|[remove()](https://www.runoob.com/java/java-arraylist-remove.html)|删除 arraylist 里的单个元素|
+|[size()](https://www.runoob.com/java/java-arraylist-size.html)|返回 arraylist 里元素数量|
+|[isEmpty()](https://www.runoob.com/java/java-arraylist-isempty.html)|判断 arraylist 是否为空|
+|[subList()](https://www.runoob.com/java/java-arraylist-sublist.html)|截取部分 arraylist 的元素|
+|[set()](https://www.runoob.com/java/java-arraylist-set.html)|替换 arraylist 中指定索引的元素|
+|[sort()](https://www.runoob.com/java/java-arraylist-sort.html)|对 arraylist 元素进行排序|
+|[toArray()](https://www.runoob.com/java/java-arraylist-toarray.html)|将 arraylist 转换为数组|
+|[toString()](https://www.runoob.com/java/java-arraylist-tostring.html)|将 arraylist 转换为字符串|
+|[ensureCapacity](https://www.runoob.com/java/java-arraylist-surecapacity.html)()|设置指定容量大小的 arraylist|
+|[lastIndexOf()](https://www.runoob.com/java/java-arraylist-lastindexof.html)|返回指定元素在 arraylist 中最后一次出现的位置|
+|[retainAll()](https://www.runoob.com/java/java-arraylist-retainall.html)|保留 arraylist 中在指定集合中也存在的那些元素|
+|[containsAll()](https://www.runoob.com/java/java-arraylist-containsall.html)|查看 arraylist 是否包含指定集合中的所有元素|
+|[trimToSize()](https://www.runoob.com/java/java-arraylist-trimtosize.html)|将 arraylist 中的容量调整为数组中的元素个数|
+|[removeRange()](https://www.runoob.com/java/java-arraylist-removerange.html)|删除 arraylist 中指定索引之间存在的元素|
+|[replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)|将给定的操作内容替换掉数组中每一个元素|
+|[removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)|删除所有满足特定条件的 arraylist 元素|
+|[forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)|遍历 arraylist 中每一个元素并执行特定操作|
