@@ -1299,9 +1299,11 @@ public class Runoob extends Object{ }
 public class Runoob { }
 ```
 - `Object`类有两个很重要的方法：`equals()`和 `toString()`
-- `equals()` 方法用于比较两个对象是否相等。它的判断方式是判断两个对象引用**指向**的是不是**同一个对象**，即它只是检查两个对象是否**指向内存中的同一个地址**。
+- `equals()` 方法用于比较两个对象是否相等，返回一个`boolean`值。它的判断方式是判断两个对象引用**指向**的是不是**同一个对象**，即它只是检查两个对象是否**指向内存中的同一个地址**。
 	- **注意**：如果子类重写了 equals() 方法，就需要重写 [hashCode() 方法](https://www.runoob.com/java/java-object-hashcode.html)，比如 String 类就重写了 equals() 方法，同时也重写了 hashCode() 方法。
+	- 因为比较两个对象的地址可以直接用`==`，所以**父类中的`equals()`方法存在的意义就是为了被子类重写，以便子类自己来定制比较规则**，一般重写`equals()`进行子类对象的内容比较。
 ``` java
+// 没重写
 class RunoobTest {
     public static void main(String[] args) {
         // Object 类使用 equals() 方法
@@ -1320,6 +1322,7 @@ class RunoobTest {
         System.out.println(obj1.equals(obj3)); // 结果：true
     }
 }
+// 重写后：
 ```
 - `Object.toString()` 方法用于返回对象的字符串表示形式。
 - 默认返回格式：对象的 class 名称 + @ + hashCode 的十六进制字符串。
@@ -1338,7 +1341,8 @@ class RunoobTest {
     }
 }
 ```
-- 由于Object类是所有类的父类，所以所有类都能使用和重写`toString()`方法。
+- 由于`Object`类是所有类的父类，所以所有类都能使用和重写`toString()`方法。**父类中的`toString()`方法存在的意义就是为了被子类重写，以便子类自己来定制转换规则**。
+- 比如：`System.out.println(array[1].toString()); // 结果：Runoob`
 ### 
 ---
 # 异常及异常的处理
