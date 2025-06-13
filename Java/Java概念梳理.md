@@ -309,7 +309,6 @@ ___
 - 其他的懒得写了
 - **注意：break只能跳转==循环和switch语句==**
 ___
-
 # 数组
 ## 概念：
 - 数组是固定数目的单一数据类型值的容器对象。数组中的每个数据被称为**元素**。
@@ -1110,7 +1109,7 @@ public class Java8Tester {
 ```
 - 在 Lambda 表达式当中不允许声明一个**与局部变量同名**的参数或者局部变量。
 ___
-## 泛型：
+## 泛型（考的不多，了解即可）：
 ### 1. 概念：
 - Java 中的 **泛型（Generics）** 是一种在编译时进行类型检查的技术，允许开发者通过参数化类型（Type Parameters）来编写灵活且类型安全的代码。它通过将类型作为参数传递给类、接口或方法，使代码能够处理多种数据类型，同时避免运行时类型转换错误。
 - **泛型的本质**：参数化类型（Parameterized Types）。你可以将类型（如 `String`、`Integer`）作为参数传递给类、接口或方法，使代码更加通用。
@@ -1259,9 +1258,7 @@ T[] array = new T[10]; // 编译错误
 ```
 **解决方案**：使用 `Object[]` 或 `Array.newInstance()`。
 
----
-
-### **7. 常见应用场景**
+### 8. 常见应用场景
 
 1. **集合类**：  
     Java 集合框架（如 `List<T>`、`Map<K, V>`）广泛使用泛型，确保类型安全。
@@ -1290,6 +1287,11 @@ T[] array = new T[10]; // 编译错误
     }
     ```
 ___
+## 常见基本类及API：
+### Object：
+- `Object` 类是**所有类的父类**，也就是说 Java 的所有类都继承了 `Object`，**子类可以使用 `Object` 的所有方法**。
+- `Object` 类位于 `java.lang` 包中，编译时会自动导入，我们创建一个类时，如果没有明确继承一个父类，那么它就会自动继承 `Object，成为 Object 的子类。
+---
 # 异常及异常的处理
 ## 异常：
 - 异常是干扰程序正常运行的各种难以避免的问题，但并不是所有的错误都是异常，并且错误有时候是可以避免的。
@@ -1599,3 +1601,4 @@ public class IteratorExample {
 | [replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)       | 将给定的操作内容替换掉数组中每一个元素          |
 | [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)           | 删除所有满足特定条件的 arraylist 元素     |
 | [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)(重要)         | 遍历 arraylist 中每一个元素并执行特定操作   |
+## 
