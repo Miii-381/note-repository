@@ -1702,12 +1702,25 @@ public class IteratorExample {
 | [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)           | 删除所有满足特定条件的 arraylist 元素     |
 | [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)(重要)         | 遍历 arraylist 中每一个元素并执行特定操作   |
 ### 可能出现的问题：
-- 在遍历删除元素的时候，如果是从前往后进行筛选并删除，由于`ArrayList`自动补位的特性，会导致元素错位，进而导致遍历错误。
+- 在遍历删除元素的时候，如果是从前往后进行筛选并删除，由于`ArrayList`自动调整索引的特性，会导致某些元素被跳过，进而未被删除。
+- 改用`for-each`循环后，由于使用**集合**的`remove()`方法会修改集合的结构，导致迭代器的 `expectedModCount` 与实际的 `modCount` 不一致，抛出 `ConcurrentModificationException`异常，从而导致程序的终止，问题更严重。
+- 但如果将代码改为使用**迭代器**的`remove()`方法，就能正确删除。
+	- **迭代器的 `remove` 方法**：会同步更新迭代器的 `expectedModCount`，避免 `ConcurrentModificationException`。
+	- **不会跳过元素**：迭代器内部维护游标（`cursor`）和 `lastRet`，确保删除操作后仍能正确遍历后续元素。
 ``` java
+// 普通for循环
 for(int i = 0; i < scores.size(); i++) {
 	int score = score.get(i);
 	if(score < 80) {
-		score.remove(i); // 会出错
+		score.remove(i); // ❌ 出错
 	}
+}
+// 迭代器删除元素：
+Iterator<Integer> iterator = scores.iterator(); 
+while (iterator.hasNext()) { 
+	Integer score = iterator.next(); 
+	if (score < 80) { 
+		iterator.remove(); // ✅ 安全删除 
+	} 
 }
 ```
