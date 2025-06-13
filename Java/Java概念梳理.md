@@ -1612,7 +1612,8 @@ ___
 - 集合都支持**泛型**。
 - 实现了`Cloneable`接口并实现了`clone()`方法的**标准集合类**可以直接使用`clone()`方法进行**深拷贝**
 - 对于集合框架的详细介绍还是看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
-## ArrayList：
+## List集合：
+### ArrayList：
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
 - `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
 - `ArrayList` 类位于` java.util` 包中，使用前需要引入它，语法格式如下：
@@ -1624,7 +1625,7 @@ ArrayList<E> objectName =new ArrayList<>();　 // 初始化
 // E: 泛型数据类型，用于设置 objectName 的数据类型，**其只能为引用数据类型**。
 // objectName: 对象名。
 ```
-### 增：
+#### 增：
 - 添加元素到 `ArrayList` 可以使用 `add()` 方法：
 ``` java
 import java.util.ArrayList;  
@@ -1646,7 +1647,7 @@ public class RunoobTest {
 // 输出基本类型数组则不会自动格式化，只会输出数组的哈希码。
 // 但输出对象数组的话，如果对象重写了toString()方法，则输出会按照重写的toString()方法进行输出。
 ```
-### 删：
+#### 删：
 - 如果要删除 `ArrayList` 中的元素可以使用 `remove()` 方法：
 ``` java
 import java.util.ArrayList;  
@@ -1664,7 +1665,7 @@ public class RunoobTest {
 }
 // 执行结果：[Google, Runoob, Taobao]
 ```
-### 改：
+#### 改：
 - 如果要修改 `ArrayList` 中的元素可以使用 `set()` 方法
 - `set(int index, E element)` 方法的第一个参数是**索引（index）**，表示要替换的元素的位置，第二个参数是**新元素（element）**，表示要设置的新值
 ``` java
@@ -1683,8 +1684,8 @@ public class RunoobTest {
 }
 // 执行结果：[Google, Runoob, Wiki, Weibo]
 ```
-### 查：
-#### 遍历数组：
+#### 查：
+##### 遍历数组：
 1. 使用**for循环**进行遍历：
 ``` java
 for (int i = 0; i < sites.size(); i++) {  
@@ -1724,10 +1725,29 @@ public class IteratorExample {
 ```
 4. 使用**Lambda表达式**进行遍历：
 	- 使用`Collection`接口中的`forEach()`方法，搭配Lambda表达式作为参数进行遍历。
+	- 本质上就是使用匿名内部类实现了一个Consumer接口。
+	- 注意：
+		- 在 `forEach` 中**不能直接修改集合的大小**（如添加、删除元素），否则会抛出 `ConcurrentModificationException` 异常。
+		- `forEach()`方法不支持`break`！！！如果需要提前终止，建议使用传统 `for` 循环或 `Stream` 的 `anyMatch` 等方法。
+		- `forEach` 更适合用于**只读**操作，如打印、统计、转换等，不适合用于复杂的控制逻辑。
 ``` java
+import java.util.ArrayList;
+import java.util.List;
 
+public class LambdaForEachExample {
+    public static void main(String[] args) {
+        // 1. 创建一个字符串集合
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        // 2. 使用 Lambda 表达式结合 forEach 遍历集合
+        names.forEach(name -> System.out.println("Hello, " + name));
+    }
+}
 ```
-#### 计算大小：
+##### 计算大小：
 - 如果要计算 `ArrayList` 中的元素数量可以使用 `size()` 方法：
 - 代码示例懒得写了。
 ### ArrayList常用方法：
