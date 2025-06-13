@@ -1390,7 +1390,8 @@ public class Tester {
     }  
 }
 ```
-### 
+### Math类：
+
 ---
 # 异常及异常的处理
 ## 异常：
@@ -1551,6 +1552,9 @@ ___
 	- 长度可变
 	- 比数组更灵活
 	- 集合中存储的对象必须是**引用类型**！！！
+- 集合可简单分为以下两类：
+	- **Collection 单列集合**，每个元素（数据）只包含**一个值**。
+	- **Map双列集合**，每个元素包含**两个值（键值对）**。
 - 四大常用集合：
 	- **列表（List）**
 	- **集合（Set）**
@@ -1707,12 +1711,13 @@ public class IteratorExample {
 - 但如果将代码改为使用**迭代器**的`remove()`方法，就能正确删除。
 	- **迭代器的 `remove` 方法**：会同步更新迭代器的 `expectedModCount`，避免 `ConcurrentModificationException`。
 	- **不会跳过元素**：迭代器内部维护游标（`cursor`）和 `lastRet`，确保删除操作后仍能正确遍历后续元素。
+- 或者，在遍历删除元素的时候，改为**从后往前**进行筛选和删除。
 ``` java
 // 普通for循环
 for(int i = 0; i < scores.size(); i++) {
 	int score = score.get(i);
 	if(score < 80) {
-		score.remove(i); // ❌ 出错
+		score.remove(i); //❌ 出错
 	}
 }
 // 迭代器删除元素：
@@ -1720,7 +1725,14 @@ Iterator<Integer> iterator = scores.iterator();
 while (iterator.hasNext()) { 
 	Integer score = iterator.next(); 
 	if (score < 80) { 
-		iterator.remove(); // ✅ 安全删除 
+		iterator.remove(); //✅ 安全删除 
 	} 
+}
+// 修改为从后往前删除：
+for(int i = scores.size() - 1; i >= 0; i--) {
+	int score = score.get(i);
+	if(score < 80) {
+		score.remove(i); //✅ 安全删除
+	}
 }
 ```
