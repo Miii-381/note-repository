@@ -1870,7 +1870,9 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 	- 对象的哈希值特点:
 		- 同一个对象多次调用`hashCode()`方法返回的哈希值是相同的 
 		- 默认情况下，不同对象的哈希值是不同的
-	- 由于哈希表的物理特性
+	- 由于哈希表的逻辑特性，哈希表对增删改查的性能都比较优秀，但哈希函数设置不好容易造成哈希冲突。
+	- 哈希冲突的解决办法这里不展开论述。
+	- 补充：如果希望Set集合认为**2个内容一样的对象是重复的**， 必须**重写**对象的`hashCode()`和`equals()`方法
 - 允许有`null`值。
 - `HashSet` 是无序的，即不会记录插入的顺序。
 - `HashSet` 不是线程安全的， 如果多个线程尝试同时修改 HashSet，则最终结果是不确定的。 必须在多线程访问时显式同步对 HashSet 的并发访问。
@@ -1897,3 +1899,15 @@ HashSet<String> sites = new HashSet<String>();
 | `addAll(Collection<? extends E> c)` | `boolean`     | 添加另一个集合的所有元素（并集操作）。                 | `[set.addAll(Arrays.asList("A", "B"));](https://www.runoob.com/java/java-hashset-addall.html)` |
 | `retainAll(Collection<?> c)`        | `boolean`     | 仅保留与指定集合共有的元素（交集操作）。                | `set.retainAll(otherSet);`                                                                     |
 | `removeAll(Collection<?> c)`        | `boolean`     | 删除与指定集合共有的元素（差集操作）。                 | `set.removeAll(otherSet);`                                                                     |
+|                                     |               |                                     |                                                                                                |
+### LinkedHashSet：
+- **有序、不重复、无索引**。 
+- 这里的有序指的是保证**存储和取出的元素顺序一致** 
+- 原理：底层数据结构是依然哈希表，只是每个元素又额外的多了一个**双链表**的机制记录存储的顺序。
+### TreeSet:
+- **不重复、无索引、可排序**
+- 可排序：按照元素的大小**默认升序**（由小到大）排序。
+- TreeSet集合底层是基于**红黑树**的数据结构实现排序的，增删改查性能都较好。
+- 注意：TreeSet集合是**一定要排序**的，可以将元素按照指定的规则进行排序。
+	- 对于数值类型：Integer , Double，官方默认按照大小进行升序排序。 
+	- 对于字符串类型：默认按照首字符的编号升序排序。 对于自定义类型如Student对象，TreeSet无法直接排序。
