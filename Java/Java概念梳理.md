@@ -1321,6 +1321,24 @@ class RunoobTest {
     }
 }
 ```
+- `Object.toString()` 方法用于返回对象的字符串表示形式。
+- 默认返回格式：对象的 class 名称 + @ + hashCode 的十六进制字符串。
+``` java
+class RunoobTest {
+    public static void main(String[] args) {
+        // toString() with Object
+        Object obj1 = new Object();
+        System.out.println(obj1.toString()); // 结果：java.lang.Object@d716361
+ 
+        Object obj2 = new Object();
+        System.out.println(obj2.toString()); // 结果：java.lang.Object@6ff3c5b5
+ 
+        Object obj3 = new Object();
+        System.out.println(obj3.toString()); // 结果：java.lang.Object@3764951d
+    }
+}
+```
+- 由于Object类是所有类的父类，所以所有类都能使用和重写`toString()`方法。
 ### 
 ---
 # 异常及异常的处理
