@@ -1917,11 +1917,15 @@ HashSet<String> sites = new HashSet<String>();
 	- 对于**自定义类型**（如Student对象），TreeSe**无法直接排序**。
 	- 结论：想要使用TreeSet存储自定义类型，需要自己制定排序规则。
 ---
-## 比较器（Comparable）
+## 比较器（Comparable和Comparator）
 - 这里很重要，所以单独抽出来讲。
 - 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
+- `Comparator` 是 Java 中的一个 **函数式接口**，用于定义对象的**外部比较逻辑**。与 `Comparable` 不同，`Comparator` 允许在不修改类源码的情况下，为对象提供多种排序规则。它常用于以下场景：
+	- 需要为已存在的类（如 `String`、`Integer` 或第三方类）定义排序规则。
+	- 需要为同一个类定义多种排序规则（如按年龄排序、按姓名排序等）。
+	- 需要动态控制排序逻辑（例如在 GUI 中让用户选择排序方式）。
 ### 1. 核心概念：
-- **接口定义**：
+- Comparator**接口定义**：
 ``` java
 public interface Comparable<T> {
     int compareTo(T o);
@@ -1936,14 +1940,12 @@ public interface Comparable<T> {
 	        - **正数**：当前对象大于参数对象。
 ### 2. 使用场景：
 - `Comparable` 接口主要用于以下场景：
-- 
 1. **排序集合/数组**
     - 对实现了 `Comparable` 的对象集合进行排序（如 `Arrays.sort()`、`Collections.sort()`）。
     - 在 `TreeSet`、`TreeMap` 等基于排序的集合中自动排序。
 2. **定义自然顺序**
     - 当需要为自定义类（如 `Student`、`Person`）定义默认的排序规则时。
 ### 3. 实现示例：
-
 #### 示例 1：自定义类实现 `Comparable`
 ``` java
 public class Student implements Comparable<Student> {
@@ -2004,7 +2006,7 @@ public class Main {
 |**方法**|`compareTo(T o)`|`compare(T o1, T o2)`|
 |**灵活性**|固定排序规则（仅一种）|可定义多种排序规则（如按年龄、姓名等）|
 |**适用场景**|默认排序需求|多种排序需求或无法修改类源码时|
-### **5. 注意事项**
+### 5. 注意事项
 1. **确保一致性**
     - `compareTo()` 和 `equals()` 方法应保持一致。如果 `x.compareTo(y) == 0`，则 `x.equals(y)` 应返回 `true`（反之亦然），否则可能导致集合行为异常（如 `TreeSet` 中元素重复）。
 2. **处理 `null`**
