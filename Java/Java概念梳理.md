@@ -1482,7 +1482,11 @@ public class RunoobTest {
     }  
 }
 
-// 执行结果：[Google, Runoob, Taobao, Weibo] **使用println输出会自动g**
+// 执行结果：[Google, Runoob, Taobao, Weibo] 
+
+// 使用println输出集合，结果会自动格式化，原理是集合类重写了toString()方法，println()内部会调用toString()方法将集合转换成易读的字符串进行输出。
+// 输出基本类型数组则不会自动格式化，只会输出数组的哈希码。
+// 但输出对象数组的话，如果对象重写了toSt
 ```
 ### 删：
 - 如果要删除 `ArrayList` 中的元素可以使用 `remove()` 方法：
