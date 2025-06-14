@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "3b6567ea7a9da1f8",
@@ -166,7 +166,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 446.5
+    "width": 446.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -179,7 +180,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "98412368871f0f17",
+  "active": "20dbbe41ee2f3d9e",
   "lastOpenFiles": [
     "Java/Java概念梳理.md",
     "Java/Pasted image 20250613212318.png",
