@@ -1926,6 +1926,9 @@ HashSet<String> sites = new HashSet<String>();
 ### 做个小补充：`sort()`方法：
 - `sort()`方法内部的实现逻辑会根据是否传入`Comparator`参数来决定使用`Comparable`接口还是`Comparator`接口的实现类。
 - 当调用`sort()`方法时**没有传入`Comparator`参数**（例如`List.sort(null)`或`Collections.sort(list)`），`sort()`方法会依赖**元素的自然顺序**，这要求元素必须**实现`Comparable`接口**。
+	- 如果元素实现了`Comparable`接口，`sort()`方法会通过调用`compareTo(T o)`方法进行排序。
+	- 如果元素未实现`Comparable`接口，会抛出`ClassCastException`异常。
+- 当调用`sort()`方法时**传入了`Comparator`参数**（例如`list.sort(Comparator.comparing(...))`），`sort()`方法会使用 **`Comparator`接口的实现类** 来定义排序规则。
 ### 1. 核心概念：
 #### `Comparable` 接口：
 ``` java
@@ -2101,7 +2104,7 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
 - **在 `TreeSet`/`TreeMap` 中**：视为相等，后者会被前者覆盖（或忽略）。
 - **在排序中**：顺序不确定（依赖具体实现）。
 #### Q2: 如何处理多个排序规则？
-- **使用 `Comparator`**：定义多个比较器，例如：
+- **使用 `Comparator`**：定义多个比较器，防止比较逻辑冲突。例如：
 ``` java
     // 按姓名排序的 Comparator
     Comparator<Student> byName = (s1, s2) -> s1.getName().compareTo(s2.getName());
@@ -2110,16 +2113,15 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
 ### 7. 总结
 #### Comparable接口：
 
-|**特点**|**说明**|
-|---|---|
-|**核心作用**|定义类的自然排序规则，支持排序和集合框架的自动排序。|
-|**实现方式**|通过 `compareTo()` 方法定义比较逻辑。|
-|**适用场景**|默认排序需求（如 `TreeSet`、`TreeMap`、`Arrays.sort()`）。|
-|**与 `Comparator` 对比**|`Comparable` 是类的固有排序规则，`Comparator` 是外部定义的自定义排序规则。|
+| **特点**                | **说明**                                             |
+| --------------------- | -------------------------------------------------- |
+| **核心作用**              | 定义类的自然排序规则，支持排序和集合框架的自动排序。                         |
+| **实现方式**              | 通过 `compareTo()` 方法定义比较逻辑。                         |
+| **适用场景**              | 默认排序需求（如 `TreeSet`、`TreeMap`、`Arrays.sort()`）。     |
+| **与 `Comparator` 对比** | `Comparable` 是类的固有排序规则，`Comparator` 是外部定义的自定义排序规则。 |
 #### Comparator接口：
 - **`Comparator` 是 Java 中灵活控制对象排序的核心工具**，尤其适合需要动态或多种排序规则的场景。
 - **与 `Comparable` 互补**：`Comparable` 定义类的自然排序规则，`Comparator` 提供外部自定义排序逻辑。
-- **掌握 Lambda 表达式和 `Comparator` 的链式调用**（如 `thenComparing`、`reversed`）可以显著提升代码简洁性和可读性。
 ### 8. 推荐实践
 - **优先使用 `Comparable`**：如果类的排序规则是明确且唯一的，优先实现 `Comparable`。
 - **结合 `Comparator`**：当需要多种排序规则时，使用 `Comparator` 提供灵活性。
@@ -2128,7 +2130,7 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
 ___
 ## 比较器省流版：
 - 让自定义的类（如学生类）实现Comparable接口重写里面的compareTo方法来定制比较规则。
-- 如果集合有参数构造器，可以设置Comparator接口对应的比较器对象，来定制比较规则
+- 可以通过自己编写`Comparator`接口的实现类并传入如`sort()`，来定制另外的比较规则。
 
 ---
 
