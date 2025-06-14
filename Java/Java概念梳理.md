@@ -1616,10 +1616,10 @@ ___
 - **API补充**：`public static void shuffle(List<?> list)` -> **打乱List集合内元素的顺序**
 
 ---
-	## List集合：
+### List集合：
 - 注意：`Vector`也是集合，但`Vector`在Java中属于历史遗留产物，现在一般使用`ArrayList`或者``LinkedList替代`Vector`。
 - `Vector`在内部代码层面是完全同步和线程安全的，`List`默认是非线程安全的，需要手动进行同步代码编写。
-	### ArrayList：
+#### ArrayList：
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
 - `ArrayList`底层是基于数组实现的：根据索引定位元素快，增删需要做元素的移位操作，扩容一般为1.5倍扩容。
 - `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
@@ -1632,7 +1632,7 @@ ArrayList<E> objectName = new ArrayList<>();　 // 初始化
 // E: 泛型数据类型，用于设置 objectName 的数据类型，**其只能为引用数据类型**。
 // objectName: 对象名。
 ```
-#### 增：
+##### 增：
 - 添加元素到 `ArrayList` 可以使用 `add()` 方法：
 ``` java
 import java.util.ArrayList;  
@@ -1654,7 +1654,7 @@ public class RunoobTest {
 // 输出基本类型数组则不会自动格式化，只会输出数组的哈希码。
 // 但输出对象数组的话，如果对象重写了toString()方法，则输出会按照重写的toString()方法进行输出。
 ```
-#### 删：
+##### 删：
 - 如果要删除 `ArrayList` 中的元素可以使用 `remove()` 方法：
 ``` java
 import java.util.ArrayList;  
@@ -1672,7 +1672,7 @@ public class RunoobTest {
 }
 // 执行结果：[Google, Runoob, Taobao]
 ```
-#### 改：
+##### 改：
 - 如果要修改 `ArrayList` 中的元素可以使用 `set()` 方法
 - `set(int index, E element)` 方法的第一个参数是**索引（index）**，表示要替换的元素的位置，第二个参数是**新元素（element）**，表示要设置的新值
 ``` java
@@ -1691,8 +1691,8 @@ public class RunoobTest {
 }
 // 执行结果：[Google, Runoob, Wiki, Weibo]
 ```
-#### 查：
-##### 遍历数组：
+##### 查：
+###### 遍历数组：
 1. 使用**for循环**进行遍历：
 ``` java
 for (int i = 0; i < sites.size(); i++) {  
@@ -1754,10 +1754,10 @@ public class LambdaForEachExample {
     }
 }
 ```
-##### 计算大小：
+###### 计算大小：
 - 如果要计算 `ArrayList` 中的元素数量可以使用 `size()` 方法：
 - 代码示例懒得写了。
-#### ArrayList常用方法：
+##### ArrayList常用方法：
 | 方法                                                                               | 描述                           |
 | -------------------------------------------------------------------------------- | ---------------------------- |
 | [add()](https://www.runoob.com/java/java-arraylist-add.html)(重要)                 | 将元素插入到指定位置的 arraylist 中      |
@@ -1785,7 +1785,7 @@ public class LambdaForEachExample {
 | [replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html)       | 将给定的操作内容替换掉数组中每一个元素          |
 | [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html)           | 删除所有满足特定条件的 arraylist 元素     |
 | [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html)(重要)         | 遍历 arraylist 中每一个元素并执行特定操作   |
-#### 可能出现的问题：
+##### 可能出现的问题：
 - 在遍历删除元素的时候，如果是从前往后进行筛选并删除，由于`ArrayList`自动调整索引的特性，会导致某些元素被跳过，进而未被删除。
 - 改用`for-each`循环后，由于使用**集合**的`remove()`方法会修改集合的结构，导致迭代器的 `expectedModCount` 与实际的 `modCount` 不一致，抛出 `ConcurrentModificationException`异常，从而导致程序的终止，问题更严重。
 - 但如果将代码改为使用**迭代器**的`remove()`方法，就能正确删除。
@@ -1817,7 +1817,7 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 	}
 }
 ```
-### LinkedList：
+#### LinkedList：
 - 底层通过**双链表**实现，与 ArrayList 相比，LinkedList 的增加和删除的操作效率更高，而查找和修改的操作效率较低。
 - 具体使用方式跟`ArrayList`差不多，不讲了，反正考的多的都是`ArrayList`
 - LinkedList由于双链表的存在，多了一些对首尾操作的特殊API。
@@ -1859,7 +1859,7 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 | [public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素转换类型而成的数组。                               |
 
 ---
-## Set集合：
+### Set集合：
 - **特点：**
 	- **无序**：存取顺序不一致 
 	- **不重复**：可以去除重复 
@@ -1868,7 +1868,7 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 	- `HashSet` : 无序、不重复、无索引。
 	- `LinkedHashSet`：有序、不重复、无索引。 
 	- `TreeSet`：排序、不重复、无索引。
-### HashSet：
+#### HashSet：
 - 基于`HashMap`实现，不允许有重复元素。
 	- `HashMap`在JDK8之前使用**数组+链表**组成，JDK8及之后使用**数组+链表+红黑树**组成。
 	- **哈希值**是JDK根据对象的地址，按照某种规则算出来的int类型的数值。
@@ -1906,11 +1906,11 @@ HashSet<String> sites = new HashSet<String>();
 | `addAll(Collection<? extends E> c)` | `boolean`     | 添加另一个集合的所有元素（并集操作）。                 | `[set.addAll(Arrays.asList("A", "B"));](https://www.runoob.com/java/java-hashset-addall.html)` |
 | `retainAll(Collection<?> c)`        | `boolean`     | 仅保留与指定集合共有的元素（交集操作）。                | `set.retainAll(otherSet);`                                                                     |
 | `removeAll(Collection<?> c)`        | `boolean`     | 删除与指定集合共有的元素（差集操作）。                 | `set.removeAll(otherSet);`                                                                     |
-### LinkedHashSet：
+#### LinkedHashSet：
 - **有序、不重复、无索引**。 
 - 这里的有序指的是保证**存储和取出的元素顺序一致** 
 - 原理：底层数据结构是依然哈希表，只是每个元素又额外的多了一个**双链表**的机制记录存储的顺序。
-### TreeSet:
+#### TreeSet:
 - **不重复、无索引、可排序**
 - 可排序：按照元素的大小**默认升序**（由小到大）排序。
 - TreeSet集合底层是基于**红黑树**的数据结构实现排序的，增删改查性能都较好。
@@ -1919,6 +1919,18 @@ HashSet<String> sites = new HashSet<String>();
 	- 对于**字符串类型**：默认按照首字符的编号**升序排序**。 
 	- 对于**自定义类型**（如Student对象），TreeSe**无法直接排序**。
 	- 结论：想要使用TreeSet存储自定义类型，需要自己制定排序规则。
+---
+## Collection接口下的集合类总结：
+1. 如果希望元素可以重复，又有索引，索引查询要快？ 
+	- 用`ArrayList`集合，基于**数组**的。（用的最多） 
+2. 如果希望元素可以重复，又有索引，增删首尾操作快？ 
+	- 用`LinkedList`集合，基于**链表**的。 
+3. 如果希望增删改查都快，但是元素不重复、无序、无索引。
+	- 用`HashSet`集合，基于**哈希表**的。
+4. 如果希望增删改查都快，但是元素不重复、有序、无索引。 
+	- 用`LinkedHashSet`集合，基于**哈希表和双链表**。 
+5. 如果要对对象进行排序。 
+	- 用`TreeSet`集合，基于**红黑树**。后续也可以用List集合实现排序。
 ---
 ## 比较器（Comparable和Comparator）
 - 这里很重要，所以单独抽出来讲。（说是重要，但占不了这么多篇幅，写上头了是这样的 doge）
@@ -2137,25 +2149,17 @@ ___
 ---
 ## Map接口下的实现类：
 ![[Pasted image 20250614221003.png]]
+- `Map`接口是与`Collection`接口平级的另一个**根接口**，用来表示双列集合（存储**键-值对**`Key-Value`）
 - Map集合的特点都是由**键**决定的。 
 - Map集合的键是**无序，不重复，无索引**的，**值不做要求**（可以重复）。
 - Map集合对于同一个键，后创建的值会覆盖先创建的值。
 - Map集合的键值对**都可以为`null`**。
-## HashMap：
+- 常用Map集合：
+	- HashMap：元素**无序**，不重复，无索引，值不做要求。（与Map体系一致） 
+	- LinkedHashMap:元素是**有序**，不重复，无索引，值不做要求。 
+	- TreeMap：元素按照键进行**排序**，不重复，无索引的，值不做要求
+### HashMap：
 - 
----
-
-## Collection接口下的集合类总结：
-1. 如果希望元素可以重复，又有索引，索引查询要快？ 
-	- 用`ArrayList`集合，基于**数组**的。（用的最多） 
-2. 如果希望元素可以重复，又有索引，增删首尾操作快？ 
-	- 用`LinkedList`集合，基于**链表**的。 
-3. 如果希望增删改查都快，但是元素不重复、无序、无索引。
-	- 用`HashSet`集合，基于**哈希表**的。
-4. 如果希望增删改查都快，但是元素不重复、有序、无索引。 
-	- 用`LinkedHashSet`集合，基于**哈希表和双链表**。 
-5. 如果要对对象进行排序。 
-	- 用`TreeSet`集合，基于**红黑树**。后续也可以用List集合实现排序。
 ___
 # 可变参数：
 - 可变参数用在形参中可以接收多个数据。 
