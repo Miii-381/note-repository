@@ -1836,20 +1836,23 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 | [public E removeLast()](https://www.runoob.com/java/java-linkedlist-removelast.html)(重要)                      | 删除并返回最后一个元素。                                      |
 | [public boolean remove(Object o)](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                | 删除某一元素，返回是否成功，成功为 true，失败为 false。                 |
 | [public E remove(int index)](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                     | 删除指定位置的元素。                                        |
-| [public E poll() （者）](https://www.runoob.com/java/java-linkedlist-poll.html)                                  | 删除并返回第一个元素。                                       |
+| [public E poll()](https://www.runoob.com/java/java-linkedlist-poll.html)                                      | 删除并返回第一个元素。                                       |
 | [public E remove()](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                              | 删除并返回第一个元素。                                       |
 | [public boolean contains(Object o)](https://www.runoob.com/java/java-linkedlist-contains.html)(重要)            | 判断是否含有某一元素。                                       |
 | [public E get(int index)](https://www.runoob.com/java/java-linkedlist-get.html)(重要)                           | 返回指定位置的元素。                                        |
 | [public E getFirst()](https://www.runoob.com/java/java-linkedlist-getfirst.html)(重要)                          | 返回第一个元素。                                          |
 | [public E getLast()](https://www.runoob.com/java/java-linkedlist-getlast.html)(重要)                            | 返回最后一个元素。                                         |
 | [public int indexOf(Object o)](https://www.runoob.com/java/java-linkedlist-indexof.html)(重要)                  | 查找指定元素从前往后第一次出现的索引。                               |
+| [public int lastIndexOf(Object o)](https://www.runoob.com/java/java-linkedlist-lastindexof.html)              | 查找指定元素最后一次出现的索引。                                  |
 | [public E peek()](https://www.runoob.com/java/java-linkedlist-peek.html)(重要)                                  | 返回第一个元素。                                          |
 | [public E element()](https://www.runoob.com/java/java-linkedlist-element.html)                                | 返回第一个元素。                                          |
 | [public E peekFirst()](https://www.runoob.com/java/java-linkedlist-peekfirst.html)                            | 返回头部元素。                                           |
 | [public E peekLast()](https://www.runoob.com/java/java-linkedlist-peeklast.html)                              | 返回尾部元素。                                           |
 | [public E set(int index, E element)](https://www.runoob.com/java/java-linkedlist-set.html)(重要)                | 设置指定位置的元素。                                        |
 | [public Object clone()](https://www.runoob.com/java/java-linkedlist-clone.html)                               | 克隆该列表。                                            |
+| [public Iterator descendingIterator()](https://www.runoob.com/java/java-linkedlist-descendingiterator.html)   | 返回倒序迭代器。                                          |
 | [public int size()](https://www.runoob.com/java/java-linkedlist-size.html)(重要)                                | 返回链表元素个数。                                         |
+| [public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)  | 返回从指定位置开始到末尾的迭代器。                                 |
 | [public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素组成的数组。                                   |
 | [public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素转换类型而成的数组。                               |
 
@@ -2130,7 +2133,14 @@ ___
 - 可以通过自己编写`Comparator`接口的实现类，来定制另外的比较规则。
 
 ---
-## map接口下的实现类：
+## Map接口下的实现类：
+![[Pasted image 20250614221003.png]]
+- Map集合的特点都是由键决定的。 
+- Map集合的键是无序，不重复，无索引的，值不做要求（可以重复）。
+- Map集合对于同一个键，后创建的值会覆盖先创建的值。
+- Map集合的键值对**都可以为`null`**。
+## HashMap：
+- 
 ---
 
 ## Collection接口下的集合类总结：
