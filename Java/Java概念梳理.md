@@ -1608,6 +1608,7 @@ ___
 - 所有集合全部继承自`Collection`接口，`Collection`接口是最基本的集合接口，其存储一组不唯一且无序的对象。
 - `Collection` API 如下，可供实现类重写：
 ![[Pasted image 20250613212318.png]]
+- **API补充**：`public static void shuffle(List<?> list)` -> **打乱List集合内元素的顺序**
 - 只要是实现了`Iterator`或者`ListIterator`接口的集合都可以进行迭代器遍历
 - 集合都支持**泛型**。
 - 实现了`Cloneable`接口并实现了`clone()`方法的**标准集合类**可以直接使用`clone()`方法进行**深拷贝**
@@ -1835,23 +1836,20 @@ for(int i = scores.size() - 1; i >= 0; i--) {
 | [public E removeLast()](https://www.runoob.com/java/java-linkedlist-removelast.html)(重要)                      | 删除并返回最后一个元素。                                      |
 | [public boolean remove(Object o)](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                | 删除某一元素，返回是否成功，成功为 true，失败为 false。                 |
 | [public E remove(int index)](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                     | 删除指定位置的元素。                                        |
-| [public E poll()](https://www.runoob.com/java/java-linkedlist-poll.html)                                      | 删除并返回第一个元素。                                       |
+| [public E poll() （者）](https://www.runoob.com/java/java-linkedlist-poll.html)                                  | 删除并返回第一个元素。                                       |
 | [public E remove()](https://www.runoob.com/java/java-linkedlist-remove.html)(重要)                              | 删除并返回第一个元素。                                       |
 | [public boolean contains(Object o)](https://www.runoob.com/java/java-linkedlist-contains.html)(重要)            | 判断是否含有某一元素。                                       |
 | [public E get(int index)](https://www.runoob.com/java/java-linkedlist-get.html)(重要)                           | 返回指定位置的元素。                                        |
 | [public E getFirst()](https://www.runoob.com/java/java-linkedlist-getfirst.html)(重要)                          | 返回第一个元素。                                          |
 | [public E getLast()](https://www.runoob.com/java/java-linkedlist-getlast.html)(重要)                            | 返回最后一个元素。                                         |
 | [public int indexOf(Object o)](https://www.runoob.com/java/java-linkedlist-indexof.html)(重要)                  | 查找指定元素从前往后第一次出现的索引。                               |
-| [public int lastIndexOf(Object o)](https://www.runoob.com/java/java-linkedlist-lastindexof.html)              | 查找指定元素最后一次出现的索引。                                  |
 | [public E peek()](https://www.runoob.com/java/java-linkedlist-peek.html)(重要)                                  | 返回第一个元素。                                          |
 | [public E element()](https://www.runoob.com/java/java-linkedlist-element.html)                                | 返回第一个元素。                                          |
 | [public E peekFirst()](https://www.runoob.com/java/java-linkedlist-peekfirst.html)                            | 返回头部元素。                                           |
 | [public E peekLast()](https://www.runoob.com/java/java-linkedlist-peeklast.html)                              | 返回尾部元素。                                           |
 | [public E set(int index, E element)](https://www.runoob.com/java/java-linkedlist-set.html)(重要)                | 设置指定位置的元素。                                        |
 | [public Object clone()](https://www.runoob.com/java/java-linkedlist-clone.html)                               | 克隆该列表。                                            |
-| [public Iterator descendingIterator()](https://www.runoob.com/java/java-linkedlist-descendingiterator.html)   | 返回倒序迭代器。                                          |
 | [public int size()](https://www.runoob.com/java/java-linkedlist-size.html)(重要)                                | 返回链表元素个数。                                         |
-| [public ListIterator listIterator(int index)](https://www.runoob.com/java/java-linkedlist-listiterator.html)  | 返回从指定位置开始到末尾的迭代器。                                 |
 | [public Object[] toArray()](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素组成的数组。                                   |
 | [public T[] toArray(T[] a)](https://www.runoob.com/java/java-linkedlist-toarray.html)(重要)                     | 返回一个由链表元素转换类型而成的数组。                               |
 
@@ -1903,7 +1901,6 @@ HashSet<String> sites = new HashSet<String>();
 | `addAll(Collection<? extends E> c)` | `boolean`     | 添加另一个集合的所有元素（并集操作）。                 | `[set.addAll(Arrays.asList("A", "B"));](https://www.runoob.com/java/java-hashset-addall.html)` |
 | `retainAll(Collection<?> c)`        | `boolean`     | 仅保留与指定集合共有的元素（交集操作）。                | `set.retainAll(otherSet);`                                                                     |
 | `removeAll(Collection<?> c)`        | `boolean`     | 删除与指定集合共有的元素（差集操作）。                 | `set.removeAll(otherSet);`                                                                     |
-|                                     |               |                                     |                                                                                                |
 ### LinkedHashSet：
 - **有序、不重复、无索引**。 
 - 这里的有序指的是保证**存储和取出的元素顺序一致** 
@@ -2130,8 +2127,10 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
 ___
 ## 比较器省流版：
 - 让自定义的类（如学生类）实现Comparable接口重写里面的compareTo方法来定制比较规则。
-- 可以通过自己编写`Comparator`接口的实现类并传入如`sort()`，来定制另外的比较规则。
+- 可以通过自己编写`Comparator`接口的实现类，来定制另外的比较规则。
 
+---
+## map接口下的实现类：
 ---
 
 ## Collection接口下的集合类总结：
