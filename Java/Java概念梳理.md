@@ -1948,14 +1948,14 @@ int compare(T o1, T o2);
     - **0**：`o1` 等于 `o2`。
     - **正数**：`o1` 大于 `o2`。
 ### 2. 使用场景：
-- `Comparable` 接口主要用于以下场景：
+`Comparable` 接口主要用于以下场景：
 1. **排序集合/数组**
     - 对实现了 `Comparable` 的对象集合进行排序（如 `Arrays.sort()`、`Collections.sort()`）。
     - 在 `TreeSet`、`TreeMap` 等基于排序的集合中自动排序。
 2. **定义自然顺序**
     - 当需要为自定义类（如 `Student`、`Person`）定义默认的排序规则时。
 
--  `Comparator`接口常用于以下场景：
+`Comparator`接口常用于以下场景：
 1. 需要为已存在的类（如 `String`、`Integer` 或第三方类）定义排序规则。
 ``` java
 // 示例：按字符串长度排序
@@ -2116,7 +2116,13 @@ Comparator<Student> safeByAge = Comparator.nullsFirst(Comparator.comparing(Stude
 - **遵循设计原则**：确保比较逻辑与 `equals()` 一致，并满足数学性质（自反性、对称性、传递性）。
 ### 注意：如果TreeSet集合存储的对象有实现比较规则，集合也自带比较器，默认使用集合自带的比较器排序。
 ___
-## 总结：
+## 比较器省流版：
+- 让自定义的类（如学生类）实现Comparable接口重写里面的compareTo方法来定制比较规则。
+- 如果集合有参数构造器，可以设置Comparator接口对应的比较器对象，来定制比较规则
+
+---
+
+## Collection接口下的集合类总结：
 1. 如果希望元素可以重复，又有索引，索引查询要快？ 
 	- 用`ArrayList`集合，基于**数组**的。（用的最多） 
 2. 如果希望元素可以重复，又有索引，增删首尾操作快？ 
