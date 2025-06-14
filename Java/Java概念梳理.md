@@ -1922,12 +1922,14 @@ HashSet<String> sites = new HashSet<String>();
 - 这里很重要，所以单独抽出来讲。（说是重要，但占不了这么多篇幅，写上头了是这样的 doge）
 - 在 Java 中，**`Comparable` 接口** 是用于定义对象的**自然排序（Natural Ordering）** 的标准接口。通过实现该接口，类可以定义自己的比较逻辑，从而支持排序操作（如 `Arrays.sort()`、`Collections.sort()` 等）。
 - `Comparator` 是 Java 中的一个 **函数式接口**，用于定义对象的**外部比较逻辑**。与 `Comparable` 不同，`Comparator` 允许在不修改类源码的情况下，为对象提供多种排序规则。
+- 要使类的对象支持排序，类需要实现 `Comparable` 接口。而要在不修改类本身的情况下定义多种排序规则，则可以使用 `Comparator` 接口。所以两者均用于排序，但使用方式不同。
 ### 1. 核心概念：
-#### Comparator接口是函数式接口，内部只有一个方法，但Comparable接口虽然只有一个方法，但其不是函数式接口。
 #### `Comparable` 接口：
 ``` java
+package java.lang;
+
 public interface Comparable<T> {
-    int compareTo(T o);
+    public int compareTo(T o);
 }
 ```
 - **内容**：
@@ -1939,7 +1941,11 @@ public interface Comparable<T> {
 	        - **正数**：当前对象大于参数对象。
 #### `Comparator` 接口：
 ``` java
-int compare(T o1, T o2);
+package java.util;
+
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
 ```
 - **参数**：
     - `o1`：第一个对象。
