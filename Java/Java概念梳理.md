@@ -1604,20 +1604,22 @@ ___
 	- **集合（Set）**：元素不重复，无索引
 	- **队列（Queue）**
 	- **映射（Map）**
-![[Pasted image 20250613211744.png]]
-- 所有集合全部继承自`Collection`接口，`Collection`接口是最基本的集合接口，其存储一组不唯一且无序的对象。
-- `Collection` API 如下，可供实现类重写：
-![[Pasted image 20250613212318.png]]
-- **API补充**：`public static void shuffle(List<?> list)` -> **打乱List集合内元素的顺序**
 - 只要是实现了`Iterator`或者`ListIterator`接口的集合都可以进行迭代器遍历
 - 集合都支持**泛型**。
 - 实现了`Cloneable`接口并实现了`clone()`方法的**标准集合类**可以直接使用`clone()`方法进行**深拷贝**
 - 对于集合框架的详细介绍还是看[菜鸟教程](https://www.runoob.com/java/java-collections.html)吧
+## Collection集合：
+![[Pasted image 20250613211744.png]]
+- 所有**单列集合**全部继承自`Collection`接口，`Collection`接口是**单列集合**的**根接口**，其存储一组不唯一且无序的对象。
+- `Collection` API 如下，可供实现类重写：
+![[Pasted image 20250613212318.png]]
+- **API补充**：`public static void shuffle(List<?> list)` -> **打乱List集合内元素的顺序**
+
 ---
-## List集合：
+	## List集合：
 - 注意：`Vector`也是集合，但`Vector`在Java中属于历史遗留产物，现在一般使用`ArrayList`或者``LinkedList替代`Vector`。
 - `Vector`在内部代码层面是完全同步和线程安全的，`List`默认是非线程安全的，需要手动进行同步代码编写。
-### ArrayList：
+	### ArrayList：
 - `ArrayList` 类是一个可以动态修改的数组，与普通数组的区别就是它是没有固定大小的限制，我们可以添加或删除元素。
 - `ArrayList`底层是基于数组实现的：根据索引定位元素快，增删需要做元素的移位操作，扩容一般为1.5倍扩容。
 - `ArrayList` 继承了` AbstractList` ，并实现了 `List` 接口。
@@ -2135,8 +2137,8 @@ ___
 ---
 ## Map接口下的实现类：
 ![[Pasted image 20250614221003.png]]
-- Map集合的特点都是由键决定的。 
-- Map集合的键是无序，不重复，无索引的，值不做要求（可以重复）。
+- Map集合的特点都是由**键**决定的。 
+- Map集合的键是**无序，不重复，无索引**的，**值不做要求**（可以重复）。
 - Map集合对于同一个键，后创建的值会覆盖先创建的值。
 - Map集合的键值对**都可以为`null`**。
 ## HashMap：
