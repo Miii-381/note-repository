@@ -648,6 +648,41 @@ public class Main {
 // 执行结果：对象是 java.util.ArrayList 类的实例
 ```
 ### 补充：
+- 调用多态方法调用的是子类的方法
+- 调用多态变量调用的是声明的父类的成员变量
+``` java
+// 父类
+class Animal {
+    // 父类的成员变量
+    String name = "Animal";
+    // 父类的方法
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+// 子类
+class Dog extends Animal {
+    // 子类的成员变量（与父类同名）
+    String name = "Dog";
+    // 子类重写父类的方法
+    @Override
+    void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        // 父类引用指向子类对象（多态）
+        Animal animal = new Dog();
+        // 调用成员变量：编译看左边（父类 Animal），运行也看左边（父类 Animal）
+        System.out.println(animal.name); // 输出 "Animal"
+        // 调用成员方法：编译看左边（父类 Animal），运行看右边（子类 Dog）
+        animal.makeSound(); // 输出 "Dog barks"
+    }
+}
+```
 ___
 ## 重写（Override）与重载（Overload）:
 ### 重写(Override)：
