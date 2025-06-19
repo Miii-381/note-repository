@@ -2424,7 +2424,7 @@ public class IOTest {
         // 2.创建字符输入流  
         // Writer writer = null;  
         // 下面使用了try-with-resources语句。
-        try(Writer writer = new FileWriter(file)) {  
+        try(Writer writer = new FileWriter(file, true)) {  // 第二个参数控制写入方式，true为追加，false为覆盖，尽量用追加，免得数据丢失。
             // 3.实例化文件字符输入流  
             // writer = new FileWriter(file, true);  
             // 4.接收输入  
@@ -2434,8 +2434,8 @@ public class IOTest {
         } catch (IOException e) {  
             e.printStackTrace();  
         } finally {  
-            // 5.关闭流（使用了try-with-resources语句。这个，不需要了.jpg） 
-//            sc.close();  
+            // 5.关闭流（字符流使用了try-with-resources语句。这个，不需要了.jpg） 
+	        sc.close();  
 //            try {  
 //                writer.close();  
 //            } catch (IOException e) {  
@@ -2448,19 +2448,21 @@ public class IOTest {
         // 1.创建文件对象  
         File oldFile = new File("G:/My_txt.txt");  
         File newFile = new File("G:/My_new_txt.txt");  
-//        // 2.创建文件字节输入输出流  
-//        try(OutputStream os = new FileOutputStream(newFile);  
-//            InputStream is = new FileInputStream(oldFile)){  
-//            // 3.创建缓冲区和长度指示  
-//            byte[] buffer = new byte[1024];  
-//            int len;  
-//            // 4.使用输入流将文件内容读取到程序缓冲区，使用输出流将程序缓冲区中的内容输出到新文件中，记得使用0，length指定输出长度，只有缓冲区参数的write默认输出整个缓冲区，可能写入残留数据。  
-//            while ((len = is.read(buffer)) > 0) {  
-//                os.write(buffer, 0, len);  
-//            }  
-//        } catch (IOException e) {  
-//            e.printStackTrace();  
-//        }  
+        
+        // 2.创建文件字节输入输出流（有缓冲版）
+        try(OutputStream os = new FileOutputStream(newFile);  
+            InputStream is = new FileInputStream(oldFile)){  
+           // 3.创建缓冲区和长度指示  
+            byte[] buffer = new byte[1024];  
+            int len;  
+           // 4.使用输入流将文件内容读取到程序缓冲区，使用输出流将程序缓冲区中的内容输出到新文件中
+           // 记得使用0，length指定输出长度，只有缓冲区一个参数的write默认输出整个缓冲区，可能写入残留数据。  
+            while ((len = is.read(buffer)) > 0) {  
+                os.write(buffer, 0, len);  
+            }  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
   
         // 2.创建文件字节输入输出流（无缓冲版）  
         try(OutputStream os = new FileOutputStream(newFile, true);  
@@ -2473,6 +2475,115 @@ public class IOTest {
         } catch (IOException e) {  
             e.printStackTrace();  
         }  
+    }  
+}
+```
+
+# GUI
+## 时间紧任务重，还是看代码
+``` java
+package javaTask.task8;  
+  
+import javax.swing.*;  
+import java.awt.*;  
+  
+public class GUI_InputTest {  
+    public static void main(String[] args) {  
+        // 创建窗口  
+        JFrame frame = new JFrame("自定义的JFrame框体");  
+        frame.setSize(400,300);  
+        frame.setLocationRelativeTo(null);  
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+        frame.setLayout(new FlowLayout());  
+  
+        // 创建描述label  
+        JLabel label = new JLabel("请输入你的姓名：");  
+        // 创建文本框  
+        JTextField textField = new JTextField(20);  
+        // 创建按钮，并添加监听  
+        JButton button = new JButton("确定");  
+        button.addActionListener(e -> {  
+            String name = textField.getText().trim();  
+            if (!name.isEmpty()) {  
+                JOptionPane.showMessageDialog(frame, name + "，您好！", "JDialog对话框", JOptionPane.INFORMATION_MESSAGE);  
+            } else {  
+                JOptionPane.showMessageDialog(frame, "请输入姓名！", "JDialog对话框", JOptionPane.INFORMATION_MESSAGE);  
+            }  
+        });  
+  
+        // 添加组件至窗口中  
+        frame.add(label);  
+        frame.add(textField);  
+        frame.add(Box.createHorizontalStrut(400));  
+        frame.add(button);  
+  
+        frame.setVisible(true);  
+    }  
+}
+```
+``` java
+package javaTask.task8;  
+  
+import javax.swing.*;  
+import java.awt.*;  
+import java.awt.event.*;
+  
+public class GUI_RadioTest {  
+    public static void main(String[] args) {  
+        // 创建JFrame窗口  
+        JFrame frame = new JFrame("关于单选按钮");  
+        frame.setSize(400,200);  
+        frame.setLocationRelativeTo(null);  
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+        frame.setLayout(new FlowLayout());  
+  
+        // 创建单选框  
+        JRadioButton option1 = new JRadioButton("经理");  
+        JRadioButton option2 = new JRadioButton("工程师");  
+        JRadioButton option3 = new JRadioButton("教师");  
+  
+        // 创建单选框组，确保同一时间只能有一个单选框被选中  
+        ButtonGroup group = new ButtonGroup();  
+        group.add(option1);  
+        group.add(option2);  
+        group.add(option3);  
+  
+        // 创建panel，并添加描述label和单选框进入panel  
+        JPanel panel = new JPanel();  
+        JLabel label = new JLabel("将来要当：");  
+        panel.add(label);  
+        panel.add(option1);  
+        panel.add(option2);  
+        panel.add(option3);  
+  
+        // 创建结果label，添加边框  
+        JLabel result = new JLabel("您选择了将来要当：");  
+        result.setBorder(BorderFactory.createLineBorder(new Color(57, 197, 187), 2));  
+  
+        // 为单选框添加事件监听  
+        ActionListener listener = new ActionListener() {  
+            @Override  
+            public void actionPerformed(ActionEvent e){  
+                if(option1.isSelected()){  
+                    result.setText("您选择了将来要当：" + option1.getText());  
+                } else if (option2.isSelected()){  
+                    result.setText("您选择了将来要当：" + option2.getText());  
+                } else if (option3.isSelected()){  
+                    result.setText("您选择了将来要当：" + option3.getText());  
+                }  
+            }  
+        };  
+        option1.addActionListener(listener);  
+        option2.addActionListener(listener);  
+        option3.addActionListener(listener);  
+  
+        // 将组件添加进窗口  
+        frame.add(panel);  
+        frame.add(Box.createHorizontalStrut(600));  
+        frame.add(result);  
+  
+        //设置窗口可见性  
+        frame.setVisible(true);  
     }  
 }
 ```
