@@ -2345,6 +2345,7 @@ public class MultiThreadTest {
 ## 如何解决多线程的线程安全问题——线程同步
 ### 加锁：
 - 把共享资源进行上锁，每次只能令一个线程进行访问，访问完毕以后解锁，然后其他线程才能进行访问。让多个线程实现先后依次访问共享资源，这样就解决了安全问题。
+- 加锁方法：`synchronized`关键字进行同步块和同步方法的设定。
 - 代码实现：
 ``` java
 public class Counter {
@@ -2357,7 +2358,14 @@ public class Counter {
 
 	// 2. 线程同步块：使用 synchronized 块同步代码
     public void increment() {
-        synchronized (Counter。class) { // 对类内静态变量的访问，应该对整个类进行加锁，而不是对类的实例（this）进行加锁。
+        synchronized (Counter.class) { // 对类内静态变量的访问，应该对整个类进行加锁，而不是对类的实例（this）进行加锁。
+            count++;
+        }
+    }
+    // 或者显式指定锁对象：
+	private final Object lock = new Object();
+	public void increment() {
+        synchronized (lock) {  // 看这看这！！！！！！！！！！
             count++;
         }
     }
@@ -2392,6 +2400,80 @@ public class Counter {
         // 输出最终结果
         System.out.println("Final Count: " + counter.getCount()); // 期望输出 2000
     }
+}
+```
+# IO
+## 时间紧任务重，看代码吧
+``` java
+package Test;  
+  
+import java.util.*;  
+import java.io.*;  
+  
+public class IOTest {  
+    public static void main(String[] args) {  
+        fileInput();  
+        fileCopy();  
+    }  
+    
+    // 1. 文件输入
+    public static void fileInput(){  
+        // 1.创建文件对象  
+        File file = new File("G:/My_txt.txt");  
+        Scanner sc = new Scanner(System.in);  
+        // 2.创建字符输入流  
+        // Writer writer = null;  
+        // 下面使用了try-with-resources语句。
+        try(Writer writer = new FileWriter(file)) {  
+            // 3.实例化文件字符输入流  
+            // writer = new FileWriter(file, true);  
+            // 4.接收输入  
+            while (sc.hasNextLine()) {  
+                writer.write(sc.nextLine() + System.lineSeparator());  
+            }  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } finally {  
+            // 5.关闭流（使用了try-with-resources语句。这个，不需要了.jpg） 
+//            sc.close();  
+//            try {  
+//                writer.close();  
+//            } catch (IOException e) {  
+//                e.printStackTrace();  
+//            }  
+        }  
+    }  
+  
+    public static void fileCopy() {  
+        // 1.创建文件对象  
+        File oldFile = new File("G:/My_txt.txt");  
+        File newFile = new File("G:/My_new_txt.txt");  
+//        // 2.创建文件字节输入输出流  
+//        try(OutputStream os = new FileOutputStream(newFile);  
+//            InputStream is = new FileInputStream(oldFile)){  
+//            // 3.创建缓冲区和长度指示  
+//            byte[] buffer = new byte[1024];  
+//            int len;  
+//            // 4.使用输入流将文件内容读取到程序缓冲区，使用输出流将程序缓冲区中的内容输出到新文件中，记得使用0，length指定输出长度，只有缓冲区参数的write默认输出整个缓冲区，可能写入残留数据。  
+//            while ((len = is.read(buffer)) > 0) {  
+//                os.write(buffer, 0, len);  
+//            }  
+//        } catch (IOException e) {  
+//            e.printStackTrace();  
+//        }  
+  
+        // 2.创建文件字节输入输出流（无缓冲版）  
+        try(OutputStream os = new FileOutputStream(newFile, true);  
+            InputStream is = new FileInputStream(oldFile)){  
+            // 3.使用输入流将文件内容读取到程序缓冲区，使用输出流将程序缓冲区中的内容输出到新文件中。无参read返回当前读取到的字节值，write有接收一个字节值的重载方法  
+            int data = 0;  
+            while ((data = is.read()) > 0) {  
+                os.write(data);  
+            }  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+    }  
 }
 ```
 
