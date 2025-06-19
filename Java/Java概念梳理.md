@@ -2481,6 +2481,8 @@ public class IOTest {
 
 # GUI
 ## 时间紧任务重，还是看代码
+
+**输入文本框**：
 ``` java
 package javaTask.task8;  
   
@@ -2489,18 +2491,18 @@ import java.awt.*;
   
 public class GUI_InputTest {  
     public static void main(String[] args) {  
-        // 创建窗口  
+        // 1. 创建窗口  
         JFrame frame = new JFrame("自定义的JFrame框体");  
         frame.setSize(400,300);  
         frame.setLocationRelativeTo(null);  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         frame.setLayout(new FlowLayout());  
   
-        // 创建描述label  
+        // 2. 创建描述label  
         JLabel label = new JLabel("请输入你的姓名：");  
-        // 创建文本框  
+        // 3. 创建文本框  
         JTextField textField = new JTextField(20);  
-        // 创建按钮，并添加监听  
+        // 4. 创建按钮，并添加监听  
         JButton button = new JButton("确定");  
         button.addActionListener(e -> {  
             String name = textField.getText().trim();  
@@ -2521,6 +2523,7 @@ public class GUI_InputTest {
     }  
 }
 ```
+- **单选框**：
 ``` java
 package javaTask.task8;  
   
@@ -2530,25 +2533,25 @@ import java.awt.event.*;
   
 public class GUI_RadioTest {  
     public static void main(String[] args) {  
-        // 创建JFrame窗口  
+        // 1. 创建JFrame窗口  
         JFrame frame = new JFrame("关于单选按钮");  
         frame.setSize(400,200);  
         frame.setLocationRelativeTo(null);  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         frame.setLayout(new FlowLayout());  
   
-        // 创建单选框  
+        // 2. 创建单选框  
         JRadioButton option1 = new JRadioButton("经理");  
         JRadioButton option2 = new JRadioButton("工程师");  
         JRadioButton option3 = new JRadioButton("教师");  
   
-        // 创建单选框组，确保同一时间只能有一个单选框被选中  
+        // 3. 创建单选框组，确保同一时间只能有一个单选框被选中  
         ButtonGroup group = new ButtonGroup();  
         group.add(option1);  
         group.add(option2);  
         group.add(option3);  
   
-        // 创建panel，并添加描述label和单选框进入panel  
+        // 4. 创建panel，并添加描述label和单选框进入panel  
         JPanel panel = new JPanel();  
         JLabel label = new JLabel("将来要当：");  
         panel.add(label);  
@@ -2556,11 +2559,11 @@ public class GUI_RadioTest {
         panel.add(option2);  
         panel.add(option3);  
   
-        // 创建结果label，添加边框  
+        // 5. 创建结果label，添加边框  
         JLabel result = new JLabel("您选择了将来要当：");  
         result.setBorder(BorderFactory.createLineBorder(new Color(57, 197, 187), 2));  
   
-        // 为单选框添加事件监听  
+        // 6. 为单选框添加事件监听(为了了解内部类结构没写成lambda格式)
         ActionListener listener = new ActionListener() {  
             @Override  
             public void actionPerformed(ActionEvent e){  
@@ -2577,14 +2580,69 @@ public class GUI_RadioTest {
         option2.addActionListener(listener);  
         option3.addActionListener(listener);  
   
-        // 将组件添加进窗口  
+        // 7. 将组件添加进窗口  
         frame.add(panel);  
         frame.add(Box.createHorizontalStrut(600));  
         frame.add(result);  
   
-        //设置窗口可见性  
+        // 8. 设置窗口可见性  
         frame.setVisible(true);  
     }  
 }
 ```
+**多选框**：
+``` java
+package javaTask.task9;  
+  
+import javax.swing.*;  
+import javax.swing.border.LineBorder;  
+import java.awt.*;  
+import java.awt.event.ActionEvent;  
+import java.awt.event.ActionListener;  
+  
+public class GUI_CheckBoxTest {  
+    public static void main(String[] args) {  
+        JFrame frame = new JFrame("关于复选框");  
+        frame.setSize(400, 200);  
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+        frame.setLocationRelativeTo(null);  
+        frame.setLayout(new FlowLayout());  
+        
+        // JCheckBox：多选框
+        JLabel hobby_select = new JLabel("爱好选择：");  
+        JCheckBox music_box = new JCheckBox("音乐");  
+        JCheckBox sport_box = new JCheckBox("运动");  
+        JCheckBox internet_box = new JCheckBox("上网");  
+  
+        JLabel selected_result = new JLabel("您选择了：");  
+        selected_result.setBorder(new LineBorder(new Color(57, 197, 187), 1));  
+        selected_result.setPreferredSize(new Dimension(300, 20));  
+  
+        ActionListener listener = new ActionListener() {  
+            String[] str = new String[3];  
+            @Override  
+            public void actionPerformed(ActionEvent e) {  
+                str[0] = music_box.isSelected() ? "音乐 " : "" ;  
+                str[1] = sport_box.isSelected() ? "运动 " : "" ;  
+                str[2] = internet_box.isSelected() ? "上网" : "" ;  
+                selected_result.setText("您选择了：" + str[0] + str[1] + str[2]);  
+            }  
+        };  
+  
+        music_box.addActionListener(listener);  
+        sport_box.addActionListener(listener);  
+        internet_box.addActionListener(listener);  
+  
+        frame.add(hobby_select);  
+        frame.add(music_box);  
+        frame.add(sport_box);  
+        frame.add(internet_box);  
+        frame.add(Box.createHorizontalStrut(600));  
+        frame.add(selected_result);  
+  
+        frame.setVisible(true);  
+    }  
+}
+```
+# JDBC：
 
