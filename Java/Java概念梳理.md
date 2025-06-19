@@ -2343,6 +2343,55 @@ public class MultiThreadTest {
 - 同时访问共享资源
 - 存在修改共享资源
 ## 如何解决多线程的线程安全问题——线程同步
-### 1. 加锁
+### 加锁：
 - 把共享资源进行上锁，每次只能令一个线程进行访问，访问完毕以后解锁，然后其他线程才能进行访问。让多个线程实现先后依次访问共享资源，这样就解决了安全问题。
+- 代码实现：
+``` java
+public class Counter {
+    private int count = 0;
+
+    // 1. 线程同步方法：使用 synchronized 关键字修饰方法
+    public synchronized void increment() {
+        count++;
+    }
+
+	// 2. 线程同步块：使用 synchronized 块同步代码
+    public void increment() {
+        synchronized (Counter。class) { // 对类内静态变量的访问，应该对整个类进行加锁，而不是对类的实例（this）进行加锁。
+            count++;
+        }
+    }
+    
+    public int getCount() {
+        return count;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Counter counter = new Counter();
+
+        // 创建两个线程
+        Thread thread1 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+        Thread thread2 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+
+        // 启动线程
+        thread1.start();
+        thread2.start();
+
+        // 等待两个线程执行完毕
+        thread1.join();
+        thread2.join();
+
+        // 输出最终结果
+        System.out.println("Final Count: " + counter.getCount()); // 期望输出 2000
+    }
+}
+```
 
