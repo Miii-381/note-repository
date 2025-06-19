@@ -143,7 +143,7 @@
               "type": "outline",
               "state": {
                 "file": "Java/Java概念梳理.md",
-                "followCursor": false,
+                "followCursor": true,
                 "showSearch": false,
                 "searchQuery": ""
               },
@@ -179,7 +179,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "20dbbe41ee2f3d9e",
+  "active": "8848d3293cbe4392",
   "lastOpenFiles": [
     "Java/Java概念梳理.md.baiduyun.uploading.cfg",
     "数据库系统原理/第七章/第七章笔记.md.baiduyun.uploading.cfg",
