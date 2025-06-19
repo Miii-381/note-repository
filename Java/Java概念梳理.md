@@ -1069,7 +1069,7 @@ class test {
     class inner {  
         String str = "innerHahaha";  
   
-        public void innerPrint() {  
+        public void Print() {  
             String str = "printHahaha";  
             System.out.println(str);  
         }  
@@ -1077,6 +1077,7 @@ class test {
             System.out.println(test.this.str);  
         }  
     }  
+    
     public void innerPrint2() {  
         inner inner = new inner();  
         System.out.println(inner.str);  
@@ -1085,13 +1086,13 @@ class test {
 public class hahaha {  
     public static void main(String[] args) {  
         test h = new test();  
+        test.inner i = h.new inner();  
         // 外部类成员  
         System.out.println(h.str);  
-        test.inner i = h.new inner();  
         // 内部类成员  
         System.out.println(i.str);  
         // 内部类成员方法内的局部变量  
-        i.innerPrint();  
+        i.Print();  
         // 内部类访问外部类成员  
         i.outerPrint();  
         // 外部类访问内部类成员  
@@ -2282,5 +2283,53 @@ ___
 	- TreeMap：元素按照键进行**排序**，不重复，无索引的，值不做要求
 ### 时间不够懒得写了，具体实现考的不多。
 ___
-
+# 多线程：
+## 线程的五种状态：
+- 新建状态：
+## 1. 继承Thread类
+## 2. 实现Runnable接口
+## 3. 实现Callable接口（略嫌麻烦，懒得写了）
+``` java
+package javaTask.task10;  
+  
+public class MultiThreadTest {  
+    public static void main(String[] args) {  
+	    // 1. 继承Thread类
+        Thread t1 = new Thread(){  
+            int num = 1;  
+            @Override  
+            public void run(){  
+                for(int i = 1; i <= 10; i++){  
+                    num *= i;  
+                    System.out.println("Thread1: Step " + i);  
+                    try {  
+                        Thread.sleep(20);  
+                    } catch (InterruptedException e) {  
+                        e.printStackTrace();  
+                    }  
+                }  
+                System.out.println("Thread1 stopped, the result is: " + num);  
+            }  
+        };  
+		// 2.实现Runnable接口，将Runnable对象
+        Runnable runnable = () -> {  
+            int num = 1;  
+            for(int i = 1; i <= 10; i++){  
+                num *= i;  
+                System.out.println("Thread2: Step " + i);  
+                try {  
+                    Thread.sleep(20);  
+                } catch (InterruptedException e) {  
+                    e.printStackTrace();  
+                }  
+            }  
+            System.out.println("Thread2 stopped, the result is: " + num);  
+        };  
+        Thread t2 = new Thread(runnable);  
+  
+        t1.start();  
+        t2.start();  
+    }  
+}
+```
 
