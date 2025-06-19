@@ -373,7 +373,7 @@ int[] x = new int[100];
 | 3   | **public static void fill(int[] a, int val)**  <br>将指定的 int 值分配给指定 int 型数组指定范围中的每个元素。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。                                                                                                                    |
 | 4   | ==**public static void sort(Object[] a)**==<br>对指定对象数组根据其元素的自然顺序进行**升序排列**。同样的方法适用于所有的其他基本数据类型（Byte，short，Int等）。                                                                                                                              |
 | 5   | **public static String toString(Object[] a)**<br>以**字符串形式**返回数组的内容。                                                                                                                                                                           |
-# 可变参数：
+## 可变参数：
 - 可变参数用在形参中可以接收多个数据。 
 - 格式：**数据类型...参数名称**
 ``` java
