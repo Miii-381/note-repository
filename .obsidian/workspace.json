@@ -162,12 +162,11 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 446.5,
-    "collapsed": true
+    "width": 446.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -180,7 +179,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "20dbbe41ee2f3d9e",
+  "active": "c9f1f55130606e43",
   "lastOpenFiles": [
     "Pasted image 20250619232833.jpg",
     "Java/Java概念梳理.md.baiduyun.uploading.cfg",
