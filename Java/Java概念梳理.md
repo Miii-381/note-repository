@@ -2292,7 +2292,7 @@ ___
 - **死亡状态（Dead）**：一个运行状态的线程完成任务（run方法最后一个语句执行结束）或者其他终止条件发生时，该线程就切换到终止状态。
 ![[Pasted image 20250619232833.jpg]]
 ## 具体代码实现：
-### 1. 继承Thread类
+### 1. 继承Thread类（本质上也是实现了Runnable接口）
 ### 2. 实现Runnable接口
 ### 3. 实现Callable接口（略嫌麻烦，懒得写了）
 ``` java
@@ -2317,7 +2317,7 @@ public class MultiThreadTest {
                 System.out.println("Thread1 stopped, the result is: " + num);  
             }  
         };  
-		// 2.实现Runnable接口，将Runnable对象
+		// 2.实现Runnable接口，重写将Runnable对象
         Runnable runnable = () -> {  
             int num = 1;  
             for(int i = 1; i <= 10; i++){  
@@ -2331,11 +2331,18 @@ public class MultiThreadTest {
             }  
             System.out.println("Thread2 stopped, the result is: " + num);  
         };  
-        Thread t2 = new Thread(runnable);  
-        // 在调用线程的start()方法后，线程才会运行
+        Thread t2 = new Thread(runnable); // Thread可接收两个参数，第一个是Runnable类，第二个是自定义的新线程名字。  
+        // 在调用线程的start()方法后，线程才会运行。
         t1.start();  
         t2.start();  
     }  
 }
 ```
+## 线程安全出现的原因：
+- 存在多线程并发
+- 同时访问共享资源
+- 存在修改共享资源
+## 如何解决多线程的线程安全问题——线程同步
+### 1. 加锁
+- 把共享资源进行上锁，每次只能令一个线程进行访问，访问完毕以后解锁，然后其他线程才能进行访问。让多个线程实现先后依次访问共享资源，这样就解决了安全问题。
 
