@@ -1061,6 +1061,44 @@ class Outter {
     }
 }
 ```
+- 总结：
+``` java
+class test {  
+    String str = "hahaha";  
+    // 内部类
+    class inner {  
+        String str = "innerHahaha";  
+  
+        public void innerPrint() {  
+            String str = "printHahaha";  
+            System.out.println(str);  
+        }  
+        public void outerPrint() {  
+            System.out.println(test.this.str);  
+        }  
+    }  
+    public void innerPrint2() {  
+        inner inner = new inner();  
+        System.out.println(inner.str);  
+    }  
+}  
+public class hahaha {  
+    public static void main(String[] args) {  
+        test h = new test();  
+        // 外部类成员  
+        System.out.println(h.str);  
+        test.inner i = h.new inner();  
+        // 内部类成员  
+        System.out.println(i.str);  
+        // 内部类成员方法内的局部变量  
+        i.innerPrint();  
+        // 内部类访问外部类成员  
+        i.outerPrint();  
+        // 外部类访问内部类成员  
+        h.innerPrint2();  
+    }  
+}
+```
 ### 局部内部类：
 - 局部内部类是定义在**一个方法**或者**一个作用域**里面的类，它和成员内部类的区别在于局部内部类的访问**仅限于方法内或者该作用域内**。
 ``` java
