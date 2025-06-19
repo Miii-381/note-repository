@@ -2645,4 +2645,203 @@ public class GUI_CheckBoxTest {
 }
 ```
 # JDBC：
+## 核心步骤：加载驱动、建立连接、创建语句、执行查询、处理结果以及关闭资源
 
+``` java
+package javaTask.task12;  
+  
+import java.sql.*;  
+import java.util.Scanner;  
+  
+public class DBTest {  
+    // 数据库驱动  
+    private static final String JDBC_DRIVER = "org.postgresql.Driver";  
+  
+    public static void main(String[] args) {  
+        // 必要变量  
+        boolean needExit = false;  
+        Connection conn = null;  
+        Statement stmt = null;  
+  
+        // 配置数据库相关信息  
+        Scanner sc = new Scanner(System.in);  
+        System.out.println("输入要连接到的数据库名：");  
+        String DB_name = sc.nextLine();  
+        String DB_URL = "jdbc:postgresql://192.168.170.4:26000/" + DB_name;  
+        System.out.println("输入用户账号：");  
+        String USER = sc.nextLine();  
+        System.out.println("输入密码：");  
+        String PASSWORD = sc.nextLine();  
+  
+        // 正式开始连接数据库  
+        try {  
+            // 1.通过反射进行数据库驱动加载  
+            Class.forName(JDBC_DRIVER);  
+            // 2.建立连接  
+            System.out.println("正在连接到数据库......");  
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);  
+            // 3.创建新的Statement对象  
+            System.out.println("创建Statement对象...\n");  
+            stmt = conn.createStatement();  
+            while(true) {  
+                System.out.println("选择你要进行的操作: ");  
+                System.out.println("1. 创建数据库");  
+                System.out.println("2. 创建表格");  
+                System.out.println("3. 从表格中查询数据");  
+                System.out.println("4. 向表格中插入数据");  
+                System.out.println("5. 从表格中删除数据");  
+                System.out.println("6. 切换数据库");  
+                switch(sc.nextInt()){  
+                    case 1:  
+                        sc.nextLine(); // 跳过回车  
+                        System.out.println("输入数据库名: ");  
+                        if(createDatabase(stmt, sc.nextLine())) {  
+                            System.out.println("openGauss需要关闭当前连接后再重新连接新数据库，是否退出以重连？(Y/N)  ");  
+                            if(sc.nextLine().trim().equalsIgnoreCase("Y")){  
+                                needExit = true;  
+                            }  
+                        }  
+                        break;  
+                    case 2:  
+                        sc.nextLine(); // 跳过回车  
+                        System.out.println("输入SQL语句： ");  
+                        createTable(stmt, sc.nextLine());  
+                        break;  
+                    case 3:  
+                        sc.nextLine(); // 跳过回车  
+                        System.out.println("输入SQL语句： ");  
+                        searchOutput(stmt, sc.nextLine());  
+                        break;  
+                    case 4:  
+                        sc.nextLine(); // 跳过回车  
+                        System.out.println("输入SQL语句： ");  
+                        insertData(stmt, sc.nextLine());  
+                        break;  
+                    case 5:  
+                        sc.nextLine(); // 跳过回车  
+                        System.out.println("输入SQL语句： ");  
+                        deleteData(stmt, sc.nextLine());  
+                        break;  
+                }  
+                if(needExit) {  
+                    break;  
+                }  
+                System.out.println("Do you want to continue? (y/n)");  
+                if(sc.next().equalsIgnoreCase("n")){  
+                    break;  
+                }  
+            }  
+            System.out.println("------------------------------------");  
+  
+        } catch (SQLException se) {  
+            System.out.println("SQLException: " + se.getMessage());  
+            se.printStackTrace();  
+        } catch (Exception e) {  
+            System.out.println("Exception: " + e.getMessage());  
+            e.printStackTrace();  
+        } finally {  
+            // 手动关闭实例和连接（也可以用try-with-resources）  
+            try{  
+                if(stmt != null) stmt.close();  
+            } catch (SQLException se2) {  
+                System.out.println("SQLException: " + se2.getMessage());  
+                se2.printStackTrace();  
+            }  
+            try {  
+                if(conn != null) conn.close();  
+            } catch (SQLException se) {  
+                System.out.println("SQLException: " + se.getMessage());  
+                se.printStackTrace();  
+            }  
+            System.out.println("Goodbye!");  
+        }  
+    }  
+  
+    public static boolean createDatabase(Statement stmt, String DB_name)  throws SQLException {  
+        if( DB_name == null || DB_name.trim().isEmpty() || DB_name.charAt(0) == ' ' ) {  
+            throw new SQLException("数据库名不能为空或以空格开头!!!");  
+        }  
+        stmt.executeUpdate("CREATE DATABASE " + DB_name);  
+        System.out.println("数据库 “" + DB_name + "” 创建成功!");  
+        stmt.executeUpdate(" " + DB_name);  
+        return true;  
+    }  
+  
+    public static void createTable(Statement stmt, String sql)  throws SQLException {  
+        stmt.executeUpdate(sql);  
+        System.out.println("表格创建成功!");  
+    }  
+  
+    public static void searchOutput(Statement stmt, String sql) throws SQLException {  
+        ResultSet rs = stmt.executeQuery(sql);  
+        ResultSetMetaData rsmd = rs.getMetaData();  
+        int columnCount = rsmd.getColumnCount();  
+  
+        for(int i = 1; i <= columnCount; i++) {  
+            System.out.print(rsmd.getColumnName(i) + "\t");  
+        }  
+        System.out.println("\n---------------------------------------------------------------------------");  
+        while(rs.next()) {  
+            StringBuilder row = new StringBuilder();  
+            for(int i = 1; i <= columnCount; i++) {  
+                Object val = rs.getObject(i);  
+                row.append(val).append("\t");  
+            }  
+            System.out.println(row);  
+        }  
+        rs.close();  
+    }  
+  
+    public static void insertData(Statement stmt, String sql) throws SQLException {  
+        stmt.executeUpdate(sql);  
+        System.out.println("数据插入成功!");  
+    }  
+  
+    public static void deleteData(Statement stmt, String sql) throws SQLException {  
+        stmt.executeUpdate(sql);  
+        System.out.println("数据删除成功!");  
+    }  
+}
+```
+``` java
+import java.sql.*;
+
+public class JDBCExample {
+    public static void main(String[] args) {
+        // 数据库连接信息（根据实际情况修改）
+        String url = "jdbc:mysql://localhost:3306/mydatabase"; // 数据库地址
+        String user = "root"; // 数据库用户名
+        String password = "password"; // 数据库密码
+
+        // SQL 查询语句
+        String sql = "SELECT id, name, email FROM users WHERE id = ?"; // 示例查询,?为占位符
+
+        try (
+            // 1. 加载驱动并建立连接
+            Connection conn = DriverManager.getConnection(url, user, password);
+            // 2. 创建预编译语句
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            // 3. 设置参数（防止 SQL 注入）
+            pstmt.setInt(1, 1); // 查询 id = 1 的用户。(第一个参数为占位符索引，第二个为值)
+
+            // 4. 执行查询
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // 5. 处理结果
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String email = rs.getString("email");
+                    System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("未找到 JDBC 驱动，请添加依赖！");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("数据库操作异常！");
+            e.printStackTrace();
+        }
+    }
+}
+```
