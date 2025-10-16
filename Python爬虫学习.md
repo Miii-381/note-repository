@@ -1900,3 +1900,918 @@ res = requests.post(url, data={
 print(res.text)
 ```
 
+------
+
+# 18. 多线程
+``` python
+from threading import Thread  
+  
+def func():  
+    for i in range(100):  
+        print("直接创建Thread对象-子线程：" + str(i))  
+  
+class MyThread(Thread):  
+    def run(self):  
+        for i in range(100):  
+            print("继承Thread类重写run方法-子线程：" + str(i))  
+  
+if __name__ == '__main__':  
+    t = Thread(target=func) # 创建线程对象  
+    t.start()               # 只是设置线程状态为运行状态，线程实际开始运行的时刻由CPU进行决定  
+  
+    t2 = MyThread()  
+    t2.start()              # 注意别写成.run()了，不然就是方法调用，成单线程了
+      
+    for i in range(100):  
+        print("主线程：" + str(i))  
+  
+# python 多线程中，print的输出混乱，主要是因为这样：  
+# python的print对字符串和end并不是同时操作的，而是先输出字符串value值，再输出end  
+# print的操作并不总是具有原子性，可能会出现value值输出后，另一个print开始输出其value值，挤占了当前print的end参数的输出  
+# 也即是说，print并不是线程安全的！
+
+# 补充：多线程可以传参，但要求在新建线程对象的时候，使用args传入函数的参数，就像这样：
+t = Thread(target=func, args=("哈哈哈",)) # args传入的参数由于是可变长度参数（关键字参数和位置参数都支持），其必须是一个元组，因此传入单个参数时后面必须加逗号，符合Python的单元素元组创建语法。
+```
+
+# 19. 多进程
+``` python
+# 逻辑与多线程一模一样
+from multiprocessing import Process  
+  
+def func():  
+    for i in range(100):  
+        print("直接创建Process对象-子进程：" + str(i))  
+  
+class MyProcess(Process):  
+    def run(self):  
+        for i in range(100):  
+            print("继承Process类-子进程：" + str(i))  
+  
+if __name__ == '__main__':  
+    p = Process(target=func)  
+    p.start()  
+      
+    p2 = MyProcess()  
+    p2.start()  
+      
+    for i in range(100):  
+        print("直接创建Process对象-父进程：" + str(i))
+```
+
+# 20. 线程池与进程池
+``` python
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor  
+  
+def fn(name):  
+    for i in range(10):  
+        print(name + ":" + str(i))  
+  
+if __name__ == '__main__':  
+    # 支持可变长度参数，可以不指定参数名  
+    # 这里通过 with 关键字来实现线程的自动关闭
+    with ThreadPoolExecutor(max_workers=5) as t:  
+        thread_list = []  
+        for i in range(10):  
+            # 创建10个线程对象，并加入线程池，其在创建后会自动开始执行任务  
+            thread = t.submit(fn, "线程" + str(i))  
+            thread_list.append(thread)  
+  
+    print("线程任务执行完毕") # 线程池存在线程守护，只有线程池中的任务全部执行完毕，才会继续执行主线程  
+  
+    with ProcessPoolExecutor(max_workers=5) as p:  
+        process_list = []  
+        for i in range(10):  
+            process = p.submit(fn, "进程" + str(i))  
+            process_list.append(process)  
+  
+    print("进程任务执行完毕") # 进程池也一样
+```
+
+# 21. 线程池和进程池实战
+
+- 东西都差不多，把单个页面的提取逻辑扔给线程池进行执行就行，外面放个参数进行翻页控制，暂时不写了，找不到合适的网页 
+``` python
+# 爬的新发地菜价
+# 逻辑放这了，添个线程池就行，就不爬了，怕给人网站爬崩（）  
+import json  
+import requests  
+  
+url = "http://www.xinfadi.com.cn/getPriceData.html"  
+current = 2  
+# 第一页limit和current参数都为空
+res = requests.post(url, params={  
+    "limit": 20,  
+    "current": {current},  
+    "pubDateStartTime": "2023/01/01",  
+    "pubDateEndTime": "",  
+    "prodPcatid": "",  
+    "prodCatid": "",  
+    "prodName": "",  
+})  
+res.encoding = "utf-8"  
+with open("xinfadi.json", "w", encoding="utf-8") as f:  
+    json.dump(res.json(), f, ensure_ascii=False)
+```
+
+------
+
+# 22. 协程
+## 1. 介绍：
+- [协程的概念，为什么要用协程，以及协程的使用-CSDN博客](https://blog.csdn.net/weixin_44575037/article/details/105513014)
+- **个人理解**：I/O操作是独立于程序执行的，在程序执行I/O操作时，我们可以使用协程的思想让程序执行另外的任务，避免了I/O阻塞导致的性能浪费，从而提高了程序的运行效率。
+## 2. 代码
+``` python
+import asyncio  
+import time  
+  
+async def func1():  
+    print("hahaha")  
+    await asyncio.sleep(3) # 异步sleep，能够让其在sleep的时候切换到另一个任务  
+    print("hehehe")  
+    return "task1"  
+  
+async def func2():  
+    print("123123123")  
+    await asyncio.sleep(2)  
+    print("345345345")  
+    return "task2"  
+  
+async def func3():  
+    print("dfgdfg")  
+    await asyncio.sleep(4)  
+    print("vbnvbn")  
+    return "task3"  
+  
+async def main():  
+    # 异步任务的创建必须要在异步函数内  
+    # gather()方法可以创建多个任务，并等待所有任务完成，按照任务顺序返回所有任务的返回值列表  
+    result_list = await asyncio.gather(func1(), func2(), func3())  
+    return result_list  
+    # 或者这么写:  
+    # tasks = [asyncio.create_task(func1()), asyncio.create_task(func2()), asyncio.create_task(func3())]    
+    # await asyncio.wait(tasks)    
+    # return [task.result() for task in tasks]  
+
+if __name__ == '__main__':  
+    # g = func1()      # 函数是异步函数，此时g得到的是一个协程对象  
+    # asyncio.run(g)  # 通过asyncio.run()方法启动协程  
+    start_time = time.time()  
+    result = asyncio.run(main())  
+    end_time = time.time()  
+    print("耗时：" + str(end_time - start_time))  
+    print(result)
+```
+## 3. 代码结果：
+``` python
+多个任务协程操作：
+hahaha
+123123123
+dfgdfg
+345345345
+hehehe
+vbnvbn
+耗时：4.014375448226929         # 在这个演示程序中，效率取决于最长的sleep
+['task1', 'task2', 'task3']
+```
+
+------
+
+# 23. aiohttp模块
+
+- `aiohttp` 是一个基于 asyncio 的异步 HTTP 客户端/服务器库，适用于 Python 3.5+。它支持客户端和服务器端的异步编程，能够处理大量并发请求。
+
+## 主要功能
+- 异步 HTTP 客户端和服务器
+- WebSocket 支持
+- 中间件支持
+- 基于 asyncio 的异步 I/O
+
+## 安装
+```bash
+pip install aiohttp
+```
+## 基本用法
+### 1. 发起 HTTP 请求
+```python
+import aiohttp
+import asyncio
+
+async def fetch(session, url):
+    async with session.get(url) as response:
+        return await response.text()
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        html = await fetch(session, 'http://httpbin.org/get')
+        print(html)
+
+# 运行异步函数
+asyncio.run(main())
+```
+### 2. 发送 POST 请求
+```python
+import aiohttp
+import asyncio
+
+async def post_example():
+    async with aiohttp.ClientSession() as session:
+        async with session.post('http://httpbin.org/post',
+                               data={'key': 'value'}) as response:
+            print(await response.text())
+
+asyncio.run(post_example())
+```
+### 3. 传递参数
+```python
+import aiohttp
+import asyncio
+
+async def param_example():
+    params = {'key1': 'value1', 'key2': 'value2'}
+    async with aiohttp.ClientSession() as session:
+        async with session.get('http://httpbin.org/get',
+                              params=params) as response:
+            print(await response.text())
+
+asyncio.run(param_example())
+```
+### 4. 设置请求头
+```python
+import aiohttp
+import asyncio
+
+async def headers_example():
+    headers = {'Authorization': 'Bearer token'}
+    async with aiohttp.ClientSession() as session:
+        async with session.get('http://httpbin.org/headers',
+                              headers=headers) as response:
+            print(await response.json())
+
+asyncio.run(headers_example())
+```
+### 5. 处理 JSON 响应
+```python
+import aiohttp
+import asyncio
+
+async def json_example():
+    async with aiohttp.ClientSession() as session:
+        async with session.get('http://httpbin.org/json') as response:
+            data = await response.json()
+            print(data)
+
+asyncio.run(json_example())
+```
+### 6. 文件上传
+```python
+import aiohttp
+import asyncio
+
+async def file_upload():
+    async with aiohttp.ClientSession() as session:
+        data = aiohttp.FormData()
+        data.add_field('file',
+                      open('filename.txt', 'rb'),
+                      filename='filename.txt')
+        async with session.post('http://httpbin.org/post',
+                               data=data) as response:
+            print(await response.text())
+
+asyncio.run(file_upload())
+```
+### 7. 设置超时
+```python
+import aiohttp
+import asyncio
+
+async def timeout_example():
+    timeout = aiohttp.ClientTimeout(total=60)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with session.get('http://httpbin.org/delay/10') as response:
+            print(await response.text())
+
+asyncio.run(timeout_example())
+```
+## 创建简单的 HTTP 服务器
+```python
+from aiohttp import web
+
+async def hello(request):
+    return web.Response(text="Hello, world")
+
+app = web.Application()
+app.router.add_get('/', hello)
+
+if __name__ == '__main__':
+    web.run_app(app, port=8080)
+```
+## 主要特点
+1. **异步性能**：利用 asyncio 实现高并发处理
+2. **连接池**：自动管理 HTTP 连接复用
+3. **Cookie 支持**：自动处理 Cookie
+4. **SSL/TLS 支持**：支持 HTTPS 请求
+5. **流式处理**：支持大文件流式传输
+6. **WebSocket 支持**：支持 WebSocket 通信
+## 注意事项
+- 必须在异步环境中使用
+- 使用 `ClientSession` 时应确保正确关闭
+- 推荐使用 `async with` 语句管理资源
+- 对于大量并发请求，可以调整连接池大小
+## 视频代码示例：
+``` python
+import aiohttp  
+import asyncio  
+  
+urls = [  
+    '1','2','3'  # 懒得找网站了  
+]  
+  
+async def aiodownload(url):  
+    async with aiohttp.ClientSession() as session:  
+        async with session.get(url) as response:  
+            print(f'正在下载：{url}')  
+            html_content = await response.text()  
+            # 二进制: response.content.read()  
+            # json: response.json()            
+            print(f'下载完成：{url}')  
+            return html_content  
+  
+  
+async def main():  
+    tasks = []  
+    for url in urls:  
+        tasks.append(asyncio.create_task(aiodownload(url)))  
+    await asyncio.wait(tasks)  
+    return [task.result() for task in tasks]  
+  
+  
+if __name__ == '__main__':  
+    result = asyncio.run(main())  
+    print(result)
+```
+
+------
+
+# 25. 异步爬虫实战——爬取小说
+``` python
+import os.path  
+import random  
+  
+import aiohttp  
+import asyncio  
+import requests  
+import re  
+import cn2an  # 中文数字转阿拉伯数字的模块
+from bs4 import BeautifulSoup  
+  
+# 限制并发数  
+semaphore = asyncio.Semaphore(10)  # 限制最多10个并发  
+  
+# 获取所有章节  
+base_url = "http://www.txt80.net"  
+chapters_url = "http://www.txt80.net/txt/97884.html"  
+chapters_list = []  
+chapters_content = {}  
+title_re = re.compile(r"(.*?)（")  
+count_re = re.compile(r"（(?P<now>\d) / (?P<total>\d)")  
+current_chapter_re = re.compile(r"第(.*?)章")  
+  
+def get_chapters(url):  
+    print("开始获取章节列表...")  
+    html = requests.get(url)  
+    html.encoding = "utf-8"  
+    soup = BeautifulSoup(html.text, "html.parser")  
+    chapters = soup.find("ul", id="ul_all_chapters").find_all("a")  
+    for chapter in chapters:  
+        chapter_location = base_url + chapter.get("href")  
+        # 章节是分段存储的，所以需要将章节链接进行分段，分段处理放在具体爬取函数中处理  
+        chapters_list.append(chapter_location)  
+    print("章节列表获取完成，开始爬取内容...\n")  
+    # 删除已有文件，为爬取做准备  
+    if os.path.exists("少侠，请留步.txt"):  
+        os.remove("少侠，请留步.txt")  
+  
+async def get_chapter_content(url):  
+    async with semaphore:  
+        try:  
+            current_url = url  
+            while True:  
+                # 每次循环都需要重新发起网络请求  
+                async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:  
+                    async with session.get(current_url) as response:  
+                        print(f"正在爬取：{current_url}")  
+                        if response.status != 200:  
+                            print(f"请求失败，状态码：{response.status}，URL：{current_url}")  
+                            return  
+  
+                        html = await response.text()  
+                        soup = BeautifulSoup(html, "html.parser")  
+                        original_title = soup.find("div", class_="text_title").text  
+                        # 获取标题  
+                        title = re.search(title_re, original_title).group(1)  
+                        current_chapter = re.search(current_chapter_re, original_title).group(1)  
+                        current_chapter = cn2an.cn2an(current_chapter, mode="normal")  
+                        now = int(re.search(count_re, original_title).group("now"))  
+                        total = int(re.search(count_re, original_title).group("total"))  
+  
+                        print(f"title:{title},chapter={current_chapter},now={now},total={total}")  
+  
+                        # 获取内容  
+                        content_elements = soup.find("article", class_="content").find_all("p")  
+                        content = "\n".join(["    " + p.text for p in content_elements])  
+                        # 将格式化的章节内容插入列表  
+                        if now == 1:  
+                            chapters_content[current_chapter] = {  
+                                "标题": title,  
+                                "内容": content,  
+                            }  
+                        else:  
+                            # 追加内容到已存在的章节  
+                            if current_chapter in chapters_content:  
+                                chapters_content[current_chapter]["内容"] += "\n" + content  
+                            else:  
+                                chapters_content[current_chapter] = {  
+                                    "标题": title,  
+                                    "内容": content,  
+                                }  
+  
+                        if now < total and now < 10:  # 添加安全限制  
+                            print(f"正在爬取下一分页... 当前页: {now}, 总页数: {total}")  
+                            next_url = url.split(".html")[0] + f"_{now + 1}.html"  
+                            print(f"下一页URL: {next_url}")  
+                            current_url = next_url  
+                            continue  
+                        else:  
+                            if now >= total:  
+                                print(f"{title} 爬取完成！")  
+                                sleep_time = random.uniform(1, 5)  
+                                print(f"休眠{sleep_time}秒")  
+                                await asyncio.sleep(sleep_time)  
+                            break  
+        except Exception as e:  
+            print(f"处理URL {url} 时出错：{e}")  
+  
+  
+async def main():  
+    tasks = []  
+    for chapter in chapters_list:  
+        task = asyncio.create_task(get_chapter_content(chapter))  
+        tasks.append(task)  
+    await asyncio.wait(tasks)  
+  
+def output_file(file_name):  
+    with open(file_name, "w", encoding="utf-8") as f:  
+        for chapter_num in sorted(chapters_content.keys()):  
+            f.write(f"\n    {chapters_content[chapter_num]['标题']}\n\n")  
+            f.write(chapters_content[chapter_num]["内容"])  
+            f.write(f"\n{'-' * 30}\n")  
+  
+if __name__ == '__main__':  
+    get_chapters(chapters_url)  
+    asyncio.run(main())  
+    output_file("少侠，请留步.txt")
+```
+
+## 执行结果：
+``` python
+开始获取章节列表...
+章节列表获取完成，开始爬取内容...
+
+正在爬取：http://www.txt80.net/read/97884/58136270.html
+title:第八章 少女顾堇,chapter=8,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136270_2.html
+正在爬取：http://www.txt80.net/read/97884/58136264.html
+title:第二章 大丫鬟轩然,chapter=2,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136264_2.html
+正在爬取：http://www.txt80.net/read/97884/58136266.html
+title:第四章 江湖偌大,chapter=4,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136266_2.html
+正在爬取：http://www.txt80.net/read/97884/58136265.html
+title:第三章 赏银,chapter=3,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136265_2.html
+正在爬取：http://www.txt80.net/read/97884/58136269.html
+title:第七章 我家夫人在哪,chapter=7,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136269_2.html
+正在爬取：http://www.txt80.net/read/97884/58136267.html
+title:第五章 武林厚重,chapter=5,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136267_2.html
+正在爬取：http://www.txt80.net/read/97884/58136268.html
+title:第六章 苏银瓶,chapter=6,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136268_2.html
+正在爬取：http://www.txt80.net/read/97884/58136272.html
+title:第十章 “诱拐少女”,chapter=10,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136272_2.html
+正在爬取：http://www.txt80.net/read/97884/58136263.html
+title:第一章 少侠秦琅,chapter=1,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136263_2.html
+正在爬取：http://www.txt80.net/read/97884/58136271.html
+title:第九章 青璃郡主,chapter=9,now=1,total=2
+正在爬取下一分页... 当前页: 1, 总页数: 2
+下一页URL: http://www.txt80.net/read/97884/58136271_2.html
+正在爬取：http://www.txt80.net/read/97884/58136270_2.html
+title:第八章 少女顾堇,chapter=8,now=2,total=2
+第八章 少女顾堇 爬取完成！
+休眠1.535839153512622秒
+
+# 太多了，省略了
+# 小说txt文件就不挂上来了~
+```
+
+------
+
+# 26. 视频分段技术——M3U
+
+## 1. M3U (MPEG URL)
+- **定义**: M3U 是一种播放列表文件格式，用于指定媒体文件的位置
+- **用途**: 主要用于音频和视频流媒体播放列表
+- **特点**:
+  - 纯文本格式
+  - 支持相对路径和绝对路径
+  - 可以包含多个媒体文件引用
+  - 常用于 IPTV 和在线广播
+
+## 2. M3U8
+- **定义**: M3U8 是 M3U 的 Unicode 版本，使用 UTF-8 编码
+- **与 M3U 的区别**:
+  - 支持国际化字符集
+  - 兼容性更好，支持各种语言的文件名
+  - 是 HTTP Live Streaming (HLS) 的标准格式
+- **应用场景**:
+  - Apple HLS 流媒体传输
+  - 视频点播和直播服务
+  - 自适应码率流媒体
+### 格式结构
+```m3u
+#EXTM3U
+#EXTINF:123, Sample Title
+/path/to/media/file.mp3
+#EXTINF:234, Another Title
+http://example.com/stream.mp4
+```
+### 主要应用
+- **在线视频平台**: YouTube、Netflix 等使用类似技术
+- **IPTV 服务**: 电视节目在线播放
+- **移动流媒体**: 适应不同网络条件的自适应流
+- **广播电台**: 在线音频流播放列表
+
+这两种格式都是流媒体领域的重要标准，M3U8 作为 M3U 的升级版本，在现代网络流媒体中应用更广泛。
+## 3. M3U8文件格式示例
+``` m3u8
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:10        # 视频切片最大时长（min）
+#EXT-X-MEDIA-SEQUENCE:0
+
+#EXT-X-KEY:METHOD=AES-128,URI="https://example.com/key.key"   # 视频加密方式及密钥地址，加密视频需要解密后才能播放
+
+#EXTINF:10.0,      # #EXTINF:duration,title 当前文件持续时长 当前文件的显示标题
+segment0.ts        # 视频分段文件的具体地址（URL链接，为相对地址，需要拼接基地址）
+#EXTINF:10.0,
+segment1.ts
+#EXTINF:10.0,
+segment2.ts
+#EXTINF:10.0,
+segment3.ts
+
+#EXT-X-ENDLIST
+
+```
+
+# 27：视频爬取实战：爬取某网站番剧
+## 1. 代码
+``` python
+# 1. 获取m3u8文件  
+# 2. 获取ts文件  
+# 3. 合并ts文件  
+import os.path  
+import random  
+import time  
+from concurrent.futures import ThreadPoolExecutor  
+import requests  
+import re  
+  
+m3u8_url = "https://v.cdnlz22.com/20250923/23113_2c87b119/2000k/hls/mixed.m3u8"  
+base_url = "https://v.cdnlz22.com/20250923/23113_2c87b119/2000k/hls/"  
+re_str = re.compile(r"^(?!#).*?\.ts$", re.MULTILINE)  
+# cloudflare反爬太严了，为了保险添加了这么多header项...但好像只添加ua和connection项就行
+headers = {  
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0",  
+    "Referer": "https://v.cdnlz22.com/",  
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",  
+    "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",  
+    "Accept-Encoding": "gzip, deflate, br",  
+    "Connection": "keep-alive",  
+    "Upgrade-Insecure-Requests": "1"  
+}  
+# 多线程爬取
+thread_limit = 8  
+thread_pool = []  
+urls = []  
+  
+def download_m3u8():  
+    global urls  
+    print("开始处理m3u8文件...")  
+    res = requests.get(m3u8_url, headers)  
+    res.encoding = "utf-8"  
+  
+    m3u8_content = res.text  
+    print(m3u8_content)  
+    urls = re.findall(re_str, m3u8_content)  
+    print("m3u8文件处理完成，开始下载ts文件...")  
+  
+  
+def download_ts(ts_url):  
+    """下载单个ts文件"""  
+    print(f"开始下载: {ts_url}")  
+    full_url = base_url + ts_url  
+    res = requests.get(full_url, headers=headers)  
+    # 确保目录存在  
+    os.makedirs("./videos", exist_ok=True)  
+  
+    with open(f"./videos/{ts_url}", "wb") as f:  
+        f.write(res.content)  
+    # sleep_time = random.uniform(2, 5)  
+    sleep_time = random.uniform(0.5, 1)  
+  
+    print(f"下载完成: {ts_url}, 休眠{sleep_time}秒")  
+  
+    time.sleep(sleep_time)  
+  
+# def download_with_threadpool():  
+#     with ThreadPoolExecutor(max_workers=thread_limit) as executor:  
+#         # 提交所有任务  
+#         futures = [executor.submit(download_ts, ts_url) for ts_url in urls]  
+#         # 等待所有任务完成  
+#         for future in futures:  
+#             future.result()  
+  
+if __name__ == '__main__':  
+    download_m3u8()  
+    # download_with_threadpool()  
+    # 很烦，爬快了封ip，只能单线程爬...
+    for ts_url in urls:  
+        download_ts(ts_url)  
+    print("下载完成！")
+```
+## 2. ffmpeg合并ts文件为mp4文件：
+``` python
+import os  
+import subprocess  
+  
+def merge_ts_files(ts_file_list, output_file="output.mp4"):  
+    print("开始合并ts文件...")  
+    os.makedirs("./videos", exist_ok=True)  
+  
+    # 创建文件列表  
+    with open('filelist.txt', 'w') as f:  
+        for ts_file in ts_file_list:  
+            if ts_file.endswith('.ts'):  
+                f.write(f"file '../codes/videos/{ts_file}'\n")  
+  
+    command = [  
+        "ffmpeg",  
+        '-f', 'concat',  
+        '-safe', '0',  
+        "-i", 'filelist.txt',  
+        "-c", "copy",  
+        output_file,  
+    ]  
+    subprocess.run(command)  
+  
+if __name__ == '__main__':  
+    ts_files = os.listdir("../codes/videos")  
+    merge_ts_files(ts_files, "恋人不行_12.mp4")
+```
+## 4. ffmpeg常用参数：
+
+### (1) 当前使用的参数
+- `-f concat`: 指定输入格式为连接模式，用于合并多个文件
+- `-safe 0`: 允许使用不安全的文件路径（如包含特殊字符的路径）
+- `-i filelist.txt`: 指定输入文件列表
+- `-c copy`: 直接复制视频/音频流，不进行重新编码
+### (2) 常用 FFmpeg 参数
+#### a. 基本参数
+- `-i <input>`: 指定输入文件
+- `-o <output>`: 指定输出文件
+- `-y`: 覆盖输出文件而不询问
+- `-n`: 不覆盖输出文件
+#### b. 编码相关
+- `-c:v`: 指定视频编码器
+- `-c:a`: 指定音频编码器
+- `-c copy`: 直接复制流（不重新编码）
+- `-crf <value>`: 指定恒定速率因子（0-51，数值越小质量越高）
+#### c. 视频处理
+- `-vf <filter>`: 应用视频滤镜
+- `-s <size>`: 设置输出视频尺寸
+- `-r <fps>`: 设置帧率
+- `-b:v <bitrate>`: 设置视频比特率
+#### d. 音频处理
+- `-b:a <bitrate>`: 设置音频比特率
+- `-ar <rate>`: 设置音频采样率
+- `-ac <channels>`: 设置音频通道数
+#### e. 时间控制
+- `-ss <time>`: 设置开始时间
+- `-t <duration>`: 设置持续时间
+- `-to <time>`: 设置结束时间
+#### f. 其他常用参数
+- `-threads <number>`: 设置处理线程数
+- `-preset <preset>`: 设置编码预设（如 ultrafast, fast, medium, slow）
+- `-hwaccel <api>`: 启用硬件加速
+
+------
+
+# 28. Selenium
+## 1. Selenium 简介
+- Selenium 是一个用于 Web 应用程序自动化测试的开源框架。它允许你编写程序来控制浏览器，模拟用户操作，如点击按钮、填写表单、导航页面等。Selenium 支持多种编程语言（如 Python、Java、C# 等）和多种浏览器（Chrome、Firefox、Safari 等）。
+
+## 2. 常用函数和方法
+
+### （1） 浏览器操作相关
+- `get(url)` - 打开指定 URL 页面
+- `quit()` - 关闭整个浏览器
+- `close()` - 关闭当前窗口
+- `refresh()` - 刷新当前页面
+- `back()` - 后退到上一页
+- `forward()` - 前进到下一页
+### （2）元素定位相关
+- `find_element()` - 查询单个元素，返回一个对象（没找到会报错）
+- `find_elements(...)` - 查询多个元素，返回一个列表（没找到返回空列表）
+
+- `find_element(By.ID, "id")` - 通过 ID 查找单个元素
+- `find_element(By.NAME, "name")]` - 通过 name 属性查找单个元素
+- `find_element(By.CLASS_NAME, "class")` - 通过 class 属性查找单个元素（只能查找单个class值，多个class值一起查询会报错）
+- `find_element(By.TAG_NAME, "tag")` - 通过标签名查找单个元素
+- `find_element(By.XPATH, "xpath")` - 通过 XPath 查找单个元素
+- `find_element(By.CSS_SELECTOR, "css")`- 通过 CSS 选择器查找单个元素
+
+### （3） 元素操作相关
+- `click()` - 点击元素
+- `send_keys(text)` - 向元素输入文本
+- `clear()` - 清除元素中的文本
+- `submit()` - 提交表单
+- `[get_attribute(name)` - 获取元素属性值
+- `text` - 获取元素文本内容
+### （4）等待机制
+- `implicitly_wait(seconds)` - 设置隐式等待时间
+- 显式等待配合 `WebDriverWait` 和 `expected_conditions` 使用
+- `time,sleep()` - 程序级休眠
+### （5） 窗口和框架操作
+- `switch_to.frame(frame_reference)` - 切换到指定框架
+- `switch_to.window(window_handle)` - 切换到指定窗口
+- `window_handles` - 获取所有窗口句柄
+## 3. 视频代码复刻：
+``` python
+import time  
+  
+from selenium import webdriver # 操作浏览器  
+from selenium.webdriver import ActionChains, Keys  
+from selenium.webdriver.chrome.service import Service # 管理驱动  
+from selenium.webdriver.chrome.options import Options # 管理设置  
+  
+def create_browser():  
+    # 创建设置浏览器对象  
+    opt = Options()  
+    # 禁用沙盒模式（增强兼容性，防止打不开浏览器）  
+    opt.add_argument('--no-sandbox')  
+    # 保持浏览器打开状态（浏览器默认会在代码执行完毕后关闭）  
+    opt.add_experimental_option("detach", True)  
+  
+    # 创建并启动浏览器（参数：浏览器驱动路径，）  
+    b = webdriver.Chrome(service=Service("../.venv/Scripts/chromedriver.exe"), options=opt)  
+    # Selenium 4 添加了自动下载并管理浏览器驱动的功能，但需要访问GitHub获取  
+    # b = webdriver.Chrome(options=opt)  
+  
+    return b  
+  
+if __name__ == '__main__':  
+    browser = create_browser()  
+    
+#################
+# 打开网址  
+#################
+    # 打开指定网址  
+    browser.get("https://www.baidu.com") # 必须添加协议，否则会报错  
+    # 在当前标签页打开新网址  
+    browser.get("https://www.bilibili.com")  
+# 新标签页  
+    # 在新标签页打开网址  
+    # 1. 使用javascript脚本  
+    browser.execute_script("window.open('https://www.bilibili.com')")  
+    # 2. 使用按键新建标签页后，跳转到新标签页再打开网址  
+    # 发送Ctrl+T快捷键打开新标签页  
+    ActionChains(browser).key_down(Keys.CONTROL).send_keys('t').key_up(Keys.CONTROL).perform()   # 动作链，通过发送一系列指令模拟人工操作
+    # 切换到新标签页  
+    browser.switch_to.new_window('tab')  
+    # 在新标签页中打开网址  
+    browser.get("https://www.bilibili.com")  
+    
+#################
+# 窗口控制  
+#################
+    # 浏览器最小化  
+    browser.minimize_window()  
+    time.sleep(1)  
+    # 浏览器全屏  
+    browser.fullscreen_window()  
+    time.sleep(1)  
+    # 浏览器最大化  
+    browser.maximize_window()  
+    time.sleep(1)  
+    # 浏览器窗口化  
+    # set_window_rect是set_window_size和set_window_position的合并版本  
+    browser.set_window_rect(x=100, y=100, width=1200, height=800)  
+    time.sleep(1)  
+    browser.set_window_position(0, 0)  
+    time.sleep(1)
+      
+#################
+# 浏览器截图  
+#################
+    browser.save_screenshot("bilibili.png") # 截取当前标签页窗口图片，并保存在当前目录下  
+    time.sleep(1) 
+     
+#################   
+# 刷新当前标签页
+################# 
+    browser.refresh()  
+    time.sleep(1)  
+  
+    # 关闭当前标签页  
+    browser.close()  
+    # 关闭浏览器并释放驱动  
+    browser.quit()
+```
+
+``` python
+import time  
+  
+from selenium import webdriver # 操作浏览器  
+from selenium.webdriver import Keys # 按键模拟  
+from selenium.webdriver.chrome.service import Service # 管理驱动  
+from selenium.webdriver.chrome.options import Options # 管理设置  
+from selenium.webdriver.common.by import By # 元素查找  
+  
+  
+def create_browser():  
+    # 创建设置浏览器对象  
+    opt = Options()  
+    # 禁用沙盒模式（增强兼容性，防止打不开浏览器）  
+    opt.add_argument('--no-sandbox')  
+    # 保持浏览器打开状态（浏览器默认会在代码执行完毕后关闭）  
+    opt.add_experimental_option("detach", True)  
+  
+    # 创建并启动浏览器（参数：浏览器驱动路径，）  
+    b = webdriver.Chrome(service=Service("../.venv/Scripts/chromedriver.exe"), options=opt)  
+  
+    return b  
+  
+if __name__ == '__main__':  
+    browser = create_browser()  
+    browser.implicitly_wait(10)  # 所有元素定位最多等待10秒  
+    browser.get("https://www.bilibili.com")  
+    browser.maximize_window()  
+# 元素定位  
+    # 定位一个元素，找不到会报错  
+    elem1 = browser.find_element(By.CLASS_NAME, "nav-search-input")  
+    print(elem1)  
+  
+    # 定位多个元素，找不到的话返回空列表  
+    elem2 = browser.find_elements(By.CLASS_NAME, "nav-search-input")  
+    print(elem2)  
+  
+# 元素操作  
+    # 输入文本  
+    elem1.send_keys("MyGO!!!!!")  
+    time.sleep(2)  
+    # 点击搜索按钮  
+    browser.find_element(By.CLASS_NAME, "nav-search-btn").click()  
+    # 等待新窗口并切换  
+    time.sleep(3)  # 简单等待  
+    # 在打开新窗口后，如果要定位新窗口的元素，必须切换到新窗口才能进行元素定位  
+    browser.switch_to.window(browser.window_handles[-1])  
+    # 重新定位元素  
+    elem1 = browser.find_element(By.CLASS_NAME, "search-input-el")  
+    print(elem1.get_attribute("outerHTML"))  
+    # 不知道为什么，不能直接使用API清除，只能模拟按键输入进行清除  
+    elem1.click()  
+    elem1.send_keys(Keys.CONTROL + "a")  # 全选  
+    elem1.send_keys(Keys.DELETE)  # 删除  
+    time.sleep(1)  
+    # 输入文本  
+    elem1.send_keys("Ave Mujica")  
+    time.sleep(0.5)  
+    # 搜索  
+    elem1.send_keys(Keys.ENTER)  
+    time.sleep(5)  
+    browser.quit()
+```
