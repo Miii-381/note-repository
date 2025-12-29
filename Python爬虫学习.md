@@ -673,21 +673,23 @@ XPath 使用路径表达式来选取 XML 文档中的节点或者节点集。
 
 XPath 提供多种运算符用于构建复杂的表达式：
 
-| 运算符   | 描述   | 示例                          |                     |
-| ----- | ---- | --------------------------- | ------------------- |
-| \`    | \`   | 计算两个节点集                     | `//book \| //title` |
-| `+`   | 加法   | `6 + 4`                     |                     |
-| `-`   | 减法   | `6 - 4`                     |                     |
-| `*`   | 乘法   | `6 * 4`                     |                     |
-| `div` | 除法   | `8 div 4`                   |                     |
-| `=`   | 等于   | `price=9.80`                |                     |
-| `!=`  | 不等于  | `price!=9.80`               |                     |
-| `<`   | 小于   | `price<9.80`                |                     |
-| `<=`  | 小于等于 | `price<=9.80`               |                     |
-| `>`   | 大于   | `price>9.80`                |                     |
-| `>=`  | 大于等于 | `price>=9.80`               |                     |
-| `or`  | 或    | `price=9.80 or price=9.70`  |                     |
-| `and` | 与    | `price>9.00 and price<9.90` |                     |
+| 运算符     | 描述      | 示例                          |                           |
+| ------- | ------- | --------------------------- | ------------------------- |
+| \|      | 合并两个节点集 | //book \| //title           | 合并所有查询到的`book`和`title`节点集 |
+| `+`     | 加法      | `6 + 4`                     | = 10                      |
+| `-`     | 减法      | `6 - 4`                     | = 2                       |
+| `*`     | 乘法      | `6 * 4`                     | = 24                      |
+| `div`   | 除法      | `8 div 4`                   | = 2                       |
+| `mod`   | 取模      | `5 mod 2`                   | = 1                       |
+| `=`     | 等于      | `price=9.80`                | 当价格等于9.80时返回True          |
+| `!=`    | 不等于     | `price!=9.80`               | 当价格不等于9.80时返回True         |
+| `<`     | 小于      | `price<9.80`                | 当价格小于9.80时返回True          |
+| `<=`    | 小于等于    | `price<=9.80`               | 当价格小于等于9.80时返回True        |
+| `>`     | 大于      | `price>9.80`                | 当价格大于9.80时返回True          |
+| `>=`    | 大于等于    | `price>=9.80`               | 当价格大于等于9.80时返回True        |
+| `or`    | 或       | `price=9.80 or price=9.70`  | 当价格为9.80和9.70时返回True      |
+| `and`   | 与       | `price>9.00 and price<9.90` | 当价格大于9.00，小于9.90时返回True   |
+| `not()` | 非       | `not(price>9.80)`           | 价格不高于9.80时返回`True`        |
 
 ## (4) 实际应用场景
 
@@ -2636,7 +2638,7 @@ if __name__ == '__main__':
 
 ## 2. 常用函数和方法
 
-### （1） 浏览器操作相关
+### （1）浏览器操作相关
 - `get(url)` - 打开指定 URL 页面
 - `quit()` - 关闭整个浏览器
 - `close()` - 关闭当前窗口
@@ -2653,22 +2655,35 @@ if __name__ == '__main__':
 - `find_element(By.TAG_NAME, "tag")` - 通过标签名查找单个元素
 - `find_element(By.XPATH, "xpath")` - 通过 XPath 查找单个元素
 - `find_element(By.CSS_SELECTOR, "css")`- 通过 CSS 选择器查找单个元素
+- `find_element(By.LINK_TEXT, "link")` - 通过`<a>`标签内的文本，查找`<a>`标签（**精准匹配**）
+- `find_element(By.PARTIAL_LINK_TEXT, "link")` - 通过`<a>`标签内的文本，查找`<a>`标签（**模糊匹配**）
 
-### （3） 元素操作相关
+### （3）元素操作相关
 - `click()` - 点击元素
 - `send_keys(text)` - 向元素输入文本
 - `clear()` - 清除元素中的文本
 - `submit()` - 提交表单
-- `[get_attribute(name)` - 获取元素属性值
+- `get_attribute(name)` - 获取元素属性值
 - `text` - 获取元素文本内容
 ### （4）等待机制
-- `implicitly_wait(seconds)` - 设置隐式等待时间
-- 显式等待配合 `WebDriverWait` 和 `expected_conditions` 使用
-- `time,sleep()` - 程序级休眠
-### （5） 窗口和框架操作
+- `implicitly_wait(seconds)` - 设置隐式等待时间（`timeout`），在设置时间内找到元素就能立刻执行，否则报错
+- 显式等待，配合 `WebDriverWait` 和 `expected_conditions` 使用
+- `time.sleep()` - 程序级休眠，固定休眠
+### （5）窗口和框架操作
 - `switch_to.frame(frame_reference)` - 切换到指定框架
 - `switch_to.window(window_handle)` - 切换到指定窗口
 - `window_handles` - 获取所有窗口句柄
+### （6）获取浏览器渲染后的页面 HTML 文档字符串
+1. **包含信息**：
+	- 完整的 HTML 结构（包括 `<html>`, `<head>`, `<body>` 等标签）
+	- 所有 DOM 元素及其属性
+	- JavaScript 动态生成的内容（如果有的话）
+	- CSS 样式信息（内联样式或嵌入样式）
+2. **使用方法**：
+```python
+html_content = driver.page_source
+```
+
 ## 3. 视频代码复刻：
 ``` python
 import time  
@@ -2777,7 +2792,7 @@ def create_browser():
   
 if __name__ == '__main__':  
     browser = create_browser()  
-    browser.implicitly_wait(10)  # 所有元素定位最多等待10秒  
+    browser.implicitly_wait(10)  # 设置隐式等待时间为10s
     browser.get("https://www.bilibili.com")  
     browser.maximize_window()  
 # 元素定位  
@@ -2814,4 +2829,800 @@ if __name__ == '__main__':
     elem1.send_keys(Keys.ENTER)  
     time.sleep(5)  
     browser.quit()
+```
+## 4. 无头浏览器配置
+- 创建浏览器前添加这两行配置就行
+``` python
+opt = Options()
+opt.add_argument('--headless')      # 无头运行
+opt.add_argument('--disable-gpu')   # 禁用GPU加速
+```
+# 5. 验证码处理
+- 验证码处理分两类，一类是自己编写视觉处理逻辑，比如使用`opencv`，但极其麻烦；一类是使用已有的框架，这里的示例程序使用的是超级鹰验证码识别平台
+``` python
+import json  
+import time  
+  
+from selenium import webdriver  
+from selenium.webdriver.chrome.options import Options  
+from selenium.webdriver.chrome.service import Service  
+from selenium.webdriver.common.by import By  
+from chaojiying import Chaojiying_Client  
+
+# 为保护隐私，account和password需填写你自己的账号和密码
+account = "123123123"  
+password = "1231231231"  
+  
+def create_browser():  
+    # 创建设置浏览器对象  
+    opt = Options()  
+    # 禁用沙盒模式（增强兼容性，防止打不开浏览器）  
+    opt.add_argument('--no-sandbox')  
+    # 保持浏览器打开状态（浏览器默认会在代码执行完毕后关闭）  
+    opt.add_experimental_option("detach", True)  
+    # 创建并启动浏览器（参数：浏览器驱动路径，）  
+    b = webdriver.Chrome(service=Service("../.venv/Scripts/chromedriver.exe"), options=opt)  
+  
+    return b  
+  
+if __name__ == '__main__':  
+    browser = create_browser()  
+    browser.implicitly_wait(10)  
+    browser.get("https://www.chaojiying.com/user/login/")  
+    img_element = browser.find_element(By.XPATH, "/html/body/div[3]/div/div[3]/div[1]/form/div/img")  
+    # 直接截屏获取验证码图片  
+    img = img_element.screenshot('i.png')  
+    time.sleep(1)  
+    # 超级鹰处理验证码  
+    chaojiying = Chaojiying_Client(account, password, '973730')  
+    im = open('i.png', 'rb').read()  
+    result = chaojiying.PostPic(im, 1004)  
+    print(result)  
+    print(result['pic_str'])  
+    # 填充内容  
+    browser.find_element(By.XPATH, "/html/body/div[3]/div/div[3]/div[1]/form/p[1]/input").send_keys(account)  
+    browser.find_element(By.XPATH, "/html/body/div[3]/div/div[3]/div[1]/form/p[2]/input").send_keys(password)  
+    browser.find_element(By.XPATH, "/html/body/div[3]/div/div[3]/div[1]/form/p[3]/input").send_keys(result['pic_str'])  
+    time.sleep(2)  
+    browser.find_element(By.XPATH, "/html/body/div[3]/div/div[3]/div[1]/form/p[4]/input").click()  
+    time.sleep(2)
+```
+
+``` python
+# chaojiying.py
+from hashlib import md5  
+  
+import requests  
+  
+class Chaojiying_Client(object):  
+  
+    def __init__(self, username, password, soft_id):  
+        self.username = username  
+        password =  password.encode('utf8')  
+        self.password = md5(password).hexdigest()  
+        self.soft_id = soft_id  
+        self.base_params = {  
+            'user': self.username,  
+            'pass2': self.password,  
+            'softid': self.soft_id,  
+        }  
+        self.headers = {  
+            'Connection': 'Keep-Alive',  
+            'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)',  
+        }  
+  
+    def PostPic(self, im, codetype):  
+        """  
+        im: 图片字节  
+        codetype: 题目类型 参考 http://www.chaojiying.com/price.html        """        params = {  
+            'codetype': codetype,  
+        }  
+        params.update(self.base_params)  
+        files = {'userfile': ('ccc.jpg', im)}  
+        r = requests.post('http://upload.chaojiying.net/Upload/Processing.php', data=params, files=files, headers=self.headers)  
+        return r.json()  
+  
+    def PostPic_base64(self, base64_str, codetype):  
+        """  
+        im: 图片字节  
+        codetype: 题目类型 参考 http://www.chaojiying.com/price.html        """        params = {  
+            'codetype': codetype,  
+            'file_base64':base64_str  
+        }  
+        params.update(self.base_params)  
+        r = requests.post('http://upload.chaojiying.net/Upload/Processing.php', data=params, headers=self.headers)  
+        return r.json()  
+  
+    def ReportError(self, im_id):  
+        """  
+        im_id:报错题目的图片ID  
+        """        params = {  
+            'id': im_id,  
+        }  
+        params.update(self.base_params)  
+        r = requests.post('http://upload.chaojiying.net/Upload/ReportError.php', data=params, headers=self.headers)  
+        return r.json()
+```
+
+------
+
+# 29. Scrapy 框架
+
+ Scrapy 是一个用 Python 编写的开源网络爬虫框架，专门用于从网站上提取结构化数据。它提供了强大的功能来处理网页抓取、数据解析和存储等任务。
+### 1. 主要特点：
+- **异步处理**：基于 Twisted 框架，支持高并发请求
+- **可扩展性**：支持自定义中间件、管道和扩展组件
+- **内置功能丰富**：包括数据提取、链接跟踪、数据验证等功能
+- **多格式输出**：支持 JSON、CSV、XML 等多种数据格式
+## 2. Scrapy 的核心组件及架构
+
+### 核心组件：
+
+#### 1. `Engine`（引擎）
+- **作用**：整个系统的中枢，负责处理所有模块的衔接，控制所有组件之间的数据流交互
+- **功能**：
+	1. 触发事务
+	2. 协调 `Spider`、`Item Pipeline`、`Downloader`、`Scheduler` 之间的通信
+#### 2. `Scheduler`（调度器）
+- **作用**：接收引擎发来的请求，排序并入队
+- **功能**：
+	1. 管理待处理的 `Request` 队列
+	2. 在引擎需要时提供下一个要抓取的 `Request`
+#### 3. `Downloader`（下载器）
+- **作用**：负责获取页面数据
+- **功能**：
+	1. 发送请求并获取响应
+	2. 处理网络通信
+#### 4. `Spider`（爬虫）
+- **作用**：解析 `Response` 并提取需要的数据或新的 URL
+- **功能**：
+	1. 处理响应
+	2. 提取 `Item`
+	3. 生成新的请求
+#### 5. `Item Pipeline`（管道）
+- **作用**：处理由 `Spider` 提取出来的 `Item`
+- **功能**：
+	1. 清理 HTML 数据
+	2. 验证提取的数据
+	3. 查重并丢弃重复内容
+	4. 持久化存储数据（文件、数据库、etc...）
+### 中间件组件：
+
+- **Downloader Middlewares**：位于 `Engine` 和 `Downloader` 之间
+- **Spider Middlewares**：位于 `Engine` 和 `Spider` 之间
+
+### 架构流程
+
+#### a. 数据流顺序：
+1. `Engine` 从 `Spider` 获取`Spider`内初始要抓取的URL，构建出初始 `Request`对象
+2. `Engine` 将 `Request` 发送给 `Scheduler` 等待调度
+3. `Scheduler` 将队列头的 `Request` 返回给 `Engine`
+4. `Engine` 将 该`Request` 发送给 `Downloader` 执行下载
+5. 一旦页面下载完成，`Downloader` 生成该` Request` 对应的 `Response` 对象，并发送给 `Engine`
+6. `Engine` 接收 `Response` 并发送给 `Spider` 处理
+7. `Spider` 处理 `Response` 并返回提取的 `Item` 和新的 `Request`（如果有的话）
+8. `Engine` 将处理的 `Item` 发送给 `Item Pipeline`，供`Pipeline`进行数据的后处理，同时如果有新的`Reqeust`，将新的 `Request` 发送给 `Scheduler`
+9. 重复步骤 3~8 直到完成所有请求
+### 总结：
+- **引擎**是核心协调者，控制数据流
+- **调度器**管理待处理的请求队列
+- **下载器**负责网络通信
+- **中间件**提供可扩展的钩子机制
+- **管道**负责数据后处理
+
+这种架构设计使得 Scrapy 具有高度的可扩展性和灵活性，各组件职责明确，便于维护和定制。
+## 3. 基本使用方法
+
+### （1）安装 Scrapy
+```bash
+pip install scrapy
+```
+### （2）创建项目
+```bash
+scrapy startproject myproject
+cd myproject
+```
+### （3）创建爬虫
+```bash
+scrapy genspider example example.com
+```
+### （4）编写爬虫代码示例
+```python
+import scrapy
+
+class ExampleSpider(scrapy.Spider):
+    name = 'example'
+    start_urls = ['http://example.com']
+
+    def parse(self, response):
+        # 使用 CSS 选择器提取数据
+        for item in response.css('div.item'):
+            yield {
+                'title': item.css('h2.title::text').get(),
+                'price': item.css('span.price::text').get(),
+            }
+        
+        # 跟踪下一页链接
+        next_page = response.css('a.next::attr(href)').get()
+        if next_page:
+            yield response.follow(next_page, self.parse)
+```
+### （5）运行爬虫
+```bash
+scrapy crawl example
+```
+## 4. 使用场景
+
+### （1）数据采集和分析
+- **电商价格监控**：定期抓取商品价格信息进行比价
+- **新闻聚合**：从多个新闻源收集文章内容
+- **社交媒体数据挖掘**：抓取公开的社交平台数据
+### （2）SEO 监控
+- 抓取网站排名信息
+- 分析竞争对手的 SEO 策略
+- 监控网站索引情况
+### （3）内容迁移
+- 将旧网站内容迁移到新平台
+- 整合多个数据源的内容
+### （4）市场研究
+- 收集行业报告和市场数据
+- 竞品分析数据获取
+- 用户评论和反馈收集
+### （5）学术研究
+- 收集研究所需的大规模网络数据
+- 社会网络分析数据获取
+## 5. 高级特性
+
+### （1）中间件支持
+可以通过编写中间件来：
+- 修改请求头（User-Agent、Cookie 等）
+- 处理代理设置
+- 实现请求重试机制
+### （2）数据管道
+- 可以配置多个管道来进行：
+	- 数据去重
+	- 数据清洗和转换
+	- 存储到数据库（MySQL、MongoDB 等）
+### （3）分布式部署
+- 支持配合 Scrapyd 进行分布式部署，提高抓取效率
+### （4）内置支持
+- 自动处理 Cookies 和 Session
+- 支持多种认证方式
+- 内置常见的反爬虫对策
+# 30. Scrapy初见
+## 1. 创建项目：
+``` shell
+scrapy startproject game
+cd game
+```
+## 2. 项目结构：
+```
+game/
+├── game/
+│   ├── __init__.py
+│   ├── items.py
+│   ├── middlewares.py
+│   ├── pipelines.py
+│   └── settings.py
+└── scrapy.cfg
+```
+- `game/`：项目主目录，包含所有核心组件
+- `__init__.py`：Python 包初始化文件，用于定义包的入口
+- `items.py`：定义数据结构（`Item` 类），用于存储抓取的数据
+- `middlewares.py`：定义中间件，处理请求和响应的钩子函数
+- `pipelines.py`：定义数据管道`pipeline`，处理提取的数据（如清洗、存储等）
+- `settings.py`：配置文件，包含爬虫的各种设置参数
+- `scrapy.cfg`：项目配置文件，用于管理多个爬虫项目
+对于非大型项目而言，只需关注五大组件中的`Spider`和`Pipeline`。
+## 3. 创建爬虫
+``` bash
+scrapy genspider xiaoyouxi www.4399.com # 创建爬虫，参数为爬虫名和爬取网站
+```
+生成爬虫结构如下：
+``` python
+import scrapy  
+  
+  
+class XiaoyouxiSpider(scrapy.Spider):   # 默认继承Spider类
+    name = "xiaoyouxi"                  # 爬虫名
+    allowed_domains = ["www.4399.com"]  # 限定爬取网页
+    start_urls = ["https://www.4399.com"]  # 起始url
+  
+    def parse(self, response):          # 处理response对象
+        pass
+```
+令`parse()`方法打印`response.text`，获取页面源代码。
+
+执行爬虫：
+``` bash
+scrapy crawl xiaoyouxi
+```
+可以得到一大堆日志，中间夹了我们的输出结果。
+
+``` shell
+注：必须在项目目录下执行上述命令，才能启动scrapy项目！
+```
+## 4. 实战——爬取4399小游戏某页面的部分游戏名和链接
+- 这里仅是单独执行爬虫，没有与其他组件进行联动
+``` python
+class XiaoyouxiSpider(scrapy.Spider):  
+    name = "xiaoyouxi"  
+    allowed_domains = ["www.4399.com"]  
+    start_urls = ["https://www.4399.com/special/277.htm"]  
+  
+    def parse(self, response):  
+        result = self.gain_names(response)  
+        if not os.path.exists("../contents"):  
+            os.mkdir("../contents")  
+        with open("../contents/xiaoyouxi.json", "w", encoding="utf-8") as f:  
+            f.write(json.dumps(result, ensure_ascii=False))  
+  
+    def gain_names(self, response):  
+        contents = response.xpath('//ul[@id="classic"]/li/a')  
+        result = [  
+            {  
+                "name": content.xpath("./text()").get(),  
+                "url": content.xpath("./@href").get(),  
+            }  
+            for content in contents  
+        ]  
+        return result
+```
+爬取到的JSON文件这里就不放出来了
+
+## 5. 修改代码，让其符合完整的Scrapy项目工作流程
+### a. 爬虫`xiaoyouxi.py`
+``` python
+import scrapy  
+  
+from ..items import GameItem  
+  
+class XiaoyouxiSpider(scrapy.Spider):  
+    name = "xiaoyouxi"  
+    allowed_domains = ["www.4399.com"]  
+    start_urls = ["https://www.4399.com/special/277.htm"]  
+  
+    def parse(self, response):  
+        contents = response.xpath('//ul[@id="classic"]/li/a')  
+        for content in contents:  
+            item = GameItem()  
+            item['name'] = content.xpath('./text()').get()  
+            item['url'] = content.xpath('./@href').get()  
+            yield item  # 通过 yield 将数据发送给管道
+```
+### b. 数据`items.py`
+``` python
+import scrapy  
+
+class GameItem(scrapy.Item):  
+    name = scrapy.Field()  
+    url = scrapy.Field()
+```
+### c. 管道`pipelines.py`
+``` python
+import json  
+import os  
+  
+class GamePipeline:  
+    def open_spider(self, spider):  
+        self.items = []  
+  
+    def close_spider(self, spider):  
+        # 在爬虫结束时写入完整的 JSON 数组  
+        if not os.path.exists('contents'):  
+            os.mkdir('contents')  
+        with open('contents/games.json', 'w', encoding='utf-8') as f:  
+            json.dump(self.items, f, ensure_ascii=False, indent=2)  
+  
+    def process_item(self, item, spider):  
+        # 将每个 item 添加到列表中  
+        self.items.append(dict(item))  
+        return item
+```
+### d. `settings.py`
+``` python
+# 添加如下行进行管道配置
+ITEM_PIPELINES = {  
+   "game.pipelines.GamePipeline": 300,   # 数字越小，优先级越高
+}
+```
+
+------
+
+# 32. Scrapy深入——Pipeline
+## 1. 常用方法：
+
+ 1. `open_spider(spider)`
+	- **调用时机**：Spider 启动时调用一次。
+	- **用途**：用于执行初始化操作，如打开数据库连接、创建文件句柄、初始化计数器等。
+- 示例：
+``` python
+def open_spider(self, spider):
+    self.file = open('items.json', 'w')
+    self.item_count = 0
+    spider.logger.info('Pipeline opened')
+```
+
+2. `close_spider(spider)`
+	- **调用时机**：Spider 关闭时调用一次。
+	- **用途**：用于清理资源，如关闭数据库连接、关闭文件、输出统计信息等。
+- **示例**：
+```python
+def close_spider(self, spider):
+    self.file.close()
+    spider.logger.info(f'Processed {self.item_count} items')
+```
+    
+3. `process_item(item, spider)` (核心方法)
+	- **调用时机**：每个 Item 被生成后都会调用此方法。
+	- **用途**：这是 Pipeline 的核心逻辑，用于处理或保存 Item。
+	- **必须返回值**：必须返回 `item` 对象，否则该 Item 会被丢弃。
+	- **返回方式**：
+	    - `return item`：继续传递给下一个 Pipeline。
+	    - `raise DropItem()`：丢弃该 Item，不再传递。
+- **示例**：
+```python
+from scrapy.exceptions import DropItem
+
+def process_item(self, item, spider):
+    if item.get('price'):
+        if item['price'] <= 0:
+            raise DropItem(f"Invalid price: {item['price']}")
+        self.item_count += 1
+        line = json.dumps(dict(item)) + "\n"
+        self.file.write(line)
+        return item  # 继续传递
+    else:
+        raise DropItem("Missing price field")
+```
+
+4. `from_crawler(cls, crawler)` (类方法)
+	- **调用时机**：Scrapy 在创建 Pipeline 实例时调用。
+	- **用途**：用于访问 `settings`、`crawler` 对象，实现更复杂的初始化，如读取配置参数。
+- **示例**：
+```python
+@classmethod
+def from_crawler(cls, crawler):
+    return cls(
+        mongo_uri=crawler.settings.get('MONGO_URI'),
+        mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
+    )
+```
+
+## 2.  **如何启用 Pipeline**
+在 `settings.py` 中配置 `ITEM_PIPELINES`，数字表示执行顺序（越小越先执行）：
+```python
+ITEM_PIPELINES = {
+   'myproject.pipelines.PriceValidationPipeline': 300,
+   'myproject.pipelines.JsonWriterPipeline': 400,
+   'myproject.pipelines.MongoDBPipeline': 500,
+}
+```
+
+## 3. 如何为不同爬虫定义不同的管道
+
+在 Scrapy 中，**爬虫（Spider）本身并不主动“选择”使用哪个管道（Pipeline）**。管道的选择和执行是由 Scrapy 的全局配置决定的，而不是由单个爬虫代码直接指定。但也不是没有办法完成这个功能。
+
+虽然配置是全局的，但我们可以在 Pipeline 内部根据当前运行的 `spider` 参数来判断是否处理该 Item，从而实现“选择性”处理。
+
+### 方法一：在 `process_item` 中判断 `spider` 名称
+
+```python
+# pipelines.py
+class SaveToMongoDBPipeline:
+    def process_item(self, item, spider):
+        # 只有名为 'ecommerce_spider' 的爬虫才保存到 MongoDB
+        if spider.name == 'ecommerce_spider':
+            self.save_to_mongo(item)
+        # 其他爬虫的 Item 直接放行（不处理）
+        return item
+
+class SaveToMySQLPipeline:
+    def process_item(self, item, spider):
+        # 只有名为 'news_spider' 的爬虫才保存到 MySQL
+        if spider.name == 'news_spider':
+            self.save_to_mysql(item)
+        return item
+```
+
+> **优点**：简单直接，无需修改配置。  
+> **缺点**：所有管道仍被加载，只是内部做了过滤。
+### ✅ 方法二：动态设置 `ITEM_PIPELINES`（推荐）
+
+在 Spider 类中通过 `custom_settings` 覆盖全局配置，实现**每个爬虫独立的管道配置**。
+
+```python
+# spiders/ecommerce_spider.py
+import scrapy
+
+class EcommerceSpider(scrapy.Spider):
+    name = 'ecommerce_spider'
+    
+    # 自定义设置：只启用特定管道
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'myproject.pipelines.ValidateItemPipeline': 100,
+            'myproject.pipelines.SaveToMongoDBPipeline': 200,
+        }
+    }
+
+    def start_requests(self):
+        pass
+```
+
+```python
+# spiders/news_spider.py
+class NewsSpider(scrapy.Spider):
+    name = 'news_spider'
+    
+    # 不同的管道配置
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'myproject.pipelines.CleanItemPipeline': 100,
+            'myproject.pipelines.SaveToMySQLPipeline': 200,
+        }
+    }
+```
+
+> **优点**：
+> - 真正实现了“每个爬虫使用不同的管道”。
+> - 未启用的管道不会被实例化，更高效。
+> - 配置清晰，易于维护。
+### ✅ 方法三：通过 `settings` 变量控制
+
+也可以在 `settings.py` 中定义多个管道组，然后在 Spider 中通过 `crawler.settings` 动态读取。
+```python
+# settings.py
+PIPELINES_FOR_SPIDER_A = {
+    'myproject.pipelines.PipelineA': 100,
+}
+
+PIPELINES_FOR_SPIDER_B = {
+    'myproject.pipelines.PipelineB': 100,
+}
+```
+
+```python
+# 在 Spider 中设置
+class MySpider(scrapy.Spider):
+    name = 'spider_a'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 动态设置管道
+        self.custom_settings = getattr(self, 'custom_settings', {})
+        self.custom_settings['ITEM_PIPELINES'] = self.settings.get('PIPELINES_FOR_SPIDER_A')
+```
+
+> 这种方式更灵活，但不如 `custom_settings` 直观。
+### **总结**
+
+|方法|说明|推荐度|
+|---|---|---|
+|**`custom_settings` + `ITEM_PIPELINES`**|每个爬虫定义自己的管道，最清晰、最推荐|⭐⭐⭐⭐⭐|
+|**在 `process_item` 中判断 `spider.name`**|全局管道统一，内部条件处理|⭐⭐⭐⭐|
+|**动态设置 `ITEM_PIPELINES`**|通过代码动态控制，适合复杂场景|⭐⭐⭐|
+
+------
+
+# 33. Scrapy深入——`CrawlSpider`类
+
+`CrawlSpider` 是 Scrapy 框架中一个非常强大的内置 Spider 类（`scrapy.spiders.CrawlSpider`），它是 `scrapy.Spider` 的子类，专门用于**自动跟踪网页链接、实现多层级爬取**，特别适合需要**从起始页开始，不断发现并跟进链接**的场景，比如网站镜像、全站数据抓取等。
+
+---
+## **1. 为什么需要 CrawlSpider？**
+
+如果我们使用普通的 `Spider` 类：
+- 我们需要手动在 `parse()` 方法中解析响应，提取链接，然后手动创建新的 `scrapy.Request`。
+- 对于复杂的链接规则（如分页、分类、详情页等），代码会变得冗长且难以维护。
+
+而 `CrawlSpider` 提供了 **规则系统（Rules）**，可以：
+- 自动匹配符合特定条件的链接。
+- 自动跟进这些链接并回调指定的处理函数。
+- 极大简化了“发现链接 → 跟进 → 处理”的流程。
+
+------
+## **2. CrawlSpider 的核心组件**
+
+#### **(1) `rules` 类属性**
+这是 `CrawlSpider` 的核心，定义了一个或多个 `Rule` 对象，告诉爬虫：
+- 哪些链接需要跟进？
+- 跟进后调用哪个方法处理？
+```python
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+
+class MyCrawlSpider(CrawlSpider):
+    name = 'mycrawler'
+    allowed_domains = ['example.com']
+    start_urls = ['https://example.com']
+
+    rules = (
+        # Rule 1: 跟进分类页链接
+        Rule(LinkExtractor(allow=r'/category/\d+'), callback='parse_category', follow=True),
+        # Rule 2: 跟进详情页链接，不继续跟进（follow=False）
+        Rule(LinkExtractor(allow=r'/product/\d+'), callback='parse_product', follow=False),
+    )
+
+    def parse_category(self, response):
+        # 处理分类页面
+        pass
+
+    def parse_product(self, response):
+        # 处理商品详情页
+        pass
+```
+#### **(2) `LinkExtractor`（链接提取器）**
+
+用于定义**如何从页面中提取链接**。常用参数：
+
+|参数|说明|
+|---|---|
+|`allow`|正则表达式，只提取匹配的链接（如 `r'/page/\d+'`）|
+|`deny`|正则表达式，排除匹配的链接|
+|`allow_domains`|限制域名|
+|`restrict_xpaths`|只从指定的 XPath 节点提取链接|
+|`restrict_css`|只从指定的 CSS 选择器提取链接|
+|`tags`|指定提取哪些标签的链接（默认 `['a', 'area']`）|
+|`attrs`|指定提取哪个属性的链接（默认 `['href']`）|
+
+**示例**：
+```python
+# 只提取 class="next" 的分页链接
+LinkExtractor(restrict_css='a.next', allow=r'/page/\d+')
+
+# 只从导航栏提取链接
+LinkExtractor(restrict_xpaths='//div[@id="nav"]')
+```
+#### **(3) `Rule` 类**
+定义一条爬取规则，构造函数：
+```python
+Rule(
+    link_extractor,        # LinkExtractor 实例
+    callback='xxx',        # 回调函数名（字符串），用于处理提取到的页面
+    cb_kwargs={abc: yyy},  # 传递给 callback 的额外参数(一个字典)
+    follow=True/False,     # 是否继续跟进该链接提取出的新链接？
+    process_links='xyz',   # 提取链接后，预处理链接列表的函数
+    process_request='ijk'  # 处理 Request 对象的函数（可修改 request）
+)
+```
+- `callback`：当链接被请求并返回响应后，调用此方法处理页面。
+- `follow`：
+    - `True`：表示继续从该页面中提取符合规则的链接（用于分页、目录页）。
+    - `False`：只处理当前页面，不再跟进新链接（用于详情页）。
+- `process_links`：接收一个链接列表，可进行去重、过滤等操作。
+- `process_request`：可修改 Request，如添加 meta、修改 headers。
+``` python
+# e.g.
+Rule(
+	LinkExtractor(restrict_css='div.pagination', allow=r'\?page=\d+'),
+	follow=True
+	callback='parse_data'
+), # 最常用的就这三个参数
+```
+
+------
+## **3. CrawlSpider 的执行流程**
+
+1. 从 `start_urls` 开始请求。
+2. 下载页面后，使用 `rules` 中的 `LinkExtractor` 提取所有匹配的链接。
+3. 对每个提取的链接：
+    - 如果 `follow=True`，则继续从该响应中提取链接（递归）。
+    - 如果 `callback` 指定了方法，则将该页面交给 `callback` 方法处理。
+4. 重复直到没有新链接或达到限制。
+
+---
+## **4. 一个完整示例：爬取新闻网站**
+
+```python
+import scrapy
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+
+class NewsSpider(CrawlSpider):
+    name = 'news_crawler'
+    allowed_domains = ['news.example.com']
+    start_urls = ['https://news.example.com']
+
+    rules = (
+        # 规则1: 跟进分页链接，并继续跟进下一页
+        Rule(LinkExtractor(
+            restrict_css='div.pagination',
+            allow=r'\?page=\d+'
+        ), follow=True),
+        
+        # 规则2: 跟进新闻详情页，调用 parse_news 处理
+        Rule(LinkExtractor(
+            restrict_css='h2.title a',
+            allow=r'/news/\d+\.html'
+        ), callback='parse_news', follow=False),
+    )
+
+    def parse_news(self, response):
+        yield {
+            'title': response.css('h1::text').get(),
+            'content': response.css('div.content::text').get(),
+            'url': response.url,
+        }
+```
+
+---
+## **5. 注意事项与最佳实践**
+
+- ✅ **不要重写 `parse()` 方法**：`CrawlSpider` 的 `parse` 已被用作默认回调。如果你想处理 `start_urls` 的响应，应使用 `parse_start_url` 方法。
+- ✅ **合理使用 `follow`**：避免无限循环或爬取过多无关页面。
+- ✅ **使用 `restrict_xpaths/css` 精确控制链接范围**，避免爬取登录、注册等无关链接。
+- ✅ **设置 `ROBOTSTXT_OBEY = True`** 遵守爬虫协议。
+- ✅ **使用 `CLOSESPIDER_PAGECOUNT` 等设置控制爬取深度和数量**。
+
+---
+## **6. 与普通 Spider 的对比**
+
+|特性|`Spider`|`CrawlSpider`|
+|---|---|---|
+|适用场景|简单、结构固定的爬取|复杂、多层级、自动发现链接|
+|链接提取|手动编写|使用 `LinkExtractor` 自动提取|
+|代码复杂度|简单页面低，复杂页面高|复杂页面更简洁|
+|灵活性|高（完全手动控制）|中（受规则限制）|
+
+------
+## 7. 如何创建`CrawlSpider`类爬虫
+### (1) 输入命令创建爬虫
+``` shell
+scrapy genspider -t crawl 蜘蛛名称 域名
+```
+- 生成代码示例如下：
+``` python
+# spiders/mycrawler.py 
+import scrapy from scrapy.spiders 
+import CrawlSpider, Rule from scrapy.linkextractors 
+import LinkExtractor 
+class MycrawlerSpider(CrawlSpider): 
+	name = 'mycrawler' 
+	allowed_domains = ['example.com'] 
+	start_urls = ['http://example.com/'] 
+	rules = ( # 默认生成一条规则，可以修改或添加 
+		Rule(LinkExtractor(allow=r''), callback='parse_item', follow=True), 
+	) 
+	
+	# TODO: 解析页面内容，填充 item
+	def parse_item(self, response): 
+	item = {}
+```
+### (2) 修改`start_urls`和`rules`
+
+```python
+start_urls = ['https://example.com/news', 'https://example.com/blog']
+
+rules = (
+    # 规则1: 跟进分页链接，继续跟进下一页
+    Rule(LinkExtractor(
+        restrict_css='a.next-page',
+        allow=r'\?page=\d+'
+    ), follow=True),
+
+    # 规则2: 跟进新闻详情页，调用 parse_news 处理
+    Rule(LinkExtractor(
+        restrict_css='h2.title a',
+        allow=r'/article/\d+\.html'
+    ), callback='parse_news', follow=False),
+)
+```
+
+### **(3) 编写 `callback` 方法处理数据**
+```python
+def parse_news(self, response):
+    yield {
+        'title': response.css('h1::text').get(),
+        'content': ''.join(response.css('div.content p::text').getall()),
+        'url': response.url,
+        'publish_date': response.css('span.date::text').get()
+    }
+```
+
+> 💡 注意：不要重写 `parse()` 方法，除非你清楚自己在做什么。`CrawlSpider` 使用 `parse` 作为默认回调。
+### (4) 运行你的 CrawlSpider
+
+```bash
+scrapy crawl mycrawler
 ```
