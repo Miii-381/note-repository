@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 462.5110321044922
   },
   "right": {
     "id": "3b6567ea7a9da1f8",
@@ -180,7 +180,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "20dbbe41ee2f3d9e",
+  "active": "c9f1f55130606e43",
   "lastOpenFiles": [
     "计组小总结.md",
     "README.md",
