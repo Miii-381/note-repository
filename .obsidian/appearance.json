@@ -1,4 +1,5 @@
 {
-  "textFontFamily": "MiSans C",
-  "theme": "moonstone"
+  "textFontFamily": "",
+  "theme": "moonstone",
+  "monospaceFontFamily": "Consolas"
 }
