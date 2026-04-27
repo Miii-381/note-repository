@@ -162,6 +162,9 @@ print(re.findall(greedy_pattern, str)) # ['饭睡觉打']
 1. **HTML/XML解析**：使用惰性匹配提取单个标签
 2. **文本提取**：从大段文本中提取特定模式的短内容
 3. **数据清洗**：精确控制匹配范围避免过度匹配
+
+________
+
 # 四、RE模块
 ## 1. 介绍：
 Python的`re`模块是正则表达式(Regular Expression)处理的核心模块，提供了强大的文本模式匹配和处理功能。
@@ -235,6 +238,7 @@ for item in obj3.finditer(str):
 print(dict)              # {'id': '10086', 'name': '中国联通'}
 ```
 
+------------
 # 5. 实战：使用RE+Requests爬取豆瓣电影 Top 250 榜单
 ``` python
 # 1. 拿到页面源代码  
@@ -702,6 +706,8 @@ XPath 主要应用于以下场景：
 
 XPath 是处理结构化文档的强大工具，掌握其基本语法能够有效提高数据提取和处理效率。
 
+--------
+
 # 11. Python中通过lxml模块使用XPath
 
 `lxml` 是一个功能强大且高效的 Python 库，用于处理 XML 和 HTML 文档。它基于 C 语言的 `libxml2` 和 `libxslt` 库构建，提供了比标准库 `xml.etree.ElementTree` 更快的解析速度和更丰富的功能。
@@ -940,7 +946,9 @@ for li in li_list:
     link_list.append({"href": href[0], "text": text[0]}) # 老生常谈的列表问题  
 print(link_list)
 ```
-
+## 补充：
+- 如果要提取某个标签的对应文本，不仅可以使用`.xpath("./text()")`，也可以使用 lxml 提供的`.text`属性，比如：`li.xpath("./a").text`
+------
 # 12. XPath实战案例：爬取猪八戒网的搜索结果（只爬取了第一页）
 
 ``` python
