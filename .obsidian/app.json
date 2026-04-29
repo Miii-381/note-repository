@@ -1,5 +1,6 @@
 {
   "promptDelete": true,
   "showLineNumber": false,
-  "readableLineLength": false
+  "readableLineLength": false,
+  "alwaysUpdateLinks": true
 }
