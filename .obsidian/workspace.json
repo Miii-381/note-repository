@@ -11,10 +11,14 @@
             "id": "c10119cd870002fc",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "人工智能导论——数理逻辑.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "人工智能导论——数理逻辑"
             }
           }
         ]
@@ -74,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 257.5110321044922
+    "width": 376.5110321044922
   },
   "right": {
     "id": "3b6567ea7a9da1f8",
@@ -138,12 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "人工智能导论——数理逻辑.md",
                 "followCursor": true,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "人工智能导论——数理逻辑 的大纲"
             }
           },
           {
@@ -161,8 +166,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 371.5,
-    "collapsed": true
+    "width": 371.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -178,6 +182,8 @@
   },
   "active": "c10119cd870002fc",
   "lastOpenFiles": [
+    "Easyx学习笔记.md",
+    "人工智能导论——数理逻辑.md",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (27).png",
     "Games101/11. Geometry 2（曲线、曲面）/11. Geometry 2 （Curves and Surfaces）.md",
     "改图鸭 (30).png",
