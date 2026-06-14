@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "人工智能导论——数理逻辑.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "人工智能导论知识点与考点总结"
+              "title": "人工智能导论——数理逻辑"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "人工智能导论——数理逻辑.md",
                 "followCursor": true,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "人工智能导论知识点与考点总结 的大纲"
+              "title": "人工智能导论——数理逻辑 的大纲"
             }
           },
           {
@@ -182,12 +182,12 @@
   },
   "active": "c10119cd870002fc",
   "lastOpenFiles": [
+    "人工智能导论知识点与考点总结.md",
     "人工智能导论知识点与考点总结.md.tmp.31588.683cb901f7c3",
     "人工智能导论知识点与考点总结.md.tmp.30416.4b6f13bd01f5",
     "人工智能导论知识点与考点总结.md.tmp.30416.eb1cf198d3c5",
     "人工智能导论知识点与考点总结.md.tmp.30416.3235edca262d",
     "人工智能导论——数理逻辑.md",
-    "人工智能导论知识点与考点总结.md",
     "计组小总结.md",
     "个人博客需求分析.md",
     "Games101/11. Geometry 2（曲线、曲面）/11. Geometry 2 （Curves and Surfaces）.md",
@@ -215,7 +215,6 @@
     "Java/Pasted image 20250613211744.png.baiduyun.uploading.cfg",
     "Java/Pasted image 20250613211723.png.baiduyun.uploading.cfg",
     "Java/Pasted image 20250609221329.png.baiduyun.uploading.cfg",
-    "计组小总结.md.baiduyun.uploading.cfg",
     "数据库系统原理/第七章/第七章笔记.md",
     "菜鸟教程.md",
     "数据库系统原理/第一章/第一章笔记.md",
