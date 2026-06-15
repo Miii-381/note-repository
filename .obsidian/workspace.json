@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "人工智能导论——数理逻辑.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "人工智能导论知识点与考点总结"
+              "title": "人工智能导论——数理逻辑"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "人工智能导论——数理逻辑.md",
                 "followCursor": true,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "人工智能导论知识点与考点总结 的大纲"
+              "title": "人工智能导论——数理逻辑 的大纲"
             }
           },
           {
@@ -182,9 +182,9 @@
   },
   "active": "c10119cd870002fc",
   "lastOpenFiles": [
+    "人工智能导论知识点与考点总结.md",
     "人工智能导论——数理逻辑.md",
     "未命名.md",
-    "人工智能导论知识点与考点总结.md",
     "人工智能导论知识点与考点总结.md.tmp.31588.683cb901f7c3",
     "人工智能导论知识点与考点总结.md.tmp.30416.4b6f13bd01f5",
     "人工智能导论知识点与考点总结.md.tmp.30416.eb1cf198d3c5",
