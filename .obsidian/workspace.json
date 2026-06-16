@@ -144,7 +144,7 @@
               "state": {
                 "file": "人工智能导论知识点与考点总结.md",
                 "followCursor": true,
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
@@ -182,11 +182,11 @@
   },
   "active": "c10119cd870002fc",
   "lastOpenFiles": [
+    "未命名.md",
+    "人工智能导论知识点与考点总结.md",
     "人工智能导论知识点与考点总结.md.tmp.26468.b80f34aca201",
     "人工智能导论知识点与考点总结.md.tmp.26468.ec5d14b798d0",
     "人工智能导论——数理逻辑.md",
-    "人工智能导论知识点与考点总结.md",
-    "未命名.md",
     "人工智能导论知识点与考点总结.md.tmp.31588.683cb901f7c3",
     "人工智能导论知识点与考点总结.md.tmp.30416.4b6f13bd01f5",
     "人工智能导论知识点与考点总结.md.tmp.30416.eb1cf198d3c5",
@@ -215,7 +215,6 @@
     "数据库系统原理/第七章/第七章笔记.md.baiduyun.uploading.cfg",
     "Java/Pasted image 20250613212318.png.baiduyun.uploading.cfg",
     "Java/Pasted image 20250613211744.png.baiduyun.uploading.cfg",
-    "Java/Pasted image 20250613211723.png.baiduyun.uploading.cfg",
     "数据库系统原理/第七章/第七章笔记.md",
     "菜鸟教程.md",
     "数据库系统原理/第一章/第一章笔记.md",
