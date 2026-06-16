@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "4e2fab74ba0a029f",
+        "id": "dbe3ea9317b3ed1b",
         "type": "tabs",
         "children": [
           {
-            "id": "c10119cd870002fc",
+            "id": "1434c7e26388455c",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -180,24 +180,29 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c10119cd870002fc",
+  "active": "1434c7e26388455c",
   "lastOpenFiles": [
-    "未命名.md",
     "人工智能导论知识点与考点总结.md",
+    "未命名.md",
+    "Easyx学习笔记.md",
+    "人工智能导论——数理逻辑.md",
+    "计组小总结.md",
+    "README.md",
+    "Python爬虫学习.md",
+    "OpenCV学习笔记.md",
+    "Electron学习记录.md",
+    "微机原理与接口技术/微机原理与接口技术.md",
+    "个人博客需求分析.md",
     "人工智能导论知识点与考点总结.md.tmp.26468.b80f34aca201",
     "人工智能导论知识点与考点总结.md.tmp.26468.ec5d14b798d0",
-    "人工智能导论——数理逻辑.md",
     "人工智能导论知识点与考点总结.md.tmp.31588.683cb901f7c3",
     "人工智能导论知识点与考点总结.md.tmp.30416.4b6f13bd01f5",
     "人工智能导论知识点与考点总结.md.tmp.30416.eb1cf198d3c5",
     "人工智能导论知识点与考点总结.md.tmp.30416.3235edca262d",
-    "计组小总结.md",
-    "个人博客需求分析.md",
     "Games101/11. Geometry 2（曲线、曲面）/11. Geometry 2 （Curves and Surfaces）.md",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (30).png",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (29).png",
     "人工智能导论——数理逻辑 1.md",
-    "Easyx学习笔记.md",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (27).png",
     "改图鸭 (28).png",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (26).png",
@@ -209,7 +214,6 @@
     "Games101/10. Geometry 1（介绍）/10. Geometry 1 (Introduction).md",
     "未命名 1.md",
     "未命名 2.md",
-    "README.md",
     "Java/Java概念梳理.md",
     "Java/Java概念梳理.md.baiduyun.uploading.cfg",
     "数据库系统原理/第七章/第七章笔记.md.baiduyun.uploading.cfg",
