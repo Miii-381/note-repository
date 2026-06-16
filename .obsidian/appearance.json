@@ -1,5 +1,7 @@
 {
   "textFontFamily": "",
-  "theme": "moonstone",
-  "monospaceFontFamily": "Consolas"
+  "theme": "obsidian",
+  "monospaceFontFamily": "Consolas",
+  "baseFontSize": 18,
+  "baseFontSizeAction": true
 }
