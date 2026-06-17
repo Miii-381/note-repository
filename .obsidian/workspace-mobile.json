@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Games101/3. Transformation（二维）/3. Transformation（变换）.md",
-                "mode": "source",
-                "source": false
+                "file": "人工智能导论知识点与考点总结.md",
+                "mode": "preview",
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "3. Transformation（变换）"
+              "title": "人工智能导论知识点与考点总结"
             }
           }
         ]
@@ -130,7 +130,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "Games101/3. Transformation（二维）/3. Transformation（变换）.md",
+            "file": "人工智能导论知识点与考点总结.md",
             "followCursor": true,
             "showSearch": false,
             "searchQuery": ""
@@ -144,6 +144,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:新建数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -154,8 +155,8 @@
   },
   "active": "4cf8ef8fad398dc9",
   "lastOpenFiles": [
-    "Games101/4. Transformation（三维）/4. Transformation（三维）.md",
     "Games101/3. Transformation（二维）/3. Transformation（变换）.md",
+    "Games101/4. Transformation（三维）/4. Transformation（三维）.md",
     "Games101/11. Geometry 2（曲线、曲面）/11. Geometry 2 （Curves and Surfaces）.md",
     "未命名 2.md",
     "未命名 1.md",

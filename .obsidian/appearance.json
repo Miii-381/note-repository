@@ -1,5 +1,7 @@
 {
   "textFontFamily": "",
   "theme": "obsidian",
-  "monospaceFontFamily": "Consolas"
+  "monospaceFontFamily": "Consolas",
+  "interfaceFontFamily": "Mi Sans",
+  "baseFontSize": 18
 }
