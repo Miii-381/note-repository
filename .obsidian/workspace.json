@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "操作系统知识点与考点整理.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "人工智能导论知识点与考点总结"
+              "title": "操作系统知识点与考点整理"
             }
           }
         ],
@@ -157,13 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "操作系统知识点与考点整理.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "人工智能导论知识点与考点总结 的大纲"
+              "title": "操作系统知识点与考点整理 的大纲"
             }
           },
           {
@@ -197,11 +197,11 @@
   },
   "active": "8651a07c38f05fd2",
   "lastOpenFiles": [
+    "个人博客需求分析.md",
+    "人工智能导论知识点与考点总结.md",
     "人工智能导论——数理逻辑.md",
     "操作系统知识点与考点整理.md",
     "计组小总结.md",
-    "人工智能导论知识点与考点总结.md",
-    "个人博客需求分析.md",
     "conflict-files-obsidian-git.md",
     "未命名.md",
     "Easyx学习笔记.md",
