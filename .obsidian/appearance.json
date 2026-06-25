@@ -1,12 +1,3 @@
 {
-  "textFontFamily": "",
-  "theme": "obsidian",
-  "monospaceFontFamily": "Consolas",
-<<<<<<< HEAD
-  "baseFontSize": 18,
-  "baseFontSizeAction": true
-=======
-  "interfaceFontFamily": "Mi Sans",
-  "baseFontSize": 18
->>>>>>> origin/main
+  "theme": "obsidian"
 }
