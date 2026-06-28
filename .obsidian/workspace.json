@@ -177,7 +177,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -195,15 +195,21 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "52bcc5f240cc1496",
+  "active": "8651a07c38f05fd2",
   "lastOpenFiles": [
-    "操作系统/Pasted image 20260623140649.png",
+    "Games101/3. Transformation（二维）/3. Transformation（变换）.md",
+    "Java/Java概念梳理.md",
+    "SpringBoot+MybatisPlus项目踩坑实录/SpringBoot+MybatisPlus项目踩坑实录.md",
+    "SpringBoot+MybatisPlus项目踩坑实录/Pasted image 20250709223451.png",
+    "Vue项目学习笔记+踩坑记录/Vue项目学习笔记+踩坑记录.md",
+    "个人博客需求分析.md",
+    "计组小总结.md",
     "操作系统/操作系统知识点与考点整理.md",
+    "操作系统/Pasted image 20260623140649.png",
     "人工智能/人工智能导论知识点与考点总结.md",
     "人工智能/人工智能导论——数理逻辑.md",
     "人工智能",
     "未命名.md",
-    "计组小总结.md",
     "操作系统",
     "操作系统/Pasted image 20260621145207.png",
     "ちゅーりっぷわんだー特典脚本_中文翻译.md",
@@ -211,7 +217,6 @@
     "__prepare_tulip_script.py",
     "__tulip_pypdf_raw.txt",
     "__tulip_wonder_script_raw.txt",
-    "个人博客需求分析.md",
     "conflict-files-obsidian-git.md",
     "Easyx学习笔记.md",
     "README.md",
@@ -232,15 +237,11 @@
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (26).png",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (25).png",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (24).png",
-    "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (23).png",
     "Games101/10. Geometry 1（介绍）/10. Geometry 1 (Introduction).md",
     "未命名 1.md",
     "未命名 2.md",
-    "Java/Java概念梳理.md",
     "数据库系统原理/第七章/第七章笔记.md",
     "菜鸟教程.md",
-    "数据库系统原理/第一章/第一章笔记.md",
-    "数据库系统原理/第六章/第六章笔记.md",
-    "数据库系统原理/第三章/第三章笔记.md"
+    "数据库系统原理/第一章/第一章笔记.md"
   ]
 }
