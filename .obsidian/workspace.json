@@ -93,8 +93,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 212.5110321044922,
-    "collapsed": true
+    "width": 212.5110321044922
   },
   "right": {
     "id": "3b6567ea7a9da1f8",
@@ -197,7 +196,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "8651a07c38f05fd2",
+  "active": "98412368871f0f17",
   "lastOpenFiles": [
     "人工智能/人工智能导论知识点与考点总结.md",
     "操作系统/操作系统知识点与考点整理.md",
