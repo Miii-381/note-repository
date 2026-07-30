@@ -4,39 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "dbe3ea9317b3ed1b",
+        "id": "6639db9cb1b4fc4c",
         "type": "tabs",
         "children": [
           {
-            "id": "1434c7e26388455c",
+            "id": "a42e3fb4ff69ca84",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "人工智能导论知识点与考点总结.md",
+                "file": "找工作/Hot100记录.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "人工智能导论知识点与考点总结"
-            }
-          },
-          {
-            "id": "8651a07c38f05fd2",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "操作系统/操作系统知识点与考点整理.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "操作系统知识点与考点整理"
+              "title": "Hot100记录"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -157,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "操作系统/操作系统知识点与考点整理.md",
+                "file": "找工作/Hot100记录.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "操作系统知识点与考点整理 的大纲"
+              "title": "Hot100记录 的大纲"
             }
           },
           {
@@ -177,7 +162,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -195,10 +180,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "52bcc5f240cc1496",
+  "active": "8848d3293cbe4392",
   "lastOpenFiles": [
-    "人工智能/人工智能导论知识点与考点总结.md",
     "操作系统/操作系统知识点与考点整理.md",
+    "找工作/Hot100记录.md",
+    "找工作/27-灵犀互娱游戏服务端开发-面经.md",
+    "找工作",
+    "人工智能/人工智能导论知识点与考点总结.md",
     "Games101/3. Transformation（二维）/3. Transformation（变换）.md",
     "Java/Java概念梳理.md",
     "SpringBoot+MybatisPlus项目踩坑实录/SpringBoot+MybatisPlus项目踩坑实录.md",
@@ -227,7 +215,6 @@
     "人工智能导论知识点与考点总结.md.tmp.26468.b80f34aca201",
     "人工智能导论知识点与考点总结.md.tmp.26468.ec5d14b798d0",
     "人工智能导论知识点与考点总结.md.tmp.31588.683cb901f7c3",
-    "人工智能导论知识点与考点总结.md.tmp.30416.4b6f13bd01f5",
     "Games101/11. Geometry 2（曲线、曲面）/11. Geometry 2 （Curves and Surfaces）.md",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (30).png",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (29).png",
@@ -240,8 +227,6 @@
     "Games101/10. Geometry 1（介绍）/10. Geometry 1 (Introduction).md",
     "未命名 1.md",
     "未命名 2.md",
-    "数据库系统原理/第七章/第七章笔记.md",
-    "菜鸟教程.md",
-    "数据库系统原理/第一章/第一章笔记.md"
+    "数据库系统原理/第七章/第七章笔记.md"
   ]
 }
