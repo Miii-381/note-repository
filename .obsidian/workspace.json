@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "找工作/Hot100记录.md",
+                "file": "Games101/8. Shading 2 (着色、管线和纹理映射)/8. Shading 2 (着色、管线和纹理映射).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Hot100记录"
+              "title": "8. Shading 2 (着色、管线和纹理映射)"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "找工作/Hot100记录.md",
+                "file": "Games101/8. Shading 2 (着色、管线和纹理映射)/8. Shading 2 (着色、管线和纹理映射).md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Hot100记录 的大纲"
+              "title": "8. Shading 2 (着色、管线和纹理映射) 的大纲"
             }
           },
           {
@@ -182,9 +182,18 @@
   },
   "active": "a42e3fb4ff69ca84",
   "lastOpenFiles": [
+    "Games101/8. Shading 2 (着色、管线和纹理映射)/改图鸭 (3).png",
+    "Games101/8. Shading 2 (着色、管线和纹理映射)/8. Shading 2 (着色、管线和纹理映射).md",
+    "Games101/7. Shading 1（光照、着色和图形管线）/7. Shading 1（光照、着色和图形管线）.md",
+    "Games101/9. Shading 3（纹理映射）/9. Shading 3（纹理映射）.md",
+    "Games101/8. Shading 2 (着色、管线和纹理映射)/改图鸭.png",
+    "Games101/9. Shading 3（纹理映射）/改图鸭.png",
+    "Games101/9. Shading 3（纹理映射）/改图鸭 (1).png",
+    "Games101/10. Geometry 1（介绍）/10. Geometry 1 (Introduction).md",
+    "Games101/3. Transformation（二维）/Pasted image 20260311215840.png",
     "Games101/3. Transformation（二维）/3. Transformation（变换）.md",
-    "Games101/3. Transformation（二维）/Pasted image 20260311215751.png",
     "找工作/Hot100记录.md",
+    "Games101/3. Transformation（二维）/Pasted image 20260311215751.png",
     "操作系统/操作系统知识点与考点整理.md",
     "找工作/27-灵犀互娱游戏服务端开发-面经.md",
     "找工作",
@@ -218,14 +227,6 @@
     "人工智能导论知识点与考点总结.md.tmp.31588.683cb901f7c3",
     "Games101/11. Geometry 2（曲线、曲面）/11. Geometry 2 （Curves and Surfaces）.md",
     "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (30).png",
-    "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (29).png",
-    "人工智能导论——数理逻辑 1.md",
-    "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (27).png",
-    "改图鸭 (28).png",
-    "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (26).png",
-    "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (25).png",
-    "Games101/10. Geometry 1（介绍）/10. Geometry 1 (Introduction).md",
-    "未命名 1.md",
-    "未命名 2.md"
+    "Games101/11. Geometry 2（曲线、曲面）/改图鸭 (29).png"
   ]
 }
