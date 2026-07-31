@@ -20,8 +20,21 @@
               "icon": "lucide-file",
               "title": "Hot100记录"
             }
+          },
+          {
+            "id": "7fe0d61fbe5ea73f",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.13.4"
+              },
+              "icon": "lucide-book-up",
+              "title": "版本说明 1.13.4"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -41,7 +54,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -78,8 +93,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 212.5110321044922,
-    "collapsed": true
+    "width": 212.5110321044922
   },
   "right": {
     "id": "3b6567ea7a9da1f8",
@@ -143,13 +157,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "找工作/Hot100记录.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Hot100记录 的大纲"
+              "title": "大纲"
             }
           },
           {
@@ -181,8 +194,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "597cf22f7cae5f02",
+  "active": "7fe0d61fbe5ea73f",
   "lastOpenFiles": [
+    "找工作/Hot100记录.md.baiduyun.uploading.cfg",
     "Games101/8. Shading 2 (着色、管线和纹理映射)/8. Shading 2 (着色、管线和纹理映射).md",
     "Games101/9. Shading 3（纹理映射）/9. Shading 3（纹理映射）.md",
     "Games101/8. Shading 2 (着色、管线和纹理映射)/改图鸭 (3).png",
