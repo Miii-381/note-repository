@@ -1,2 +1,2 @@
-.obsidian/
-*.baiduyun.uploading.cfg
+.obsidian/*
+*baiduyun.upload*
