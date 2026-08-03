@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "找工作/Hot100记录.md",
+                "file": "找工作/编程语言C++整理.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "找工作/Hot100记录.md",
+                "file": "找工作/编程语言C++整理.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -155,9 +155,19 @@
               "icon": "lucide-list",
               "title": "大纲"
             }
+          },
+          {
+            "id": "8ddf5f3210561fe4",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -175,7 +185,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "30f85a9f2bcb5f94",
+  "active": "a83c90c3bf108da7",
   "lastOpenFiles": [
     "找工作/tmp/format-cpp-layout.ps1",
     "找工作/tmp/format-cpp-final.ps1",
