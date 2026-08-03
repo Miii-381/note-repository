@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "找工作/Hot100记录.md",
+                "file": "找工作/编程语言C++整理.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Hot100记录"
+              "title": "编程语言C++整理"
             }
           }
         ]
@@ -147,7 +147,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "找工作/Hot100记录.md",
+                "file": "找工作/编程语言C++整理.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -177,7 +177,13 @@
   },
   "active": "30f85a9f2bcb5f94",
   "lastOpenFiles": [
-    "找工作/27-灵犀互娱游戏服务端开发-面经.md",
-    "找工作/Hot100记录.md"
+    "找工作/tmp/format-cpp-layout.ps1",
+    "找工作/tmp/format-cpp-final.ps1",
+    "找工作/tmp/编程语言C++整理.pangu.preview.md",
+    "找工作/tmp/编程语言C++整理.preview.md",
+    "找工作/编程语言C++.pdf",
+    "找工作/编程语言C++整理.md",
+    "找工作/Hot100记录.md",
+    "找工作/27-灵犀互娱游戏服务端开发-面经.md"
   ]
 }
