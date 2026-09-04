@@ -1,3 +1,11 @@
 **/.obsidian/
 **/.agent/
+**/.agents/
+**/.codex/
 *baiduyun.upload*
+
+# Codex 工具调用产生的临时构建与校验文件
+找工作/tmp/pdfs/
+找工作/output/pdf/
+**/__pycache__/
+*.py[cod]
