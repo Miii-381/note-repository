@@ -2,7 +2,7 @@
 
 > **读者定位**：这不是一份指令字典，而是一篇“先建立心智模型，再读懂项目配置”的入门笔记。  
 > **阅读主线**：项目为什么需要 Nginx → 一次请求怎样被选中和转发 → 上传、下载、分享各走哪条链路 → 性能与高可用从哪里来 → 配置出错时怎样排查。  
-> **资料边界**：项目目录中没有原始 `nginx.conf` 和 C/C++ 源码。本文所说的“项目实际运用”来自现有架构、接口资料及《网盘项目架构与 HTTP 接口学习文档》；配置片段是按这些事实重建的教学示例，不冒充项目原配置。
+> **代码复核基线**：已读取 `D:\Desktop\AI_YunCunChu` 的 Nginx 配置、Docker Compose、启动脚本和业务源码。项目实际配置为 2 个 worker、HTTP 跳 HTTPS、React 静态资源、13 条 FastCGI TCP 路由和 `ngx_fastdfs_module` 下载；没有 `nginx-upload-module` 指令、没有 `upstream`、没有多业务实例负载均衡。下文通用 Nginx 示例仍是教学设计，不能冒充项目现状。
 
 ---
 
@@ -49,16 +49,16 @@ Nginx：域名、TLS、路由、静态文件、上传入口、下载出口、日
 
 | 标记 | 含义 | 示例 |
 |---|---|---|
-| **可确认** | 项目资料直接给出的结构或链路 | 上传经过 `nginx-upload-module`，下载经过 `fastdfs-nginx-module` |
-| **合理推断** | 由接口、模块名和架构关系推得，但还需源码或配置验证 | 普通 API 后端可能使用 HTTP 反向代理，也可能使用 FastCGI |
+| **可确认** | 当前源码与配置直接证明 | 13 条 API 使用 `fastcgi_pass`；普通上传正文由 `upload_cgi` 读取；下载使用 `ngx_fastdfs_module` |
+| **设计示例** | 用于学习但未在当前配置中启用 | `upstream` 多实例、限流、签名下载、Nginx upload module |
 | **教学示例** | 为帮助学习而给出的通用配置 | `upstream image_api` 中的端口、超时和实例数 |
 
 特别注意：
 
-1. `nginx-upload-module` 和 `fastdfs-nginx-module` 都不是 Nginx 官方核心模块；
+1. `ngx_fastdfs_module` 不是 Nginx 官方核心模块；当前配置没有使用 `nginx-upload-module`；
 2. 项目接口资料对上传正文的描述存在不一致：一处写 `application/octet-stream`，示例又具有 `multipart/form-data` 特征；
 3. 因此，本文只确认“先由 Nginx 接收并落临时文件，再通知上传处理器”这一层，不虚构具体第三方模块指令；
-4. 普通 `/api/...` 到 C/C++ 处理器究竟走 HTTP 还是 FastCGI，也需要原始配置才能最终确认。
+4. 普通 `/api/...` 已确认走 FastCGI TCP 端口 `10000`～`10012`，不是 HTTP `proxy_pass`。
 
 这份笔记的目标是让你得到一套可迁移的理解方法，而不是背诵一份未经验证的配置。
 
@@ -508,7 +508,7 @@ Nginx 只负责把请求交到正确入口，不应在配置中重写注册、�
 
 ### 6.2 上传链路
 
-项目明确使用 `nginx-upload-module`。可确认的逻辑链路是：
+当前项目没有配置 `nginx-upload-module`。普通上传的实际链路是：Nginx 把 multipart 请求体通过 FastCGI 传给 `upload_cgi`，该程序全量读取请求体并自行写本地临时文件。下面上传模块流程仅作为另一种架构方案，不代表当前实现：
 
 ```mermaid
 sequenceDiagram
@@ -702,11 +702,11 @@ Nginx 127.0.0.1
 
 开启请求缓冲时，Nginx 先接收客户端请求体，再转给上游，有助于隔离慢客户端；关闭后，请求体会更接近流式地送到上游，但上游连接会更早、更久地被占用。
 
-对本项目上传而言，不能简单照抄 `proxy_request_buffering off;`，因为项目使用了专门的上传模块和临时文件协议。是否关闭缓冲必须结合真实模块配置、临时盘容量和后端读取方式验证。
+对本项目上传而言，不能简单照抄 `proxy_request_buffering off;`：实际后端是 FastCGI，`upload_cgi` 还会把整个请求体读入内存并自行落临时文件。缓冲策略必须结合 `fastcgi_request_buffering`、12 MiB 请求上限和后端内存行为验证。
 
-### 7.5 如果后端实际使用 FastCGI
+### 7.5 当前后端实际使用 FastCGI
 
-项目处理器是 C/C++ 模块，但没有原始 Nginx 配置，所以不能确认普通 API 使用 HTTP 还是 FastCGI。若真实服务暴露的是 FastCGI，入口会更接近：
+原始配置已确认普通 API 使用 FastCGI，并把不同路径映射到不同 TCP 端口。入口形态如下：
 
 ```nginx
 location /api/ {
@@ -999,7 +999,7 @@ location /api/ {
             └─► 多台 API 与多节点存储
 ```
 
-项目资料能确认 Nginx 的入口作用，但没有给出双 Nginx、VIP 或云负载均衡拓扑，因此不能声称当前项目入口已经高可用。
+当前 Compose 只有一个 Nginx 容器，也没有 VIP、云负载均衡或第二个入口实例，因此明确不是入口高可用。
 
 ---
 
@@ -1332,7 +1332,7 @@ http {
 server {
     # 精确上传入口优先于通用 /api/ 前缀
     location = /api/upload {
-        # nginx-upload-module 的真实指令应从项目配置恢复
+        # 仅作可选方案；当前项目未配置 nginx-upload-module
         # 目标：请求体写临时文件，再把文件信息交给 ApiUpload
     }
 
@@ -1510,13 +1510,13 @@ curl -I http://image.example.com/api/login
 
 ### 17.1 30 秒版本
 
-> 这个网盘项目把 Nginx 放在最前面作为统一 HTTP 入口。普通 `/api` 请求进入 C/C++ 业务处理器，分享页和前端资源由 Nginx 直接返回；上传通过 `nginx-upload-module` 先落临时文件，再交给 ApiUpload 写入 FastDFS；下载通过 `fastdfs-nginx-module` 从 Storage 返回。Nginx 还适合统一做 TLS、访问日志、请求大小限制、限流和 API 负载均衡，但单台 Nginx 本身仍是单点。
+> 这个网盘项目把 Nginx 放在最前面作为统一入口。当前配置用 2 个 worker，HTTP 重定向 HTTPS，直接返回 React 静态资源，并把 13 条 `/api/*` 路由通过 FastCGI TCP 端口交给业务进程。普通上传正文也走 FastCGI，由 `upload_cgi` 全量读取并落临时文件；下载通过 `ngx_fastdfs_module` 返回 `/group...` 文件。当前没有 `upstream`、限流或多实例负载均衡，单 Nginx 仍是单点。
 
 ### 17.2 两分钟版本
 
 > 我理解 Nginx 的核心不是“会写 proxy_pass”，而是先选择 Server，再按 URI 选择 Location，最后执行静态服务、代理或第三方模块处理。本项目里，`/api/myfiles?cmd=...` 的查询参数不会影响 Location，多个 cmd 会进入同一路径，再由业务层分派。普通 HTTP 代理要特别注意 `proxy_pass` 末尾斜杠会不会删掉 `/api` 前缀，还要传递 Host、真实客户端地址、外部协议和请求 ID。
 >
-> 上传与下载是两条特殊数据链路。上传模块先把大请求落到临时目录，能隔离部分慢客户端，但必须监控临时盘、处理孤儿文件，并解决 FastDFS 成功而 MySQL 失败等一致性窗口。下载模块适合直接发送公共文件，但永久 URL 不自动具备 Token 权限，私有文件需要业务鉴权或短期签名。性能上，Nginx 依靠 Master/Worker 和事件驱动模型管理大量连接；高可用则还需要多 Nginx、外部入口、无状态 API 与健康检查共同完成。
+> 上传与下载是两条特殊链路。当前普通上传在 FastCGI 程序中全量缓冲请求体并写临时文件；大文件被前端切成 10 MiB 后顺序上传，单请求受 Nginx 12 MiB 上限约束。下载模块直接返回文件，但永久 URL 不自动具备 Token 权限。要完善性能与高可用，还需要流式处理、有界背压、多入口、多业务实例和共享/持久化状态；这些不是当前实现。
 
 ### 17.3 追问时可以展开的四条线
 
@@ -1661,8 +1661,8 @@ upstream_response_time
 
 ### 20.4 仍需从真实项目确认的清单
 
-- 普通 API 到 C/C++ 处理器使用 HTTP 还是 FastCGI；
-- `/api/upload` 的真实 Content-Type 与上传模块重写参数；
+- 普通 API 已确认使用 FastCGI TCP 端口；
+- `/api/upload` 已确认是 multipart，经 FastCGI 由 `upload_cgi` 手工解析，没有上传模块重写参数；
 - 两个第三方模块的版本、编译方式和完整指令；
 - 上传临时目录、清理策略和磁盘告警；
 - FastDFS 下载 Location 与 `mod_fastdfs.conf`；
