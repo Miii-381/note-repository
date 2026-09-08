@@ -200,3 +200,603 @@
 - 一条端到端 API：注册 code0 → 登录 code0+token（MD5 密码）→（该 token 曾在 redis 为 `123123` 键值）。
 
 > 所有数字仅来自本次本地部署，不推广到任意环境；压测/并发/性能数据未做，不提供。
+
+---
+
+## 九、核心功能调用链图与面试回答口径
+
+> 本章整理自源码复核后的问答，只描述当前项目已经存在的调用关系。FastCGI 多实例、受保护下载、点对点分享、签名 URL、完整事务与补偿机制均属于改进方案，不能表述为现有功能。
+
+### 9.1 Nginx、FastCGI 程序与业务层
+
+核心关系：FastCGI 是 Nginx 与业务进程之间的通信协议，不是另一个类似 Nginx 的调度程序。当前项目把 FastCGI 接入代码和业务代码编译在同一个可执行程序中。
+
+```mermaid
+flowchart LR
+    Client["浏览器 / React 前端"]
+
+    subgraph Gateway["Web 入口"]
+        Nginx["Nginx<br/>监听 80 / 443<br/>解析 HTTP、匹配路由"]
+    end
+
+    subgraph Process["一个 FastCGI 业务进程<br/>例如 login"]
+        Adapter["FastCGI 接入部分<br/>FCGI_Accept()<br/>PARAMS / STDIN"]
+        Business["业务逻辑部分<br/>解析参数、鉴权<br/>执行业务"]
+        Adapter -->|"同进程函数调用"| Business
+    end
+
+    MySQL[("MySQL<br/>持久化业务数据")]
+    Redis[("Redis<br/>Token / 分片会话")]
+    FastDFS[("FastDFS<br/>文件正文")]
+
+    Client <-->|"HTTP / HTTPS"| Nginx
+    Nginx <-->|"TCP + FastCGI 协议"| Adapter
+    Business <-->|"SQL"| MySQL
+    Business <-->|"Redis 协议"| Redis
+    Business <-->|"FastDFS 客户端协议或命令"| FastDFS
+```
+
+一次请求的协议转换如下：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant F as 前端
+    participant N as Nginx
+    participant M as Nginx FastCGI模块
+    participant L as 业务进程中的libfcgi
+    participant B as 同进程业务逻辑
+    participant S as MySQL / Redis / FastDFS
+
+    F->>N: HTTP / HTTPS请求
+    N->>N: TCP字节流重组后增量解析HTTP
+    N->>N: 根据URI匹配location
+    N->>M: 进入ngx_http_fastcgi_module
+    M->>L: FCGI_BEGIN_REQUEST
+    M->>L: FCGI_PARAMS<br/>方法、URI、请求头等
+    M->>L: FCGI_STDIN<br/>原始请求体
+    L->>B: FCGI_Accept返回<br/>环境变量 + stdin
+    B->>S: 执行业务并访问后端依赖
+    S-->>B: 返回结果
+    B-->>L: printf输出响应头和正文
+    L-->>M: FCGI_STDOUT + FCGI_END_REQUEST
+    M-->>N: FastCGI响应
+    N-->>F: HTTP / HTTPS响应
+```
+
+HTTP 转 FastCGI 只是“换协议外壳”，Nginx 不负责解析 JSON 或 multipart 的业务字段：
+
+```mermaid
+flowchart TD
+    HTTP["HTTP请求<br/>请求行 + 请求头 + 请求体"]
+    Parse["Nginx解析HTTP外层结构"]
+    Route["location匹配<br/>确定fastcgi_pass地址"]
+    Params["请求元数据<br/>编码为FCGI_PARAMS"]
+    Stdin["请求体原始字节<br/>编码为FCGI_STDIN"]
+    Send["通过TCP发送到<br/>对应FastCGI端口"]
+    Accept["libfcgi解析记录<br/>FCGI_Accept返回"]
+    Biz["业务程序解析<br/>JSON / multipart / 二进制"]
+
+    HTTP --> Parse --> Route
+    Route --> Params
+    Route --> Stdin
+    Params --> Send
+    Stdin --> Send
+    Send --> Accept --> Biz
+```
+
+当前 13 条业务路由由 Nginx 直接映射到 13 个单实例 FastCGI 进程：
+
+```mermaid
+flowchart LR
+    N["Nginx<br/>按URI选择端口"]
+    N -->|"/api/login → 10000"| P0["login"]
+    N -->|"/api/reg → 10001"| P1["register"]
+    N -->|"/api/upload → 10002"| P2["upload"]
+    N -->|"/api/md5 → 10003"| P3["md5"]
+    N -->|"/api/myfiles → 10004"| P4["myfiles"]
+    N -->|"/api/dealfile → 10005"| P5["dealfile"]
+    N -->|"/api/sharefiles → 10006"| P6["sharefiles"]
+    N -->|"/api/dealsharefile → 10007"| P7["dealsharefile"]
+    N -->|"/api/sharepic → 10008"| P8["sharepicture"]
+    N -->|"/api/chunk_init → 10009"| P9["chunk_init"]
+    N -->|"/api/chunk_upload → 10010"| P10["chunk_upload"]
+    N -->|"/api/chunk_merge → 10011"| P11["chunk_merge"]
+    N -->|"/api/ai → 10012"| P12["ai"]
+```
+
+`spawn-fcgi` 只参与启动，不是每次请求的中转层：
+
+```mermaid
+flowchart TD
+    Start["容器执行start.sh"]
+    Spawn["spawn-fcgi指定<br/>可执行程序和监听端口"]
+    Process["启动常驻FastCGI业务进程"]
+    Wait["FCGI_Accept等待请求"]
+    Nginx["Nginx直接连接该进程"]
+    Handle["进程执行业务逻辑"]
+    Again["处理完成后继续等待"]
+
+    Start --> Spawn --> Process --> Wait
+    Nginx --> Wait
+    Wait --> Handle --> Again --> Wait
+```
+
+**面试口径：** 前端使用 HTTP/HTTPS 访问 Nginx；Nginx 根据 URI 路由到指定端口，并把 HTTP 元数据封装为 `FCGI_PARAMS`、请求体封装为 `FCGI_STDIN`。业务程序通过 `libfcgi` 接入请求，在同一进程中执行业务，再以 FastCGI 响应返回 Nginx。当前每个模块只有一个常驻进程，没有 FastCGI 多实例池或业务线程池，同一模块基本串行处理请求。
+
+### 9.2 文件数据的存储职责
+
+```mermaid
+flowchart LR
+    Frontend["React前端<br/>计算MD5、切片、发请求"]
+
+    subgraph NF["Nginx + Tracker + Storage容器<br/>172.30.0.3"]
+        Nginx["Nginx"]
+        Tracker["FastDFS Tracker<br/>选择Storage"]
+        Storage["FastDFS Storage<br/>保存最终文件正文"]
+        Module["ngx_fastdfs_module<br/>返回文件正文"]
+    end
+
+    subgraph App["FastCGI + Redis容器<br/>172.30.0.4"]
+        CGI["FastCGI业务程序"]
+        Redis[("Redis<br/>Token、分片会话")]
+        Temp["/tmp/chunks<br/>未合并分片"]
+    end
+
+    MySQL[("MySQL<br/>文件元数据、用户关系")]
+
+    Frontend <-->|"HTTP / HTTPS"| Nginx
+    Nginx <-->|"/api/*：FastCGI"| CGI
+    CGI <-->|"会话和鉴权"| Redis
+    CGI <-->|"元数据和关系"| MySQL
+    CGI <-->|"临时分片"| Temp
+    CGI -->|"询问上传位置"| Tracker
+    Tracker -->|"返回Storage地址"| CGI
+    CGI -->|"上传最终正文"| Storage
+    Nginx -->|"/group...：不走FastCGI"| Module
+    Module -->|"读取正文"| Storage
+```
+
+- MySQL 保存 `md5`、`file_id`、URL、大小、类型、引用计数和用户目录关系，不保存文件正文。
+- Redis 保存 Token、分片会话和公共分享缓存，不保存最终正文。
+- `/tmp/chunks` 暂存未合并分片。
+- FastDFS Storage 保存最终文件正文。
+
+### 9.3 秒传预检与上传分流
+
+所有文件先在前端计算完整 MD5，再调用 `/api/md5`：
+
+```mermaid
+flowchart TD
+    Select["用户选择文件"]
+    Calc["SparkMD5按2 MiB读取<br/>计算完整文件MD5"]
+    Request["POST /api/md5<br/>user、token、fileName、md5"]
+    Nginx["Nginx → FastCGI 10003"]
+    Auth["md5进程<br/>Redis验证Token"]
+    Query["查询MySQL的file_info<br/>和user_file_list"]
+    Physical{"物理文件是否存在？"}
+    Own{"当前用户是否已拥有<br/>同名、同MD5文件？"}
+    Existing["返回已存在<br/>不重复计数"]
+    Instant["秒传：新增用户关系<br/>引用计数和用户文件数+1"]
+    Size{"文件是否大于10 MiB？"}
+    Normal["普通上传<br/>/api/upload"]
+    Chunk["分片上传<br/>/api/chunk_*"]
+
+    Select --> Calc --> Request --> Nginx --> Auth --> Query --> Physical
+    Physical -->|"存在"| Own
+    Own -->|"是"| Existing
+    Own -->|"否"| Instant
+    Physical -->|"不存在"| Size
+    Size -->|"≤ 10 MiB"| Normal
+    Size -->|"> 10 MiB"| Chunk
+```
+
+**面试口径：** 用户已拥有则直接返回；物理正文存在但当前用户未拥有时，只新增 `user_file_list` 并增加 `file_info.count`，不传正文；物理文件不存在时才进入普通上传或分片上传。当前秒传依赖客户端 MD5，服务端不复算正文摘要。
+
+### 9.4 普通上传链路
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant F as React前端
+    participant N as Nginx
+    participant U as upload FastCGI<br/>10002
+    participant T as 应用容器临时文件
+    participant C as fdfs_upload_file命令
+    participant TR as Tracker
+    participant ST as Storage
+    participant DB as MySQL
+
+    F->>N: POST /api/upload<br/>multipart：file、user、md5、size
+    N->>N: 接收并缓冲HTTP请求体
+    N->>U: FastCGI PARAMS + STDIN
+    U->>U: 整个multipart读入内存并解析
+    U->>T: 文件正文写本地临时文件
+    U->>DB: 再次查询MD5尝试去重
+    DB-->>U: 查询结果
+    U->>C: pipe + fork + exec
+    C->>TR: 查询可写Storage
+    TR-->>C: 返回Storage地址
+    C->>ST: 上传文件正文
+    ST-->>C: 返回file_id
+    C-->>U: 通过管道返回file_id
+    U->>T: 删除本地临时文件
+    U->>U: 使用配置和file_id拼接URL
+    U->>DB: 写file_info、user_file_list<br/>更新user_file_count
+    U-->>N: FastCGI JSON结果
+    N-->>F: HTTP JSON结果
+```
+
+**面试口径：** 不超过 10 MiB 的文件以 multipart 发送给 `upload_cgi`。该程序全量读取请求体并落本地临时文件，再通过 `fork/exec` 调用 `fdfs_upload_file`；Tracker 只选择 Storage，正文最终写入 Storage。成功后保存 `file_id`、URL和用户关系。当前 `/api/upload` 不验 Token、不复算真实 MD5，多表写入也没有事务。
+
+### 9.5 大文件分片、续传与合并
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant F as React前端
+    participant N as Nginx
+    participant I as chunk_init<br/>10009
+    participant U as chunk_upload<br/>10010
+    participant M as chunk_merge<br/>10011
+    participant R as Redis
+    participant D as /tmp/chunks
+    participant TR as Tracker
+    participant ST as Storage
+    participant DB as MySQL
+
+    F->>F: 按10 MiB切片并计算chunkCount
+    F->>N: POST /api/chunk_init<br/>用户、Token、MD5、大小、片数
+    N->>I: FastCGI 10009
+    I->>R: 验证Token并创建或读取chunk:{md5}
+    I->>D: 创建/tmp/chunks/{md5}
+    I-->>F: 返回uploadedChunks
+
+    loop 按编号逐个await上传缺片
+        F->>N: POST /api/chunk_upload<br/>?md5=...&index=i<br/>原始二进制正文
+        N->>U: FastCGI 10010
+        U->>U: 整片读入内存
+        U->>D: 写/tmp/chunks/{md5}/{i}
+        U->>R: 将i追加到uploaded字符串
+        U-->>F: code=0
+    end
+
+    F->>N: POST /api/chunk_merge<br/>用户、Token、MD5、文件名
+    N->>M: FastCGI 10011
+    M->>R: 验证Token并读取大小、分片数
+    M->>D: 检查0到N-1号文件是否存在
+    M->>TR: 请求可写Storage
+    TR-->>M: 返回Storage
+    M->>ST: 第0片创建appender文件
+    ST-->>M: 返回file_id
+
+    loop 后续分片1到N-1
+        M->>ST: append第i片到同一file_id
+        M->>D: 每片成功后立即删除本地片
+    end
+
+    M->>DB: 写file_info、user_file_list<br/>更新user_file_count
+    M->>R: 删除chunk:{md5}
+    M->>D: 删除临时目录
+    M-->>F: 上传完成
+```
+
+**面试口径：** 大于 10 MiB 的文件每片 10 MiB，前端按编号顺序上传。`chunk_init` 校验 Token，并用 Redis Hash 保存 24 小时会话；`chunk_upload` 把原始分片写入 `/tmp/chunks/{md5}/{index}`；`chunk_merge` 用第一片创建 FastDFS appender 文件，再依次追加后续分片。当前单片上传不验 Token和摘要，合并只检查分片是否存在，失败时可能留下远端半成品。
+
+### 9.6 文件列表与正文下载
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant F as React前端
+    participant N as Nginx
+    participant L as myfiles FastCGI<br/>10004
+    participant P as dealfile FastCGI<br/>10005
+    participant R as Redis
+    participant DB as MySQL
+    participant MOD as ngx_fastdfs_module
+    participant ST as Storage文件
+
+    rect rgba(100,100,100,0.08)
+        F->>N: POST /api/myfiles?cmd=normal
+        N->>L: FastCGI 10004
+        L->>R: 验证Token
+        L->>DB: 联查user_file_list和file_info
+        DB-->>L: 文件名、MD5、URL、大小、类型
+        L-->>F: JSON文件列表
+        F->>F: 内网URL替换为同源/group路径
+    end
+
+    rect rgba(100,100,100,0.08)
+        F->>N: POST /api/dealfile?cmd=pv
+        N->>P: FastCGI 10005
+        P->>R: 验证Token
+        P->>DB: 下载计数+1
+        P-->>F: 计数结果
+    end
+
+    rect rgba(100,100,100,0.08)
+        F->>N: GET /group1/M00/.../xxx
+        N->>MOD: 匹配/group路由
+        MOD->>ST: 定位并读取文件
+        ST-->>MOD: 文件字节
+        MOD-->>N: 文件内容和长度
+        N-->>F: HTTP 200或Range 206
+    end
+```
+
+**面试口径：** FastCGI 只参与获取文件信息和更新下载计数；真正的正文请求匹配 Nginx 的 `/group...` 路由，由 `ngx_fastdfs_module` 直接读取 Storage 文件并返回，不经过 FastCGI、MySQL或Redis。计数请求与正文请求相互独立，因此当前 `pv` 只是可绕过、可重复的点击统计，不是下载授权。
+
+### 9.7 `file_id`、URL 与下载路径
+
+`file_id` 是 FastDFS 返回的内部逻辑标识；URL 是项目根据 Web 访问地址拼接出的 HTTP 地址：
+
+```text
+file_id = group1/M00/00/00/xxx.mp4
+
+url = http://172.30.0.3:80/
+    + file_id
+    = http://172.30.0.3:80/group1/M00/00/00/xxx.mp4
+```
+
+```mermaid
+flowchart LR
+    Upload["文件写入Storage"]
+    ID["FastDFS返回file_id<br/>group1/M00/.../xxx"]
+    Build["FastCGI程序拼接<br/>协议 + Web地址 + file_id"]
+    DB["file_info同时保存<br/>file_id和url"]
+    List["文件列表API返回url"]
+    Replace["前端去掉内网前缀<br/>得到/group..."]
+    Nginx["Nginx匹配/group路由"]
+    Module["ngx_fastdfs_module"]
+    Storage["Storage文件正文"]
+
+    Upload --> ID --> Build --> DB --> List --> Replace --> Nginx --> Module --> Storage
+```
+
+- `file_id` 用于 FastDFS 查询、删除和 appender 追加，是更基础的存储标识。
+- URL 用于 HTTP 访问，是环境相关的可推导字段；当前前端把 `http://172.30.0.3:80` 替换为空字符串，再按同源路径访问。
+- 同时永久保存完整 URL 会与部署地址耦合；合理改进是持久化 `file_id`，在响应时动态生成相对或公共 URL。
+
+### 9.8 普通分享、公共列表、转存与取消分享
+
+普通分享是“发布到公共窗口”，不是指定接收人的点对点授权。分享和转存都不会复制 FastDFS 正文：
+
+```mermaid
+flowchart LR
+    Alice["Alice"]
+    Bob["Bob"]
+    UA["user_file_list<br/>Alice → md5=abc<br/>shared_status=1"]
+    UB["user_file_list<br/>Bob → md5=abc<br/>转存后新增"]
+    Share["share_file_list<br/>Alice公开分享md5=abc"]
+    File["file_info<br/>md5=abc<br/>file_id固定<br/>count=2"]
+    Body["FastDFS正文<br/>仍然只有一份"]
+    Public["公共分享窗口"]
+
+    Alice --> UA
+    UA --> Share
+    Share --> Public
+    Public -->|"Bob主动点击转存"| Bob
+    Bob --> UB
+    UA -. "通过md5引用" .-> File
+    UB -. "通过md5引用" .-> File
+    Share -. "通过md5展示" .-> File
+    File --> Body
+```
+
+创建分享链路：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as 分享者前端
+    participant N as Nginx
+    participant D as dealfile FastCGI<br/>10005
+    participant R as Redis
+    participant DB as MySQL
+    participant ST as FastDFS Storage
+
+    A->>N: POST /api/dealfile?cmd=share<br/>user、token、md5、filename
+    N->>D: FastCGI 10005
+    D->>R: verify_token
+    D->>R: 查询FILE_PUBLIC_ZSET
+    alt Redis未命中
+        D->>DB: 回查share_file_list
+    end
+    alt 尚未分享
+        D->>DB: user_file_list.shared_status=1
+        D->>DB: 插入share_file_list，pv=0
+        D->>DB: 公共分享总数+1
+        D->>R: 更新公共ZSet和文件名Hash
+        D-->>A: code=0
+    else 已有人分享同MD5和文件名
+        D-->>A: code=3
+    end
+    Note over D,ST: 不访问或复制Storage正文<br/>file_info.count不变
+```
+
+公共列表与转存链路：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant B as Bob前端
+    participant N as Nginx
+    participant L as sharefiles<br/>10006
+    participant S as dealsharefile<br/>10007
+    participant DB as MySQL
+    participant ST as FastDFS正文
+
+    B->>N: POST /api/sharefiles?cmd=normal<br/>start、count
+    N->>L: FastCGI 10006
+    L->>DB: 联查share_file_list和file_info
+    DB-->>L: 分享者、MD5、文件名、URL、大小、PV
+    L-->>B: 公共分享列表
+
+    B->>N: POST /api/dealsharefile?cmd=save<br/>user=Bob、md5、filename
+    N->>S: FastCGI 10007
+    Note over S: 当前未验证Token
+    S->>DB: 查询Bob是否已有同名同MD5文件
+    alt 已经拥有
+        S-->>B: code=5
+    else 尚未拥有
+        S->>DB: file_info.count+1
+        S->>DB: 插入Bob的user_file_list
+        S->>DB: Bob的user_file_count+1
+        S-->>B: code=0
+    end
+    Note over S,ST: 不下载、不上传、不生成新file_id
+```
+
+公共分享下载仍分为“计数”和“正文”两条请求：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as 公共页面用户
+    participant N as Nginx
+    participant S as dealsharefile<br/>10007
+    participant DB as MySQL
+    participant R as Redis
+    participant MOD as ngx_fastdfs_module
+    participant ST as Storage
+
+    U->>N: POST /api/dealsharefile?cmd=pv
+    N->>S: FastCGI 10007
+    S->>DB: share_file_list.pv+1
+    S->>R: 公共ZSet分数+1
+    S-->>U: 计数结果
+
+    U->>N: GET /group1/M00/.../xxx
+    N->>MOD: 匹配/group路由
+    MOD->>ST: 读取正文
+    ST-->>N: 文件字节
+    N-->>U: HTTP 200或206
+```
+
+取消分享链路：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as 分享者前端
+    participant N as Nginx
+    participant S as dealsharefile<br/>10007
+    participant DB as MySQL
+    participant R as Redis
+    participant ST as FastDFS Storage
+
+    A->>N: POST /api/dealsharefile?cmd=cancel<br/>user、md5、filename
+    N->>S: FastCGI 10007
+    Note over S: 当前未验证Token
+    S->>DB: shared_status=0
+    S->>DB: 公共分享总数-1
+    S->>DB: 删除share_file_list
+    S->>R: 删除公共ZSet和Hash记录
+    S-->>A: code=0
+    Note over S,ST: 不删除用户拥有关系<br/>不减少file_info.count<br/>不删除正文
+```
+
+一份正文从上传到最终删除的状态变化：
+
+```mermaid
+stateDiagram-v2
+    [*] --> AliceOwns: Alice上传
+    AliceOwns: Alice拥有\ncount=1
+    AliceOwns --> Shared: Alice公开分享
+    Shared: 公共窗口可见\ncount仍为1
+    Shared --> BobSaved: Bob转存
+    BobSaved: Alice和Bob共同拥有\ncount=2
+    BobSaved --> ShareCanceled: Alice取消分享
+    ShareCanceled: 不再公开\n双方仍拥有\ncount=2
+    ShareCanceled --> AliceDeleted: Alice删除自己的关系
+    AliceDeleted: 仅Bob拥有\ncount=1
+    AliceDeleted --> PhysicalDeleted: Bob也删除
+    PhysicalDeleted: count=0\n删除file_info和FastDFS正文
+    PhysicalDeleted --> [*]
+```
+
+**面试口径：** 分享只把原目录项标记为已分享，并新增 `share_file_list` 和 Redis 公共列表缓存，不增加物理引用计数；转存给目标用户新增 `user_file_list` 并把 `file_info.count` 加一，继续引用同一个 `file_id`；取消分享只移除公开关系，不撤销别人已经完成的转存，也不删除正文。
+
+### 9.9 当前是公共发布，不是点对点分享
+
+```mermaid
+flowchart LR
+    Alice["Alice点击分享"]
+    Public["share_file_list<br/>公共分享窗口"]
+    Bob["Bob可见"]
+    Carol["Carol可见"]
+    Other["其他访问者可见"]
+
+    Alice -->|"未指定接收人"| Public
+    Public --> Bob
+    Public --> Carol
+    Public --> Other
+```
+
+当前请求中没有 `receiver_user`、接收者授权、权限级别、有效期或分享授权表。用户也可以把永久 `/group...` 地址私下发送给别人，但这只是直链传播，不是受系统权限控制的点对点分享。图片分享子系统虽然有 `urlmd5` 和 `key` 字段，但当前前端未完整接入，浏览链路也没有强制校验提取码。
+
+真正的点对点模型应显式记录发送者、接收者与权限：
+
+```mermaid
+flowchart LR
+    Sender["发送者Alice"]
+    Grant["分享授权记录<br/>sender=Alice<br/>receiver=Bob<br/>permission=read<br/>expire_time"]
+    File["file_info / file_id"]
+    Bob["接收者Bob"]
+    Carol["Carol"]
+
+    Sender -->|"创建授权"| Grant
+    Grant --> File
+    Grant -->|"仅授权"| Bob
+    Carol -. "没有授权，拒绝访问" .-> File
+```
+
+### 9.10 Token 遗漏与真实安全边界
+
+前端页面要求登录不等于后端已经鉴权：
+
+```mermaid
+flowchart TD
+    UI["React页面<br/>检查user.token、隐藏按钮"]
+    Normal["正常用户从页面发请求"]
+    Direct["调用者绕过React<br/>控制台 / Postman / 脚本"]
+    Nginx["Nginx公开API入口"]
+    CGI["FastCGI业务程序"]
+    Verify{"服务端是否验证Token<br/>并检查资源权限？"}
+    Safe["允许合法操作"]
+    Reject["拒绝伪造或越权请求"]
+    Risk["直接相信请求体user<br/>产生越权风险"]
+
+    UI --> Normal --> Nginx
+    Direct --> Nginx
+    Nginx --> CGI --> Verify
+    Verify -->|"是且有权限"| Safe
+    Verify -->|"无效或无权限"| Reject
+    CGI -->|"当前dealsharefile未验证"| Risk
+```
+
+当前鉴权结论：
+
+| 操作 | 当前 Token 状态 | 判断 |
+| --- | --- | --- |
+| 创建普通分享 `dealfile?cmd=share` | 校验 | 符合预期，但还应检查资源所有权 |
+| 查看公共分享列表 `sharefiles?cmd=normal` | 不校验 | 若定义为公共窗口可以接受 |
+| 转存 `dealsharefile?cmd=save` | **不校验** | 明确的服务端鉴权遗漏 |
+| 取消分享 `dealsharefile?cmd=cancel` | **不校验** | 可伪造分享者，属于越权风险 |
+| 公共下载计数 `dealsharefile?cmd=pv` | **不校验** | 可匿名计数，但独立接口可刷、可绕过 |
+| 私有/公开正文 `/group...` | **不校验** | 知道永久URL即可直达，未区分私有与公开 |
+
+结合前后端代码，最合理的判断不是“为了避免 Token 过期导致插入失败”，而是开发者把前端登录门禁误当成安全边界，遗漏了直接调用 API 和 `/group...` URL 的路径。Token 过期时拒绝转存、取消等写操作才是正确行为。
+
+合理改进：
+
+1. 转存、取消等写接口必须携带并校验 Token，真实用户应由服务端会话确定，不能信任请求体中的 `user`。
+2. 转存前确认分享记录仍有效；取消前确认当前用户就是分享创建者。
+3. 多表计数和关系更新使用事务、唯一约束与幂等设计。
+4. 下载统一经过授权入口，校验私有拥有关系或公开分享状态，再使用短期签名 URL 或 `X-Accel-Redirect` 让 Nginx 返回正文。
+5. 公共下载计数应与真实下载响应关联，而不是依赖前端单独调用可伪造的 `pv` 接口。
+
+### 9.11 一分钟综合回答
+
+> 前端通过 HTTP/HTTPS 访问 Nginx，Nginx 按 URI 把 `/api/*` 请求用 FastCGI 协议交给对应的常驻业务进程。文件上传前先由前端计算完整 MD5并调用 `/api/md5`：用户已拥有则结束，物理文件存在但用户未拥有则只新增引用完成秒传，物理文件不存在才上传正文。小文件经 `upload_cgi` 落临时文件后调用 `fdfs_upload_file`；大文件按 10 MiB 顺序上传到 `/tmp/chunks`，再用 FastDFS appender 合并。MySQL 保存元数据和用户关系，Redis 保存 Token、分片会话和公共分享缓存，Storage 保存最终正文。下载时 FastCGI 只负责查询 URL 和更新计数，正文由 Nginx 的 `ngx_fastdfs_module` 直接从 Storage 返回。普通分享只是发布到公共窗口，转存只给目标用户新增对同一 `file_id` 的引用，不复制正文。当前转存、取消分享和公共计数缺少服务端 Token 校验，`/group...` 永久直链也没有区分私有与公开，这是把前端登录限制误当安全边界造成的鉴权缺口。
