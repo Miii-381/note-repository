@@ -2735,15 +2735,15 @@ Docker 也保留很多常用短命令：
 
 ### 14.2 环境与连接
 
-| 命令 | 作用 |
-|---|---|
-| `docker version` | 查看客户端与服务端版本、确认通信 |
-| `docker info` | 查看 daemon 和整体运行信息 |
-| `docker context ls` | 列出可连接的 Docker 环境 |
-| `docker context show` | 显示当前 context |
-| `docker context use <NAME>` | 切换 context |
-| `docker system df -v` | 查看 Docker 对象磁盘占用 |
-| `docker events` | 实时查看 daemon 对象事件 |
+| 命令                          | 作用                |
+| --------------------------- | ----------------- |
+| `docker version`            | 查看客户端与服务端版本、确认通信  |
+| `docker info`               | 查看 daemon 和整体运行信息 |
+| `docker context ls`         | 列出可连接的 Docker 环境  |
+| `docker context show`       | 显示当前 context      |
+| `docker context use <NAME>` | 切换 context        |
+| `docker system df -v`       | 查看 Docker 对象磁盘占用  |
+| `docker events`             | 实时查看 daemon 对象事件  |
 
 ### 14.3 镜像与构建
 
